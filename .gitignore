@@ -1,0 +1,19 @@
+# Eclipse
+.metadata
+bin/
+/bin/
+tmp/
+*.tmp
+local.properties
+.settings/
+.loadpath
+.project
+.classpath
+
+# Intellj
+.idea/
+out/
+
+
+#Info about .gitignore
+https://www.atlassian.com/git/tutorials/saving-changes/gitignore
