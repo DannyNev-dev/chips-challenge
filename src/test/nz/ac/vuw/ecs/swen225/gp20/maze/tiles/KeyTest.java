@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
-import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.Key;
+import nz.ac.vuw.ecs.swen225.gp20.maze.Key;
 
 class KeyTest {
 

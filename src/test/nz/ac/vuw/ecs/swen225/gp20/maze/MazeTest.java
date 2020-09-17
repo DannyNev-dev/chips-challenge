@@ -10,5 +10,7 @@ class MazeTest {
   void test() {
     assert(true);
   }
+  
+  //Check there is exactly one playerTile in the board
 
 }

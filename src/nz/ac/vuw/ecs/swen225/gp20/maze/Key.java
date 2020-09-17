@@ -1,7 +1,4 @@
-package nz.ac.vuw.ecs.swen225.gp20.maze.tiles;
-
-import java.util.Collection;
-import nz.ac.vuw.ecs.swen225.gp20.maze.Collectable;
+package nz.ac.vuw.ecs.swen225.gp20.maze;
 
 /**
  * Represent keys which can be take up a whole tile in the board of be collected by an entity.
@@ -9,10 +6,10 @@ import nz.ac.vuw.ecs.swen225.gp20.maze.Collectable;
  * @author Emanuel Evans (ID: 300472656)
  *
  */
-public class Key implements Tile, Collectable {
+public class Key implements Collectable {
 
   // Ending of all the key names, stored to improve efficiency
-  private static final String suffix = "KeyTile";
+  private static final String suffix = "Key";
 
   /**
    * Group and define the finite type of keys that are available.
@@ -42,19 +39,10 @@ public class Key implements Tile, Collectable {
    * @param colour identifying the type of this key.
    */
   public Key(Colour colour) {
-    super();
     this.colour = colour;
   }
 
-  @Override
-  public String getName() {
-    return colour.name().toLowerCase() + suffix;
-  }
-
-  @Override
-  public boolean isAccessible(Collection<Collectable> invetory) {
-    return true;
-  }
+ 
 
   /**
    * Obtain the colour of this key.
@@ -63,6 +51,11 @@ public class Key implements Tile, Collectable {
    */
   public Key.Colour getColour() {
     return colour;
+  }
+
+  @Override
+  public String getName() {
+    return colour.name().toLowerCase() + suffix;
   }
 
 }
