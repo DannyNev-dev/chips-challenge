@@ -3,8 +3,6 @@ package nz.ac.vuw.ecs.swen225.gp20.maze;
 import java.awt.Point;
 
 import com.google.common.base.Preconditions;
-
-import nz.ac.vuw.ecs.swen225.gp20.application.Window;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Key;
 import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.Tile;
 
@@ -55,13 +53,13 @@ public class Maze {
 
 
   /**
-   * Test setup.
+   * Manual Test.
    * 
    * @param args initial arguments
    */
   public static void main(String... args) {
     //Preconditions.checkState(test, "test");
-    System.out.println(Key.Colour.BLUE);
+    System.out.println("The sky is " + Key.Colour.BLUE);
     
     //assert(false);
   }

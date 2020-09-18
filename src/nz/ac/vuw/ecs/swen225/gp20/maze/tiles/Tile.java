@@ -30,7 +30,7 @@ public abstract class Tile {
    * 
    * @param item an object which can be collected by the player from this tile
    */
-  public Tile(Collectable item) {
+  public Tile(Item item) {
     super();
     this.item = item;
   }

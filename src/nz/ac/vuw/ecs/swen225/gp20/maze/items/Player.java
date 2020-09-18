@@ -5,6 +5,7 @@ import com.google.common.base.Preconditions;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import nz.ac.vuw.ecs.swen225.gp20.maze.Move;
 import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.Tile;
 
 /**
@@ -15,9 +16,10 @@ import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.Tile;
 public class Player implements Entity {
   
   //Ending of all the player names, stored to improve efficiency
-  private static final String suffix = "chipTile";
+  private static final String name = "chip";
   
-  //Store orientation? Change chip to upper case ^
+  //Store where the player is facing
+  private Move.Direction orientation;
   
   private List<Collectable> inventory;
   
@@ -31,7 +33,7 @@ public class Player implements Entity {
    * @param position where the player should initially be located
    */
   public Player(Tile position) {
-    Preconditions.checkNotNull(position, "The player must have a well defeined position");
+    Preconditions.checkArgument(position != null, "The player must have a well defeined position");
     this.inventory = new ArrayList<Collectable>();
     this.chipsCollected = 0;
     this.position = position;
@@ -45,9 +47,10 @@ public class Player implements Entity {
    * @param chipsCollected number of chips which have been already collected
    */
   public Player(List<Collectable> inventory, Tile position, int chipsCollected) {
+    Preconditions.checkArgument(inventory != null, "Inventory can't be null when loading a player");
+    Preconditions.checkArgument(position != null, "The player must have a well defeined position");
     Preconditions.checkArgument(chipsCollected >= 0, "Number of chips collected can't be negative");
-    Preconditions.checkNotNull(position, "The player must have a well defeined position");
-    
+   
     this.inventory = new ArrayList<Collectable>(inventory);
     this.position = position;
     this.chipsCollected = chipsCollected;
@@ -77,6 +80,22 @@ public class Player implements Entity {
     return inventory.add(newItem);
   }
 
+  /**
+   * Get the direction the player is facing.
+   * @return where the player is facing
+   */
+  public Move.Direction getOrientation() {
+    return orientation;
+  }
+
+  /**
+   * Set the direction the player is facing.
+   * @param orientation where the player is facing
+   */
+  public void setOrientation(Move.Direction orientation) {
+    this.orientation = orientation;
+  }
+
 
   @Override
   public boolean isAccessible(Entity entity) {
@@ -102,7 +121,7 @@ public class Player implements Entity {
 
   @Override
   public String getName() {
-    return suffix;
+    return name;
   }
 
   

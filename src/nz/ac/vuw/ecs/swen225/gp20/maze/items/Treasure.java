@@ -11,7 +11,7 @@ import com.google.common.base.Preconditions;
 public class Treasure implements Collectable {
   
   //All treasures have the same name so store it statically to conserve resources
-  private static final String name = "treasureTile";
+  private static final String name = "treasure";
 
   @Override
   public boolean isAccessible(Entity entity) {

@@ -4,6 +4,7 @@ package nz.ac.vuw.ecs.swen225.gp20.maze.tiles;
 import com.google.common.base.Preconditions;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Collectable;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Entity;
+import nz.ac.vuw.ecs.swen225.gp20.maze.items.Item;
 
 /**
  * Class used to create free tile objects where entities can move without constrains.
@@ -19,9 +20,9 @@ public class ItemTile extends Tile {
    * Construct a basic tile which could contain a collectable item.
    * If null is given this cell will be empty 
    * 
-   * @param item object which could be collected at this tile
+   * @param item object which might (or might not) be collectable at this tile
    */
-  public ItemTile(Collectable item) {
+  public ItemTile(Item item) {
     super(item);
   }
 

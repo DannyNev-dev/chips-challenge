@@ -1,6 +1,6 @@
 package nz.ac.vuw.ecs.swen225.gp20.maze.items;
 
-import jdk.internal.jline.internal.Preconditions;
+import com.google.common.base.Preconditions;
 
 /**
  * Represent keys which can be take up a whole tile in the board of be collected by an entity.
