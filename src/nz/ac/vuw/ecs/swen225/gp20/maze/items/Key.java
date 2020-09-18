@@ -1,4 +1,6 @@
-package nz.ac.vuw.ecs.swen225.gp20.maze;
+package nz.ac.vuw.ecs.swen225.gp20.maze.items;
+
+import jdk.internal.jline.internal.Preconditions;
 
 /**
  * Represent keys which can be take up a whole tile in the board of be collected by an entity.
@@ -39,6 +41,7 @@ public class Key implements Collectable {
    * @param colour identifying the type of this key.
    */
   public Key(Colour colour) {
+    Preconditions.checkNotNull(colour);
     this.colour = colour;
   }
 
@@ -56,6 +59,15 @@ public class Key implements Collectable {
   @Override
   public String getName() {
     return colour.name().toLowerCase() + suffix;
+  }
+
+
+
+  @Override
+  public boolean pickup(Player player) {
+    // TODO check player in valid tile
+    
+    return player.collectItem(this);
   }
 
 }

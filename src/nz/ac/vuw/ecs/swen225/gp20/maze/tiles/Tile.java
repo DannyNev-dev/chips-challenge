@@ -1,8 +1,9 @@
 package nz.ac.vuw.ecs.swen225.gp20.maze.tiles;
 
 import com.google.common.base.Preconditions;
-import java.util.Collection;
-import nz.ac.vuw.ecs.swen225.gp20.maze.Collectable;
+import nz.ac.vuw.ecs.swen225.gp20.maze.items.Collectable;
+import nz.ac.vuw.ecs.swen225.gp20.maze.items.Entity;
+import nz.ac.vuw.ecs.swen225.gp20.maze.items.Item;
 
 
 
@@ -17,9 +18,11 @@ import nz.ac.vuw.ecs.swen225.gp20.maze.Collectable;
 public abstract class Tile {
   
   /**
-   * A collectable item which can be collected by the player from this tile.
+   * An item which might be collectable by the player from this tile.
+   * By having an item objects such as player can be on different backgorunds
+   * such as the empty tile or the info tile
    */
-  protected Collectable item;
+  protected Item item;
   
 
   /**
@@ -45,11 +48,10 @@ public abstract class Tile {
    * items contains in the collection passed as a parameter nor their properties.
    * Indeed, this method should be given an unmodifiable collection.
    * 
-   * @param invetory the collection of collectable items which might affect where
-   *                 the tile can be accessed
+   * @param entity the entity which would like to access this tile
    * @return whether this tile can be currently accessed
    */
-  public abstract boolean isAccessible(Collection<Collectable> invetory);
+  public abstract boolean isAccessible(Entity entity);
   
   
   /**
@@ -62,17 +64,31 @@ public abstract class Tile {
   }
   
   /**
+   * Insert an item to this cell.
+   * @param newItem item to add to this tile
+   * @return the item which was previously in this time, null if it was empty
+   * @throws RuntimeException if an item can't be added to this tile
+   */
+  public Item replaceItem(Item newItem) throws RuntimeException {
+    Item previous = item;
+    item = newItem;
+    return previous;
+  }
+  
+  /*
    * Obtain the Collectable item at this tile and removes it from here.
    * This method should only be invoked when there is an item to pick up.
    * Hence if the method executes correctly the return value is different form null.
    * 
    * @return the item which have just been removed from this tile
    */
+  /*
   public Collectable pickupItem() {
     Preconditions.checkState(containsItem(), "There is no item to pick up in this tile");
     Collectable collected = item;
     item = null;
     return collected;
   }
+  */
 
 }

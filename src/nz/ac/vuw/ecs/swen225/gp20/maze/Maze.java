@@ -5,6 +5,7 @@ import java.awt.Point;
 import com.google.common.base.Preconditions;
 
 import nz.ac.vuw.ecs.swen225.gp20.application.Window;
+import nz.ac.vuw.ecs.swen225.gp20.maze.items.Key;
 import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.Tile;
 
 /**
@@ -28,6 +29,8 @@ public class Maze {
   
 
   /**
+   * Load a maze.
+   * 
    * @param playerPos coordinates of the Tile containing the player
    * @param board 2-D array of tiles grouping each location on the maze
    * @param target Chips left to collect
