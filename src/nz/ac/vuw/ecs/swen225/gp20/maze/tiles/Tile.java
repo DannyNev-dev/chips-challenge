@@ -1,7 +1,6 @@
 package nz.ac.vuw.ecs.swen225.gp20.maze.tiles;
 
 import com.google.common.base.Preconditions;
-import nz.ac.vuw.ecs.swen225.gp20.maze.items.Collectable;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Entity;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Item;
 
@@ -55,13 +54,26 @@ public abstract class Tile {
   
   
   /**
-   * Check whether this tile has an item which could be collected.
+   * Check whether this tile has an item.
    * @return whether the tile contains an Item
    */
   public boolean containsItem() {
     return item != null;
     
   }
+  
+  /**
+   * Check whether this tile has an item of the given type.
+   * @param type class which will be checked if item is instance of it
+   * @return whether the tile contains an Item
+   */
+  public boolean containsItemType(Class type) {
+    if (containsItem()) {
+      return type.isInstance(item);
+    }
+    return false;
+    
+  } 
   
   /**
    * Insert an item to this cell.
@@ -74,6 +86,41 @@ public abstract class Tile {
     item = newItem;
     return previous;
   }
+  /*
+  //@Override
+  //public abstract Tile clone();
+  
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (obj == null) {
+      return false;
+    }
+    if (getClass() != obj.getClass()) {
+      return false;
+    }
+    Tile other = (Tile) obj;
+    if (item == null) {
+      if (other.item != null) {
+        return false;
+      }
+    } else if (!item.equals(other.item)) {
+      return false;
+    }
+    return true;
+  }
+  
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + ((item == null) ? 0 : item.hashCode());
+    return result;
+  }
+  */
+ 
   
   /*
    * Obtain the Collectable item at this tile and removes it from here.

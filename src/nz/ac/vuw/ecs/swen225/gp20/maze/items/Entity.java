@@ -1,6 +1,9 @@
 package nz.ac.vuw.ecs.swen225.gp20.maze.items;
 
+import java.awt.Point;
 import java.util.List;
+
+import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.Tile;
 
 /**
  * An item which has the ability to move around.
@@ -28,5 +31,12 @@ public interface Entity extends Item {
    * @return the number of collected chips
    */
   public int getChipsCollected();
+  
+  
+  /**
+   * Get the Coordinates of the tile object where this entity is located.
+   * @return the entity position
+   */
+  public Point getPosition();
 
 }

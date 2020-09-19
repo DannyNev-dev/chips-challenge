@@ -2,11 +2,11 @@ package nz.ac.vuw.ecs.swen225.gp20.maze.items;
 
 
 import com.google.common.base.Preconditions;
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import nz.ac.vuw.ecs.swen225.gp20.maze.Move;
-import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.Tile;
 
 /**
  * Represent the token of chip (the player).
@@ -23,7 +23,7 @@ public class Player implements Entity {
   
   private List<Collectable> inventory;
   
-  private Tile position;
+  private Point position;
   
   private int chipsCollected;
   
@@ -32,7 +32,7 @@ public class Player implements Entity {
    * Create a new player.
    * @param position where the player should initially be located
    */
-  public Player(Tile position) {
+  public Player(Point position) {
     Preconditions.checkArgument(position != null, "The player must have a well defeined position");
     this.inventory = new ArrayList<Collectable>();
     this.chipsCollected = 0;
@@ -46,7 +46,7 @@ public class Player implements Entity {
    * @param position where the player is currently located
    * @param chipsCollected number of chips which have been already collected
    */
-  public Player(List<Collectable> inventory, Tile position, int chipsCollected) {
+  public Player(List<Collectable> inventory, Point position, int chipsCollected) {
     Preconditions.checkArgument(inventory != null, "Inventory can't be null when loading a player");
     Preconditions.checkArgument(position != null, "The player must have a well defeined position");
     Preconditions.checkArgument(chipsCollected >= 0, "Number of chips collected can't be negative");
@@ -56,14 +56,6 @@ public class Player implements Entity {
     this.chipsCollected = chipsCollected;
   }
 
-  /**
-   * Get the tile object where the player is located.
-   * @return the player position
-   */
-  public Tile getPosition() {
-    return position;
-  }
-  
   /**
    * Increase the number of chips which have been collected by one.
    */
@@ -96,6 +88,10 @@ public class Player implements Entity {
     this.orientation = orientation;
   }
 
+  @Override
+  public Point getPosition() {
+    return position;
+  }
 
   @Override
   public boolean isAccessible(Entity entity) {
