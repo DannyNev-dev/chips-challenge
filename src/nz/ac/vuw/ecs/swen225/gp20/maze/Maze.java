@@ -39,7 +39,12 @@ public class Maze {
    * @param target Chips left to collect
    */
   public Maze(Player player, Tile[][] board, int target) {
-    Preconditions.checkArgument(board[playerPos.x][playerPos.y].containsItemType(Player.class));
+    Preconditions.checkNotNull(player, "There must be a player on the board to get its position");
+    //Get the coordinates of the tile where the player should be located
+    Point p = player.getPosition();
+    //Validate the player position against the board, hence check that tile contains a player
+    Preconditions.checkArgument(board[p.x][p.y].containsItemType(Player.class),
+        "The position of the given player doesn't match the player tile in the board");
     Preconditions.checkArgument(target >= 0);
     this.player = player;
     this.board = board;

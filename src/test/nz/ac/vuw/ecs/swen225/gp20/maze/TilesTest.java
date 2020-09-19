@@ -2,8 +2,7 @@ package test.nz.ac.vuw.ecs.swen225.gp20.maze;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import org.junit.jupiter.api.Test;
-
+import java.awt.Point;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Block;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.ExitLock;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Key;
@@ -14,6 +13,7 @@ import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.ExitTile;
 import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.ItemTile;
 import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.Tile;
 import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.Wall;
+import org.junit.jupiter.api.Test;
 
 class TilesTest {
 
@@ -22,7 +22,7 @@ class TilesTest {
    */
   @Test
   void playerTileNameTest() {
-    Tile tile = new ItemTile(new Player(new ItemTile(null)));
+    Tile tile = new ItemTile(new Player(new Point(1, 1)));
     assertEquals("chipTile", tile.getName());
   }
   
@@ -36,15 +36,15 @@ class TilesTest {
   }
   
   /**
-   * Check that is invalid adding an item to a wall
+   * Check that is invalid adding an item to a wall.
    */
   @Test
-  void AddItemWallIvalidTest() {
+  void addItemWallIvalidTest() {
     Tile tile = new Wall();
     try {
       tile.replaceItem(new Key(Colour.GREEN));
-    }catch( RuntimeException e) {
-      assert(true);
+    } catch (RuntimeException e) {
+      assert (true);
     }
   }
   
