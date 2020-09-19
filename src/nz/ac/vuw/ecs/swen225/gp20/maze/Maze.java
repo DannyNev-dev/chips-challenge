@@ -39,12 +39,7 @@ public class Maze {
    * @param target Chips left to collect
    */
   public Maze(Player player, Tile[][] board, int target) {
-    Preconditions.checkNotNull(player, "There must be a player on the board to get its position");
-    //Get the coordinates of the tile where the player should be located
-    Point p = player.getPosition();
-    //Validate the player position against the board, hence check that tile contains a player
-    Preconditions.checkArgument(board[p.x][p.y].containsItemType(Player.class),
-        "The position of the given player doesn't match the player tile in the board");
+    Preconditions.checkArgument(isPlayerPosValid());
     Preconditions.checkArgument(target >= 0);
     this.player = player;
     this.board = board;
@@ -81,6 +76,26 @@ public class Maze {
   public List<Collectable> getPlayerInventory() {
     Preconditions.checkNotNull(player, "There must be a player on the board to get its inventory");
     return Collections.unmodifiableList(player.getInventory());
+  }
+  
+  /**
+   * Check whether the position store in the player object match the board.
+   * @return whether the tile at the player coordinate actually contains a player
+   * @throws RuntimeException is the player is undefined or has an invalid position
+   */
+  private boolean isPlayerPosValid() {
+    if (player == null) {
+      throw new RuntimeException("There must be a player on the board to get its position");
+    }
+    //Get the coordinates of the tile where the player should be located
+    Point p = player.getPosition();
+    //Validate the player position against the board, hence check that tile contains a player
+    if (!board[p.x][p.y].containsItemType(Player.class)) {
+      throw new RuntimeException(
+          "The position of the given player doesn't match the player tile in the board");
+    }
+    
+    return true;    
   }
   
   /*
