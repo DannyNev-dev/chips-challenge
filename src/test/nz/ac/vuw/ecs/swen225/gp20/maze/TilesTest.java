@@ -10,6 +10,7 @@ import nz.ac.vuw.ecs.swen225.gp20.maze.items.Key.Colour;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Player;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Treasure;
 import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.ExitTile;
+import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.InfoTile;
 import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.ItemTile;
 import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.Tile;
 import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.Wall;
@@ -73,6 +74,24 @@ class TilesTest {
   void treasureTileNameTest() {
     Tile tile = new ItemTile(new Treasure());
     assertEquals("treasureTile", tile.getName());
+  }
+  
+  /**
+   * Check name of info tile.
+   */
+  @Test
+  void infoTileNameTest() {
+    Tile tile = new InfoTile("use the arrow keys to move");
+    assertEquals("infoTile", tile.getName());
+  }
+  
+  /**
+   * Check name of info tile.
+   */
+  @Test
+  void playerInfoTileNameTest() {
+    Tile tile = new InfoTile("look for elements of the same colour", new Player(new Point(5, 5)));
+    assertEquals("chipInfoTile", tile.getName());
   }
   
   /**

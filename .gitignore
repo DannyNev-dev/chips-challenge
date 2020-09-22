@@ -9,6 +9,7 @@ local.properties
 .loadpath
 .project
 .classpath
+.iml
 
 # Intellj
 .idea/
