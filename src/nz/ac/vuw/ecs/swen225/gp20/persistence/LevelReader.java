@@ -20,6 +20,7 @@ import nz.ac.vuw.ecs.swen225.gp20.maze.items.Key.Colour;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Player;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Treasure;
 import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.ExitTile;
+import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.InfoTile;
 import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.ItemTile;
 import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.Tile;
 import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.Wall;
@@ -108,8 +109,10 @@ public class LevelReader {
 		    			break;
 		    		case "exitLock":
 		    			item = new ExitLock(target);
+		    			break;
 		    		case "player":
 		    			item = p;
+		    			break;
 		    		default:
 		    			System.out.println("Invalid JSON input for the item");	//may need to throw custom exception
 		    			break;
@@ -139,8 +142,10 @@ public class LevelReader {
 	    		break;
 	    	case "Wall":
 	    		tile = new Wall();
+	    		break;
 	    	case "Info":
-	    		//tile = new InfoTile(jsonObj.getString("item")); // need to find out about this
+	    		tile = new InfoTile(jsonObj.getString("item"),null);
+	    		break;
 	    	default:
 	    		System.out.print("Incorrect Json Format");	//may need to throw custom exception
 	    		break;
