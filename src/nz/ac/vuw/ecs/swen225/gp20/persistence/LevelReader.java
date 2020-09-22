@@ -26,13 +26,19 @@ import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.Wall;
 
 /**
  * Contains methods and static variables required for reading levels from json files
- * Contains methods that return a maze which will be parsed maze module
- * 
- * @author Daniel Neville
+ * Contains methods that return a maze which will be parsed maze module.
  *
+ * @author Daniel Neville
  */
 public class LevelReader {
 	
+	/**
+	 * Deserialize level.
+	 *
+	 * @param levelNum the level num
+	 * @return the maze
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	public static Maze deserializeLevel(int levelNum) throws IOException{
 		//invalid number check, i assume that int primitive cannot be null
 		if(levelNum<=0 || levelNum>2) {
@@ -49,6 +55,7 @@ public class LevelReader {
 		int x = mazeObj.getJsonObject("player").getInt("x");
 		int y = mazeObj.getJsonObject("player").getInt("y");
 	    Player p = new Player(new Point(x,y));
+	    //target is the number of chips (treasures) that need to be collected
 	    int target = mazeObj.getInt("target");
 	    //initialize board
 	    Tile[][] board = {};
@@ -60,13 +67,20 @@ public class LevelReader {
 	    	JsonArray internalList = jsonObj.getJsonArray("row");
 	    	for(int j=0;j<internalList.size();j++) {
 	    		JsonObject internalJObj = internalList.getJsonObject(j);
-	    		board[i][j] = parseTile(internalJObj,target); //Parse each tile from the row array into the board of tiles
+	    		board[i][j] = parseTile(internalJObj,target,p); //Parse each tile from the row array into the board of tiles
 	    	}	    		
 	    }
 		return new Maze(p,board,target);		
 	}
 	
-	public static Tile parseTile(JsonObject jsonObj,int target) {	
+	/**
+	 * Parses the tile.
+	 *
+	 * @param jsonObj the json obj
+	 * @param target the target
+	 * @return the tile
+	 */
+	public static Tile parseTile(JsonObject jsonObj,int target,Player p) {	
 		
 		Item item = null;
 		Tile tile = null;
@@ -94,6 +108,8 @@ public class LevelReader {
 		    			break;
 		    		case "exitLock":
 		    			item = new ExitLock(target);
+		    		case "player":
+		    			item = p;
 		    		default:
 		    			System.out.println("Invalid JSON input for the item");	//may need to throw custom exception
 		    			break;
@@ -116,6 +132,7 @@ public class LevelReader {
 		    			System.out.println("Invalid JSON input for the door colour");	//may need to throw custom exception
 		    			break;
 	    		}
+	    		tile = new ItemTile(item);
 	    		break;
 	    	case "ExitTile":
 	    		tile = new ExitTile();
@@ -123,7 +140,7 @@ public class LevelReader {
 	    	case "Wall":
 	    		tile = new Wall();
 	    	case "Info":
-	    		//tile = new ItemTile(); // need to find out about this
+	    		//tile = new InfoTile(jsonObj.getString("item")); // need to find out about this
 	    	default:
 	    		System.out.print("Incorrect Json Format");	//may need to throw custom exception
 	    		break;
