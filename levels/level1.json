@@ -1,6 +1,6 @@
 {		
-	"player":{"x":9,"y":9}	
-	"target":7	
+	"player":{"x":9,"y":9},	
+	"target":7,	
 	"board":[
 		{"row":[
 			{
@@ -293,7 +293,7 @@
 			},		
 			{
 				"type": "Tile",
-				"item": "Treasure"			
+				"item": "treasure"			
 			},
 			{
 				"type": "Tile",
@@ -314,7 +314,7 @@
 			},
 			{
 				"type": "Tile",
-				"item": "Treasure"			
+				"item": "treasure"			
 			},
 			{
 				"type": "Tile",
@@ -360,7 +360,7 @@
 			},
 			{
 				"type": "Door",
-				"item": "Green"	
+				"item": "green"	
 			},
 			{
 				"type": "Wall"			
@@ -374,7 +374,7 @@
 			},
 			{
 				"type": "Door",
-				"item": "Green"			
+				"item": "green"			
 			},
 			{
 				"type": "Wall"			
@@ -484,7 +484,7 @@
 			},
 			{
 				"type": "Tile",
-				"item": "Treasure"		
+				"item": "treasure"		
 			},		
 			{
 				"type": "Wall"			
@@ -499,7 +499,7 @@
 			},
 			{
 				"type": "Info",
-				"item": "Collect all of the Treasures to access the exit \n The colourful keys unlock the colourful doors "
+				"item": "Collect all of the treasures to access the exit \n The colourful keys unlock the colourful doors "
 			},
 			{
 				"type": "Tile",
@@ -514,7 +514,7 @@
 			},
 			{
 				"type": "Tile",
-				"item": "Treasure"			
+				"item": "treasure"			
 			},
 			{
 				"type": "Wall"			
@@ -556,7 +556,7 @@
 			},
 			{
 				"type": "Tile",
-				"item": "Treasure"
+				"item": "treasure"
 			},
 			{
 				"type": "Tile",
@@ -572,7 +572,7 @@
 			},
 			{
 				"type": "Tile",
-				"item": "Treasure"				
+				"item": "treasure"				
 			},
 			{
 				"type": "Wall"			
@@ -696,7 +696,7 @@
 			},
 			{
 				"type": "Tile",
-				"item": "Treasure"	
+				"item": "treasure"	
 			},
 			{
 				"type": "Tile",

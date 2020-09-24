@@ -48,8 +48,9 @@ public class LevelReader {
 		}			
 		System.out.println("Loading Level" + levelNum);
 		//open corresponding level file
-		Reader reader = Files.newBufferedReader(Paths.get("level"+levelNum+".json"));
-	    JsonReader jReader = Json.createReader(reader);
+		Reader reader = Files.newBufferedReader(Paths.get("levels//level"+levelNum+".json"));
+	    
+		JsonReader jReader = Json.createReader(reader);
 	    JsonObject mazeObj = jReader.readObject();
 		reader.close();
 		//create player object from JSON
@@ -58,11 +59,12 @@ public class LevelReader {
 	    Player p = new Player(new Point(x,y));
 	    //target is the number of chips (treasures) that need to be collected
 	    int target = mazeObj.getInt("target");
-	    //initialize board
-	    Tile[][] board = {};
+	    
 	    //get json array of objects that each contain a list and then begin nested loop to parse each json object into out desired classes
 	    JsonArray jList = mazeObj.getJsonArray("board");
 	    int length = jList.size();
+	    //initialize board
+	    Tile[][] board = new Tile[jList.getJsonObject(0).getJsonArray("row").size()][length];	    
 	    for(int i=0; i<length; i++) {	    	
 	    	JsonObject jsonObj = jList.getJsonObject(i);
 	    	JsonArray internalList = jsonObj.getJsonArray("row");
@@ -86,8 +88,8 @@ public class LevelReader {
 		Item item = null;
 		Tile tile = null;
 		String type = jsonObj.getString("type");
-		String var = jsonObj.getString("item");	
-
+		String var;
+		
 		switch(type) {
     	//Create cells based on type
 	    	case "Tile":
