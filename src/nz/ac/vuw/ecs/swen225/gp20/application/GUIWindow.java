@@ -33,45 +33,32 @@ public class GUIWindow extends javax.swing.JFrame {
 
         gameCanvas = new javax.swing.JPanel();
         boardCanvas = new javax.swing.JPanel();
-        jFileChooser2 = new javax.swing.JFileChooser();
         levelAndTimer = new javax.swing.JPanel();
         levelText = new javax.swing.JLabel();
         levelNumber = new javax.swing.JLabel();
         timerText = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
-        gameBotton = new javax.swing.JMenu();
+        gameButton = new javax.swing.JMenu();
         newGame = new javax.swing.JMenuItem();
         replay = new javax.swing.JMenuItem();
-        fileBotton = new javax.swing.JMenu();
-        loadBotton = new javax.swing.JMenuItem();
-        saveBotton = new javax.swing.JMenuItem();
+        fileButton = new javax.swing.JMenu();
+        loadButton = new javax.swing.JMenuItem();
+        saveButton = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(0, 207, 18));
 
         gameCanvas.setBackground(new java.awt.Color(0, 208, 18));
 
-        jFileChooser2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jFileChooser2ActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout boardCanvasLayout = new javax.swing.GroupLayout(boardCanvas);
         boardCanvas.setLayout(boardCanvasLayout);
         boardCanvasLayout.setHorizontalGroup(
             boardCanvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, boardCanvasLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jFileChooser2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+            .addGap(0, 562, Short.MAX_VALUE)
         );
         boardCanvasLayout.setVerticalGroup(
             boardCanvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(boardCanvasLayout.createSequentialGroup()
-                .addGap(17, 17, 17)
-                .addComponent(jFileChooser2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGap(0, 469, Short.MAX_VALUE)
         );
 
         levelAndTimer.setBackground(new java.awt.Color(204, 204, 204));
@@ -145,10 +132,10 @@ public class GUIWindow extends javax.swing.JFrame {
                 .addGap(67, 67, 67))
         );
 
-        gameBotton.setText("Game");
+        gameButton.setText("Game");
 
         newGame.setText("New Game");
-        gameBotton.add(newGame);
+        gameButton.add(newGame);
 
         replay.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         replay.setText("Replay");
@@ -157,36 +144,36 @@ public class GUIWindow extends javax.swing.JFrame {
                 replayActionPerformed(evt);
             }
         });
-        gameBotton.add(replay);
+        gameButton.add(replay);
 
-        jMenuBar1.add(gameBotton);
+        jMenuBar1.add(gameButton);
 
-        fileBotton.setText("File");
+        fileButton.setText("File");
 
-        loadBotton.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_U, java.awt.event.InputEvent.CTRL_DOWN_MASK));
-        loadBotton.setText("Upload Json File");
-        loadBotton.addMouseListener(new java.awt.event.MouseAdapter() {
+        loadButton.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_U, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        loadButton.setText("Upload Json File");
+        loadButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                loadBottonMouseClicked(evt);
+                loadButtonMouseClicked(evt);
             }
         });
-        loadBotton.addActionListener(new java.awt.event.ActionListener() {
+        loadButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                loadBottonActionPerformed(evt);
+                loadButtonActionPerformed(evt);
             }
         });
-        fileBotton.add(loadBotton);
+        fileButton.add(loadButton);
 
-        saveBotton.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_DOWN_MASK));
-        saveBotton.setText("Save Game");
-        saveBotton.addActionListener(new java.awt.event.ActionListener() {
+        saveButton.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        saveButton.setText("Save Game");
+        saveButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                saveBottonActionPerformed(evt);
+                saveButtonActionPerformed(evt);
             }
         });
-        fileBotton.add(saveBotton);
+        fileButton.add(saveButton);
 
-        jMenuBar1.add(fileBotton);
+        jMenuBar1.add(fileButton);
 
         setJMenuBar(jMenuBar1);
 
@@ -204,27 +191,22 @@ public class GUIWindow extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void loadBottonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadBottonActionPerformed
+    private void loadButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadButtonActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_loadBottonActionPerformed
+    }//GEN-LAST:event_loadButtonActionPerformed
 
-    private void saveBottonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveBottonActionPerformed
+    private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_saveBottonActionPerformed
+    }//GEN-LAST:event_saveButtonActionPerformed
 
     private void replayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_replayActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_replayActionPerformed
 
-    private void loadBottonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_loadBottonMouseClicked
+    private void loadButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_loadButtonMouseClicked
         // TODO add your handling code here:
 
-    }//GEN-LAST:event_loadBottonMouseClicked
-
-    private void jFileChooser2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFileChooser2ActionPerformed
-        // TODO add your handling code here:
-
-    }//GEN-LAST:event_jFileChooser2ActionPerformed
+    }//GEN-LAST:event_loadButtonMouseClicked
 
     /**
      * @param args the command line arguments
@@ -269,18 +251,17 @@ public class GUIWindow extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel boardCanvas;
-    private javax.swing.JMenu fileBotton;
-    private javax.swing.JMenu gameBotton;
+    private javax.swing.JMenu fileButton;
+    private javax.swing.JMenu gameButton;
     private javax.swing.JPanel gameCanvas;
-    private javax.swing.JFileChooser jFileChooser2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel levelAndTimer;
     private javax.swing.JLabel levelNumber;
     private javax.swing.JLabel levelText;
-    private javax.swing.JMenuItem loadBotton;
+    private javax.swing.JMenuItem loadButton;
     private javax.swing.JMenuItem newGame;
     private javax.swing.JMenuItem replay;
-    private javax.swing.JMenuItem saveBotton;
+    private javax.swing.JMenuItem saveButton;
     private javax.swing.JLabel timerText;
     // End of variables declaration//GEN-END:variables
    // Game variables
