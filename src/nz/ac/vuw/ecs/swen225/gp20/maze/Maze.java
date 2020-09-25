@@ -62,7 +62,7 @@ public class Maze {
    * @param level the level of the current board
    */
   public Maze(Player player, Tile[][] board, int target, int level) {
-    Preconditions.checkArgument(player != null);
+    Preconditions.checkArgument(player != null, "There must be a player on the board");
     Preconditions.checkArgument(board != null);
     Preconditions.checkArgument(target >= 0, "there can't be a negative target");
     Preconditions.checkArgument(level >= 0, "levels can't be negative");
@@ -156,15 +156,17 @@ public class Maze {
    * @throws RuntimeException is the player is undefined or has an invalid position
    */
   private boolean isPlayerPosValid() {
+    /*
     if (player == null) {
       throw new RuntimeException("There must be a player on the board");
     }
+    */
     //Get the coordinates of the tile where the player should be located
     Point playerPos = player.getPosition();
     
     if(!isPointInsideBoard(playerPos)) {
       //Player position is outside the board;
-      throw new RuntimeException("The player most be within the board boundaries");
+      throw new RuntimeException("The player must be within the board boundaries");
     }
     
     //Validate the player position against the board, hence check that tile contains a player

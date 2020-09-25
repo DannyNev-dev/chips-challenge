@@ -2,6 +2,9 @@ package nz.ac.vuw.ecs.swen225.gp20.maze;
 
 import java.awt.Point;
 import java.util.List;
+
+import com.google.common.base.Preconditions;
+
 import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.Tile;
 
 /**
@@ -21,8 +24,7 @@ public class SingleMove implements Move {
    * @param direction where is this move going to
    */
   public SingleMove(Direction direction) {
-    super();
-    //check direction?
+    Preconditions.checkArgument(direction != null, "The direction of a move can't be undefiened");
     this.direction = direction;
   }
 
@@ -42,20 +44,21 @@ public class SingleMove implements Move {
   @Override
   public Point getDestination(Point old) {
     switch(direction) {
-    case UP:
-      return new Point(old.x+1, old.y);
-    
-    case RIGHT:
-      return new Point(old.x, old.y+1);
+      case UP:
+        return new Point(old.x-1, old.y);
       
-    case DOWN:
-      return new Point(old.x-1, old.y);
-    
-    case lEFT:
-      return new Point(old.x, old.y-1);
+      case RIGHT:
+        return new Point(old.x, old.y+1);
+        
+      case DOWN:
+        return new Point(old.x+1, old.y);
       
-    default:
-      throw new RuntimeException("The direction of this move is invalid");
+      default:
+        //assert(direction == Direction.LEFT);
+        return new Point(old.x, old.y-1);
+      
+   // default:
+      //throw new RuntimeException("The direction of this move is invalid");
     }
   }
   

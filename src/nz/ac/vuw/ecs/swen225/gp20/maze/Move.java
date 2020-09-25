@@ -33,7 +33,7 @@ public interface Move {
     /**
      * Towards the West of the board.
      */
-    lEFT
+    LEFT
   }
   
   /**
