@@ -48,5 +48,13 @@ public interface Move {
    * @return a new board where the move have been applied
    */
   public Tile[][] apply(Tile[][] board);
+  
+  
+  /**
+   * Get the new cooridates of where this move brings.
+   * @param old location before the move is applied
+   * @return new location
+   */
+  public Point getDestination(Point old);
 
 }
