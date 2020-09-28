@@ -313,6 +313,7 @@ public class GUIWindow extends javax.swing.JFrame {
     /**
      * Displays the level on the GUI by receiving the information from the maze
      * module.
+     * @param level number to show.
      */
     public void setLevelNumber(int level) {
        this.level = level;
