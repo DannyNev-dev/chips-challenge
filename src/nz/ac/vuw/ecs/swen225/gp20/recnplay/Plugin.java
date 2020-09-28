@@ -7,10 +7,8 @@ package nz.ac.vuw.ecs.swen225.gp20.recnplay;
  * @author Yan Lu
  *
  */
-public interface Action {
+public interface Plugin {
 
-	public void run(Event e);
-	
-	public void run();
+	void onEvent(Event e);
 	
 }
