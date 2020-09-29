@@ -40,6 +40,7 @@ public class GUIWindow extends javax.swing.JFrame {
         levelText = new javax.swing.JLabel();
         levelNumber = new javax.swing.JLabel();
         timerText = new javax.swing.JLabel();
+        timer = new javax.swing.JLabel();
         boardCanvas = new javax.swing.JPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
         gameButton = new javax.swing.JMenu();
@@ -70,23 +71,27 @@ public class GUIWindow extends javax.swing.JFrame {
         levelText.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         levelText.setText("LEVEL");
 
-        levelNumber.setFont(new java.awt.Font("Arial Narrow", 1, 36)); // NOI18N
+        levelNumber.setFont(new java.awt.Font("Arial Hebrew Scholar", 1, 60)); // NOI18N
+        levelNumber.setForeground(new java.awt.Color(0, 153, 102));
         levelNumber.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         levelNumber.setToolTipText("");
         levelNumber.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        levelNumber.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
         timerText.setFont(new java.awt.Font("Arial Narrow", 1, 36)); // NOI18N
         timerText.setForeground(new java.awt.Color(0, 153, 153));
         timerText.setText("TIME");
 
+        timer.setBackground(new java.awt.Color(0, 0, 0));
+        timer.setFont(new java.awt.Font("Arial Rounded MT Bold", 1, 48)); // NOI18N
+        timer.setForeground(new java.awt.Color(0, 153, 153));
+        timer.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        timer.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+
         javax.swing.GroupLayout levelAndTimerLayout = new javax.swing.GroupLayout(levelAndTimer);
         levelAndTimer.setLayout(levelAndTimerLayout);
         levelAndTimerLayout.setHorizontalGroup(
             levelAndTimerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, levelAndTimerLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(levelText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(47, 47, 47))
             .addGroup(levelAndTimerLayout.createSequentialGroup()
                 .addGroup(levelAndTimerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(levelAndTimerLayout.createSequentialGroup()
@@ -96,6 +101,15 @@ public class GUIWindow extends javax.swing.JFrame {
                         .addGap(63, 63, 63)
                         .addComponent(levelNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(70, Short.MAX_VALUE))
+            .addGroup(levelAndTimerLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(levelAndTimerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(levelAndTimerLayout.createSequentialGroup()
+                        .addComponent(timer, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(levelAndTimerLayout.createSequentialGroup()
+                        .addComponent(levelText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(47, 47, 47))))
         );
         levelAndTimerLayout.setVerticalGroup(
             levelAndTimerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -106,7 +120,9 @@ public class GUIWindow extends javax.swing.JFrame {
                 .addComponent(levelNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(50, 50, 50)
                 .addComponent(timerText)
-                .addContainerGap(187, Short.MAX_VALUE))
+                .addGap(31, 31, 31)
+                .addComponent(timer, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         timerText.getAccessibleContext().setAccessibleName("time");
@@ -144,7 +160,7 @@ public class GUIWindow extends javax.swing.JFrame {
                 .addGroup(gameCanvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(gameCanvasLayout.createSequentialGroup()
                         .addComponent(boardCanvas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap(67, Short.MAX_VALUE))
                     .addGroup(gameCanvasLayout.createSequentialGroup()
                         .addComponent(levelAndTimer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGap(67, 67, 67))))
@@ -212,8 +228,12 @@ public class GUIWindow extends javax.swing.JFrame {
 
     }//GEN-LAST:event_jFileChooser2ActionPerformed
 
+    /**
+     * Forms a warning message if user clicks exit bottom.
+     * @param evt default event.
+     */
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-
+        c.pause();
         int confirm = JOptionPane.showConfirmDialog(null,
                 "Are you sure you want to leave this match?\n You will lose all your progress if\n you leave without saving",
                 "Leave Game?", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
@@ -221,9 +241,17 @@ public class GUIWindow extends javax.swing.JFrame {
             //close current game, it will not affect other game in different windows
             evt.getWindow().dispose();
             //System.exit(0); //close all windows
+        } else if (confirm == JOptionPane.OK_CANCEL_OPTION) {
+            //close current game, it will not affect other game in different windows
+            c.setRestarted();
+            //System.exit(0); //close all windows
         }
     }//GEN-LAST:event_formWindowClosing
 
+    /**
+     * Forms the window when running the game and allows user to select a level.
+     * @param evt default event
+     */
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         int numSelected;
         JRadioButton one = new JRadioButton("1");
@@ -247,7 +275,10 @@ public class GUIWindow extends javax.swing.JFrame {
             } else{
                 numSelected = 2;
             }
+                c = new GameTimer();
                 setLevelNumber(numSelected);
+                c.start(); // starts time out
+
         }
   
     }//GEN-LAST:event_formWindowOpened
@@ -287,10 +318,10 @@ public class GUIWindow extends javax.swing.JFrame {
             }
         });
 
-       // if(mode.equals("Running")){
-        GameTimer c = new GameTimer();
-       // c.start();
-       // }
+       //if(mode.equals("Running")){
+//        c = new GameTimer();
+//        c.start();
+       //}
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -305,6 +336,7 @@ public class GUIWindow extends javax.swing.JFrame {
     private javax.swing.JMenuItem newGame;
     private javax.swing.JMenuItem replay;
     private javax.swing.JMenuItem saveButton;
+    public static javax.swing.JLabel timer;
     private javax.swing.JLabel timerText;
     // End of variables declaration//GEN-END:variables
    // Game variables
@@ -312,6 +344,7 @@ public class GUIWindow extends javax.swing.JFrame {
     private String mode;
     private int level;
     private enum modes { Run, Load, Save, Replay}
+    private static GameTimer c;
     
    /**
      * initialize the number images  by linking each face to its image and storing them.
@@ -371,7 +404,7 @@ public class GUIWindow extends javax.swing.JFrame {
 
     /**
      * Set current game mode.
-     * @param mode Name of the mode within the modes enum
+     * @param mode Name of the mode within the modes enum.
      */
     public void setMode( String mode){
         for( int i = 0; i < modes.values().length; i++) {
@@ -380,5 +413,19 @@ public class GUIWindow extends javax.swing.JFrame {
             }
             this.mode = modes.valueOf(mode).name();
         }
+    }
+    
+    //@Override
+    public static void display(String data) {
+        int result = JOptionPane.showConfirmDialog(null, data, "Alert", JOptionPane.PLAIN_MESSAGE);
+    }
+    
+     /**
+     * create a pop up window
+     * @param data text shown inside the window
+     * @param title of the window
+     */
+    public void display(String data, String title) {
+        int result = JOptionPane.showConfirmDialog(null, data, title, JOptionPane.PLAIN_MESSAGE);
     }
 }
