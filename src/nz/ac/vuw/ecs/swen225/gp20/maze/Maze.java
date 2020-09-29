@@ -75,6 +75,14 @@ public class Maze {
   }
 
   /**
+   *Merge board.
+    *@return board
+     */
+     public Tile[][] getBoard (){
+      return board;
+      }
+
+  /**
    * Move the player from it's current position to a different tile in the board.
    * 
    * @param move indicates where should the player move to
