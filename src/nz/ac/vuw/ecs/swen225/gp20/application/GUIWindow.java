@@ -5,12 +5,16 @@
  */
 package nz.ac.vuw.ecs.swen225.gp20.application;
 
+import nz.ac.vuw.ecs.swen225.gp20.persistence.LevelReader;
+
 import java.awt.Image;
+import java.io.IOException;
 import javax.swing.*;
 
 /**
  *
  * @author camilalis
+ * From Master
  */
 public class GUIWindow extends javax.swing.JFrame {
 
@@ -32,47 +36,31 @@ public class GUIWindow extends javax.swing.JFrame {
     private void initComponents() {
 
         gameCanvas = new javax.swing.JPanel();
-        boardCanvas = new javax.swing.JPanel();
-        jFileChooser2 = new javax.swing.JFileChooser();
         levelAndTimer = new javax.swing.JPanel();
         levelText = new javax.swing.JLabel();
         levelNumber = new javax.swing.JLabel();
         timerText = new javax.swing.JLabel();
+        timer = new javax.swing.JLabel();
+        boardCanvas = new javax.swing.JPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
-        gameBotton = new javax.swing.JMenu();
+        gameButton = new javax.swing.JMenu();
         newGame = new javax.swing.JMenuItem();
         replay = new javax.swing.JMenuItem();
-        fileBotton = new javax.swing.JMenu();
-        loadBotton = new javax.swing.JMenuItem();
-        saveBotton = new javax.swing.JMenuItem();
+        fileButton = new javax.swing.JMenu();
+        saveButton = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(0, 207, 18));
-
-        gameCanvas.setBackground(new java.awt.Color(0, 208, 18));
-
-        jFileChooser2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jFileChooser2ActionPerformed(evt);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
             }
         });
 
-        javax.swing.GroupLayout boardCanvasLayout = new javax.swing.GroupLayout(boardCanvas);
-        boardCanvas.setLayout(boardCanvasLayout);
-        boardCanvasLayout.setHorizontalGroup(
-            boardCanvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, boardCanvasLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jFileChooser2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
-        boardCanvasLayout.setVerticalGroup(
-            boardCanvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(boardCanvasLayout.createSequentialGroup()
-                .addGap(17, 17, 17)
-                .addComponent(jFileChooser2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
+        gameCanvas.setBackground(new java.awt.Color(0, 208, 18));
 
         levelAndTimer.setBackground(new java.awt.Color(204, 204, 204));
         levelAndTimer.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, null, null, null, new java.awt.Color(102, 102, 102)));
@@ -83,23 +71,27 @@ public class GUIWindow extends javax.swing.JFrame {
         levelText.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         levelText.setText("LEVEL");
 
-        levelNumber.setFont(new java.awt.Font("Lucida Grande", 0, 3)); // NOI18N
+        levelNumber.setFont(new java.awt.Font("Arial Hebrew Scholar", 1, 60)); // NOI18N
+        levelNumber.setForeground(new java.awt.Color(0, 153, 102));
         levelNumber.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         levelNumber.setToolTipText("");
         levelNumber.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        levelNumber.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
         timerText.setFont(new java.awt.Font("Arial Narrow", 1, 36)); // NOI18N
         timerText.setForeground(new java.awt.Color(0, 153, 153));
         timerText.setText("TIME");
 
+        timer.setBackground(new java.awt.Color(0, 0, 0));
+        timer.setFont(new java.awt.Font("Arial Rounded MT Bold", 1, 48)); // NOI18N
+        timer.setForeground(new java.awt.Color(0, 153, 153));
+        timer.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        timer.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+
         javax.swing.GroupLayout levelAndTimerLayout = new javax.swing.GroupLayout(levelAndTimer);
         levelAndTimer.setLayout(levelAndTimerLayout);
         levelAndTimerLayout.setHorizontalGroup(
             levelAndTimerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, levelAndTimerLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(levelText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(47, 47, 47))
             .addGroup(levelAndTimerLayout.createSequentialGroup()
                 .addGroup(levelAndTimerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(levelAndTimerLayout.createSequentialGroup()
@@ -109,6 +101,15 @@ public class GUIWindow extends javax.swing.JFrame {
                         .addGap(63, 63, 63)
                         .addComponent(levelNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(70, Short.MAX_VALUE))
+            .addGroup(levelAndTimerLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(levelAndTimerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(levelAndTimerLayout.createSequentialGroup()
+                        .addComponent(timer, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(levelAndTimerLayout.createSequentialGroup()
+                        .addComponent(levelText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(47, 47, 47))))
         );
         levelAndTimerLayout.setVerticalGroup(
             levelAndTimerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -119,36 +120,56 @@ public class GUIWindow extends javax.swing.JFrame {
                 .addComponent(levelNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(50, 50, 50)
                 .addComponent(timerText)
-                .addContainerGap(187, Short.MAX_VALUE))
+                .addGap(31, 31, 31)
+                .addComponent(timer, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         timerText.getAccessibleContext().setAccessibleName("time");
+
+        boardCanvas.setPreferredSize(new java.awt.Dimension(562, 469));
+        boardCanvas.setRequestFocusEnabled(false);
+        boardCanvas.setSize(new java.awt.Dimension(562, 469));
+
+        javax.swing.GroupLayout boardCanvasLayout = new javax.swing.GroupLayout(boardCanvas);
+        boardCanvas.setLayout(boardCanvasLayout);
+        boardCanvasLayout.setHorizontalGroup(
+            boardCanvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 562, Short.MAX_VALUE)
+        );
+        boardCanvasLayout.setVerticalGroup(
+            boardCanvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 469, Short.MAX_VALUE)
+        );
 
         javax.swing.GroupLayout gameCanvasLayout = new javax.swing.GroupLayout(gameCanvas);
         gameCanvas.setLayout(gameCanvasLayout);
         gameCanvasLayout.setHorizontalGroup(
             gameCanvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(gameCanvasLayout.createSequentialGroup()
-                .addGap(42, 42, 42)
-                .addComponent(boardCanvas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(122, 122, 122)
+                .addGap(86, 86, 86)
+                .addComponent(boardCanvas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 142, Short.MAX_VALUE)
                 .addComponent(levelAndTimer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(60, 60, 60))
         );
         gameCanvasLayout.setVerticalGroup(
             gameCanvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, gameCanvasLayout.createSequentialGroup()
+            .addGroup(gameCanvasLayout.createSequentialGroup()
                 .addGap(52, 52, 52)
-                .addGroup(gameCanvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(levelAndTimer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(boardCanvas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(67, 67, 67))
+                .addGroup(gameCanvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(gameCanvasLayout.createSequentialGroup()
+                        .addComponent(boardCanvas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(67, Short.MAX_VALUE))
+                    .addGroup(gameCanvasLayout.createSequentialGroup()
+                        .addComponent(levelAndTimer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(67, 67, 67))))
         );
 
-        gameBotton.setText("Game");
+        gameButton.setText("Game");
 
         newGame.setText("New Game");
-        gameBotton.add(newGame);
+        gameButton.add(newGame);
 
         replay.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         replay.setText("Replay");
@@ -157,36 +178,17 @@ public class GUIWindow extends javax.swing.JFrame {
                 replayActionPerformed(evt);
             }
         });
-        gameBotton.add(replay);
+        gameButton.add(replay);
 
-        jMenuBar1.add(gameBotton);
+        jMenuBar1.add(gameButton);
 
-        fileBotton.setText("File");
+        fileButton.setText("File");
 
-        loadBotton.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_U, java.awt.event.InputEvent.CTRL_DOWN_MASK));
-        loadBotton.setText("Upload Json File");
-        loadBotton.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                loadBottonMouseClicked(evt);
-            }
-        });
-        loadBotton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                loadBottonActionPerformed(evt);
-            }
-        });
-        fileBotton.add(loadBotton);
+        saveButton.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        saveButton.setText("Save Game");
+        fileButton.add(saveButton);
 
-        saveBotton.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_DOWN_MASK));
-        saveBotton.setText("Save Game");
-        saveBotton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                saveBottonActionPerformed(evt);
-            }
-        });
-        fileBotton.add(saveBotton);
-
-        jMenuBar1.add(fileBotton);
+        jMenuBar1.add(fileButton);
 
         setJMenuBar(jMenuBar1);
 
@@ -227,6 +229,61 @@ public class GUIWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_jFileChooser2ActionPerformed
 
     /**
+     * Forms a warning message if user clicks exit bottom.
+     * @param evt default event.
+     */
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        c.pause();
+        int confirm = JOptionPane.showConfirmDialog(null,
+                "Are you sure you want to leave this match?\n You will lose all your progress if\n you leave without saving",
+                "Leave Game?", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
+        if (confirm == JOptionPane.OK_OPTION) {
+            //close current game, it will not affect other game in different windows
+            evt.getWindow().dispose();
+            //System.exit(0); //close all windows
+        } else if (confirm == JOptionPane.OK_CANCEL_OPTION) {
+            //close current game, it will not affect other game in different windows
+            c.setRestarted();
+            //System.exit(0); //close all windows
+        }
+    }//GEN-LAST:event_formWindowClosing
+
+    /**
+     * Forms the window when running the game and allows user to select a level.
+     * @param evt default event
+     */
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        int numSelected;
+        JRadioButton one = new JRadioButton("1");
+        JRadioButton two = new JRadioButton("2");
+        
+        //Group the radio buttons.
+        ButtonGroup levelSelected = new ButtonGroup();
+        levelSelected.add(one);
+        levelSelected.add(two);
+        
+        final JComponent[] inputs = new JComponent[]{
+            new JLabel("Choose a level to play"),
+            one,
+            two,
+        };
+        
+        int result = JOptionPane.showConfirmDialog(null, inputs, "Welcome", JOptionPane.PLAIN_MESSAGE);
+        if (result == JOptionPane.OK_OPTION) {
+            if (one.isSelected()) {
+                numSelected = 1;
+            } else{
+                numSelected = 2;
+            }
+                c = new GameTimer();
+                setLevelNumber(numSelected);
+                c.start(); // starts time out
+
+        }
+  
+    }//GEN-LAST:event_formWindowOpened
+
+    /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
@@ -261,34 +318,34 @@ public class GUIWindow extends javax.swing.JFrame {
             }
         });
 
-       // if(mode.equals("Running")){
-        GameTimer c = new GameTimer();
-       // c.start();
-       // }
+       //if(mode.equals("Running")){
+//        c = new GameTimer();
+//        c.start();
+       //}
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel boardCanvas;
-    private javax.swing.JMenu fileBotton;
-    private javax.swing.JMenu gameBotton;
+    private javax.swing.JMenu fileButton;
+    private javax.swing.JMenu gameButton;
     private javax.swing.JPanel gameCanvas;
-    private javax.swing.JFileChooser jFileChooser2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel levelAndTimer;
     private javax.swing.JLabel levelNumber;
     private javax.swing.JLabel levelText;
-    private javax.swing.JMenuItem loadBotton;
     private javax.swing.JMenuItem newGame;
     private javax.swing.JMenuItem replay;
-    private javax.swing.JMenuItem saveBotton;
+    private javax.swing.JMenuItem saveButton;
+    public static javax.swing.JLabel timer;
     private javax.swing.JLabel timerText;
     // End of variables declaration//GEN-END:variables
    // Game variables
     private static ImageIcon[] numberImg = new ImageIcon[10];
     private String mode;
-    private int level=1;
+    private int level;
     private enum modes { Run, Load, Save, Replay}
-
+    private static GameTimer c;
+    
    /**
      * initialize the number images  by linking each face to its image and storing them.
      */
@@ -300,7 +357,8 @@ public class GUIWindow extends javax.swing.JFrame {
             
         }
     }
-
+    
+                            
     /**
      * Display board grid on the GUI by receiving information from the Render module.
      * @return return a canvas for the Render module to display it in the game's
@@ -313,11 +371,15 @@ public class GUIWindow extends javax.swing.JFrame {
     /**
      * Displays the level on the GUI by receiving the information from the maze
      * module.
-     * @param level number to show.
      */
     public void setLevelNumber(int level) {
        this.level = level;
-        levelNumber.setIcon(numberImg[level]);
+        levelNumber.setText(String.valueOf(level));
+        try {
+            LevelReader.deserializeLevel(level);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -342,7 +404,7 @@ public class GUIWindow extends javax.swing.JFrame {
 
     /**
      * Set current game mode.
-     * @param mode Name of the mode within the modes enum
+     * @param mode Name of the mode within the modes enum.
      */
     public void setMode( String mode){
         for( int i = 0; i < modes.values().length; i++) {
@@ -351,5 +413,19 @@ public class GUIWindow extends javax.swing.JFrame {
             }
             this.mode = modes.valueOf(mode).name();
         }
+    }
+    
+    //@Override
+    public static void display(String data) {
+        int result = JOptionPane.showConfirmDialog(null, data, "Alert", JOptionPane.PLAIN_MESSAGE);
+    }
+    
+     /**
+     * create a pop up window
+     * @param data text shown inside the window
+     * @param title of the window
+     */
+    public void display(String data, String title) {
+        int result = JOptionPane.showConfirmDialog(null, data, title, JOptionPane.PLAIN_MESSAGE);
     }
 }
