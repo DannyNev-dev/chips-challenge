@@ -38,6 +38,7 @@ public class Record {
 		try {
 			FileWriter recordedFile = new FileWriter("levels//level"+".json");
 			recordedFile.write(gameRecord.toString());
+			recordedFile.close();
 		}
 		catch(IOException e) {
 			e.printStackTrace();
