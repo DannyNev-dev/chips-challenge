@@ -4,6 +4,7 @@ package nz.ac.vuw.ecs.swen225.gp20.render;
 import nz.ac.vuw.ecs.swen225.gp20.maze.Maze;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Player;
 import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.Tile;
+import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.*;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -20,19 +21,17 @@ import javax.swing.JPanel;
 
 public class Render {
 
-    private Model model;
     private View view;
     private Maze maze;
 
     public Render(Maze maze) {
     	this.maze = maze;
-        model = new Model();
-        view = new View(model);
+        view = new View(maze);
     }
 
-    private void movePlayer() {
+    private void updateRender() {
     	maze.getBoard();
-        view.refresh();
+        view.refresh(maze);
     }
 
     /*testing only */
@@ -45,17 +44,26 @@ public class Render {
 //game controller is fine
 
 class View {
+	
+	private Maze maze;
+	private int xSize;
+	private int ySize;
+	Tile[][] board;
+	private int tileSize = 41;
 
     private final static int GAP = 2;
-    Model model;
     private MainPanel mainPanel;
 
-    View(Model model){
-        this.model = model;
+    View(Maze maze){
+    	this.maze = maze;
+    	board = maze.getBoard();
+    	xSize = board.length;
+    	ySize = board[0].length;
         createAndShowGUI();
     }
 
-    void refresh() {
+    void refresh(Maze maze) {
+    	this.maze = maze;
         mainPanel.repaint();
     }
 
@@ -84,20 +92,18 @@ class View {
     }
 
     class BoardPanel extends JPanel {
-
-
+    	
         BoardPanel()   {
             setBorder(BorderFactory.createLineBorder(Color.BLACK, GAP));
-            GridLayout layout = new GridLayout(model.getBoardRows(), 
-            model.getBoardCols());
+            GridLayout layout = new GridLayout(xSize, 
+            ySize);
             setLayout(layout);
 
-            for (int i = 0; i <model.getBoardRows(); i++)   {
+            for (int i = 0; i < xSize; i++)   {
 
-                for (int j = 0; j < model.getBoardCols(); j++)  {
-                	Tile t = new Tile();
-                	String[][] Board = model.getBoard();
-                	ImageIcon ic = new ImageIcon(Board[i][j] + ".png");
+                for (int j = 0; j < ySize; j++)  {
+                	DispTile t = new DispTile();
+                	ImageIcon ic = new ImageIcon(board[i][j].getName() + ".png");
                 	t.setIcon(ic);
                     add(t);
                 }
@@ -112,10 +118,10 @@ class View {
         }
     }
 
-    class Tile extends JLabel {
+    class DispTile extends JLabel {
 
-        Tile() {
-            setPreferredSize(new Dimension(model.getSquareSize(), model.getSquareSize()));
+    	DispTile() {
+            setPreferredSize(new Dimension(tileSize, tileSize));
             setBorder(BorderFactory.createLineBorder(Color.BLACK, GAP));
         }
     }
@@ -139,24 +145,4 @@ class View {
 
         JButton getButton() {   return button;  }
     }
-}
-
-class Model{
-
-	String[][] board = {
-			{"wallTile", "wallTile","wallTile","wallTile"},
-			{"wallTile", "freeTile","freeTile","wallTile"},
-			{"wallTile", "chapTile","freeTile","wallTile"},
-			{"wallTile", "wallTile","wallTile","wallTile"}		
-	};
-	
-    private int boardRows = 4, boardCols = 4, squareSize = 41;
-
-    String[][] getBoard() {return board;}
-    
-    int getBoardRows() {return boardRows; }
-
-    int getBoardCols() {return boardCols; }
-
-    int getSquareSize() {return squareSize; }
 }
