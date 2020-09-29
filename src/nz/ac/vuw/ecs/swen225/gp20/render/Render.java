@@ -29,9 +29,13 @@ public class Render {
         view = new View(maze);
     }
 
-    private void updateRender() {
+    public void updateRender() {
     	maze.getBoard();
         view.refresh(maze);
+    }
+    
+    public JPanel getView() {
+    	return view.getMainPanel();
     }
 
     /*testing only */
@@ -74,6 +78,10 @@ class View {
         f.add(mainPanel);
         f.pack();
         f.setVisible(true);
+    }
+    
+    public JPanel getMainPanel() {
+    	return mainPanel;
     }
 
     JButton getButton() {   return mainPanel.getButton();   }
