@@ -63,7 +63,7 @@ public class LevelReader {
 	    //get json array of objects that each contain a list and then begin nested loop to parse each json object into out desired classes
 	    JsonArray jList = mazeObj.getJsonArray("board");
 	    
-		return new Maze(p,makeBoard(jList,target,p),target);	//after merge parse level num		
+		return new Maze(p,makeBoard(jList,target,p),target,levelNum);	//after merge parse level num		
 	}
 	/**
 	 * Parses the tile.
