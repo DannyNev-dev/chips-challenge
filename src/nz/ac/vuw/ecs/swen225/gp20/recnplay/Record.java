@@ -1,4 +1,3 @@
-
 package nz.ac.vuw.ecs.swen225.gp20.recnplay;
 
 import java.io.File;
@@ -9,7 +8,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.Date;
-
 import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonArrayBuilder;
@@ -46,15 +44,13 @@ public class Record{
 	}
 	
 	private String getSaveFileName() {	
-		//DateFormat df = new SimpleDateFormat("dd/MM/yy/HH/mm/ss");
+		//DateFormat df = new SimpleDateFormat("dd-MM-yy");
 		//Date dateobj = new Date();
 		//System.out.println(df.format(dateobj));
-		return "C:\\Users\\USER\\Desktop\\Fay_Study" + "Level" + recordedGame.level + ".json"; 
+		return "Level" + recordedGame.level + ".json";
 		// Calculate filename to save, if preferred folder is specified, it shall be passed from App in initializer
 	}
-	
-	
-	
+
 	// this method is open for app to call when save file dialog gets filepathI(name)
 	public void saveToJson() {
 		// call getSaveFileName to dump recordedGame into file		
@@ -65,9 +61,7 @@ public class Record{
             mapper.writeValue(new File(getSaveFileName()), this.recordedGame);
 
             // Java objects to JSON string - compact-print
-            String jsonString = mapper.writeValueAsString(this.recordedGame);
-
-            System.out.println(jsonString);
+            // String jsonString = mapper.writeValueAsString(this.recordedGame);
 
             // Java objects to JSON string - pretty-print
             String jsonInString2 = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(this.recordedGame);
@@ -80,13 +74,9 @@ public class Record{
 	}
 	
 	
-	
-	
 	// this method shall be called by Application when file loading dialog gets filepath(name).
 	private RecordedGame loadGame(String filename) {
 		// load the file and deserialize it to a new RecordedGame object, return it.
 		return null;
 	}
-	
-	
 }

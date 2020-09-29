@@ -22,7 +22,7 @@ public class Event {
 		PickUpChip;	  // if Event object is PickUpChip
 	}
 	
-	private SingleMove movement;
+	private SingleMove move;
 	
 	private int level;
 	
@@ -30,26 +30,68 @@ public class Event {
 	
 	private boolean pickupChip;
 
+	public int getLevel() {
+		return level;
+	}
+
+	public void setLevel(int level) {
+		this.level = level;
+	}
+
+	public boolean isPickupKey() {
+		return pickupKey;
+	}
+
+	public void setPickupKey(boolean pickupKey) {
+		this.pickupKey = pickupKey;
+	}
+
+	public boolean isPickupChip() {
+		return pickupChip;
+	}
+
+	public void setPickupChip(boolean pickupChip) {
+		this.pickupChip = pickupChip;
+	}
+
+	public void setType(Type type) {
+		this.type = type;
+	}
+
+	public void setMove(SingleMove move) {
+		this.move = move;
+	}
+
 	public Type getType() {
 		return type;
 	}
+	
+	public SingleMove getMove() {
+		return this.move;
+	}
 	        
-	public Event(Type type, int level, SingleMove move, boolean pickupKey, boolean pickupChip) {}  
+	public Event(Type type, int level, SingleMove move, boolean pickupKey, boolean pickupChip) {
+		this.type = type;
+		this.level = level;
+		this.move = move;
+		this.pickupKey = pickupKey;
+		this.pickupChip = pickupChip;
+	}  
 	
     public static Event eventOfLevelSetting(int level) {
     	return new Event(Type.SetLevel, level, null, false, false);
     }
 	
     public static Event eventOfMove(SingleMove move) {  
-    	return new Event(Type.Move, 1, move, false, false);
+    	return new Event(Type.Move, 0, move, false, false);
     	
     }
     
     public static Event eventOfPickUpKey(boolean pickUpKey) { 
-    	return new Event(Type.PickUpKey, 1, null, true, false);
+    	return new Event(Type.PickUpKey, 0, null, true, false);
     }
     
     public static Event eventOfPickUpChip(boolean pickUpChip) {
-    	return new Event(Type.PickUpChip, 1, null, false, true);  
+    	return new Event(Type.PickUpChip, 0, null, false, true);  
     }
 }
