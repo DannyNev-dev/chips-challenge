@@ -5,11 +5,12 @@
  */
 package nz.ac.vuw.ecs.swen225.gp20.application;
 
+import nz.ac.vuw.ecs.swen225.gp20.maze.Maze;
 import nz.ac.vuw.ecs.swen225.gp20.persistence.LevelReader;
 
-import java.awt.Image;
-import java.io.IOException;
 import javax.swing.*;
+import java.awt.*;
+import java.io.IOException;
 
 /**
  *
@@ -66,26 +67,30 @@ public class GUIWindow extends javax.swing.JFrame {
         levelAndTimer.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, null, null, null, new java.awt.Color(102, 102, 102)));
 
         levelText.setBackground(new java.awt.Color(0, 0, 0));
-        levelText.setFont(new java.awt.Font("Arial Narrow", 1, 36)); // NOI18N
+        levelText.setFont(new java.awt.Font("Arial Narrow", 1, 48)); // NOI18N
         levelText.setForeground(new java.awt.Color(0, 153, 153));
         levelText.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        levelText.setText("LEVEL");
+        levelText.setText("L E V E L");
 
-        levelNumber.setFont(new java.awt.Font("Arial Hebrew Scholar", 1, 60)); // NOI18N
-        levelNumber.setForeground(new java.awt.Color(0, 153, 102));
+        levelNumber.setBackground(new java.awt.Color(0, 0, 0));
+        levelNumber.setFont(new java.awt.Font("Arial Narrow", 1, 80)); // NOI18N
+        levelNumber.setForeground(new java.awt.Color(0, 0, 204));
         levelNumber.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         levelNumber.setToolTipText("");
-        levelNumber.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        levelNumber.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, null, new java.awt.Color(0, 0, 0), null, null));
         levelNumber.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
-        timerText.setFont(new java.awt.Font("Arial Narrow", 1, 36)); // NOI18N
+        timerText.setFont(new java.awt.Font("Arial Narrow", 1, 48)); // NOI18N
         timerText.setForeground(new java.awt.Color(0, 153, 153));
-        timerText.setText("TIME");
+        timerText.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        timerText.setText("T I M E");
+        timerText.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
         timer.setBackground(new java.awt.Color(0, 0, 0));
-        timer.setFont(new java.awt.Font("Arial Rounded MT Bold", 1, 48)); // NOI18N
-        timer.setForeground(new java.awt.Color(0, 153, 153));
+        timer.setFont(new java.awt.Font("Arial Rounded MT Bold", 1, 55)); // NOI18N
+        timer.setForeground(new java.awt.Color(0, 0, 204));
         timer.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        timer.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, null, new java.awt.Color(0, 0, 0), null, null));
         timer.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
         javax.swing.GroupLayout levelAndTimerLayout = new javax.swing.GroupLayout(levelAndTimer);
@@ -93,40 +98,33 @@ public class GUIWindow extends javax.swing.JFrame {
         levelAndTimerLayout.setHorizontalGroup(
             levelAndTimerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(levelAndTimerLayout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(levelAndTimerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(levelText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(levelAndTimerLayout.createSequentialGroup()
-                        .addGap(75, 75, 75)
-                        .addComponent(timerText))
-                    .addGroup(levelAndTimerLayout.createSequentialGroup()
-                        .addGap(63, 63, 63)
-                        .addComponent(levelNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(70, Short.MAX_VALUE))
-            .addGroup(levelAndTimerLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(levelAndTimerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(levelAndTimerLayout.createSequentialGroup()
-                        .addComponent(timer, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(levelAndTimerLayout.createSequentialGroup()
-                        .addComponent(levelText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(47, 47, 47))))
+                        .addGroup(levelAndTimerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(timerText, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(levelNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(timer, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 17, Short.MAX_VALUE))))
         );
         levelAndTimerLayout.setVerticalGroup(
             levelAndTimerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(levelAndTimerLayout.createSequentialGroup()
-                .addGap(24, 24, 24)
-                .addComponent(levelText)
-                .addGap(18, 18, 18)
+                .addContainerGap()
+                .addComponent(levelText, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(levelNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(50, 50, 50)
-                .addComponent(timerText)
-                .addGap(31, 31, 31)
-                .addComponent(timer, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(timerText, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(timer, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         timerText.getAccessibleContext().setAccessibleName("time");
 
+        boardCanvas.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         boardCanvas.setPreferredSize(new java.awt.Dimension(562, 469));
         boardCanvas.setRequestFocusEnabled(false);
         boardCanvas.setSize(new java.awt.Dimension(562, 469));
@@ -135,11 +133,11 @@ public class GUIWindow extends javax.swing.JFrame {
         boardCanvas.setLayout(boardCanvasLayout);
         boardCanvasLayout.setHorizontalGroup(
             boardCanvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 562, Short.MAX_VALUE)
+            .addGap(0, 558, Short.MAX_VALUE)
         );
         boardCanvasLayout.setVerticalGroup(
             boardCanvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 469, Short.MAX_VALUE)
+            .addGap(0, 465, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout gameCanvasLayout = new javax.swing.GroupLayout(gameCanvas);
@@ -149,9 +147,9 @@ public class GUIWindow extends javax.swing.JFrame {
             .addGroup(gameCanvasLayout.createSequentialGroup()
                 .addGap(86, 86, 86)
                 .addComponent(boardCanvas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 142, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 125, Short.MAX_VALUE)
                 .addComponent(levelAndTimer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(60, 60, 60))
+                .addGap(93, 93, 93))
         );
         gameCanvasLayout.setVerticalGroup(
             gameCanvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -336,7 +334,7 @@ public class GUIWindow extends javax.swing.JFrame {
     private javax.swing.JMenuItem newGame;
     private javax.swing.JMenuItem replay;
     private javax.swing.JMenuItem saveButton;
-    public static javax.swing.JLabel timer;
+    private static javax.swing.JLabel timer;
     private javax.swing.JLabel timerText;
     // End of variables declaration//GEN-END:variables
    // Game variables
@@ -345,6 +343,7 @@ public class GUIWindow extends javax.swing.JFrame {
     private int level;
     private enum modes { Run, Load, Save, Replay}
     private static GameTimer c;
+    private static Maze maze;
     
    /**
      * initialize the number images  by linking each face to its image and storing them.
@@ -371,16 +370,23 @@ public class GUIWindow extends javax.swing.JFrame {
     /**
      * Displays the level on the GUI by receiving the information from the maze
      * module.
+     * @param level level chosen by user.
      */
     public void setLevelNumber(int level) {
        this.level = level;
-        levelNumber.setText(String.valueOf(level));
+        levelNumber.setText("0" + level);
         try {
             LevelReader.deserializeLevel(level);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Countdown for game when players initializes the game.
+     * @return countdown for game
+     */
+    public static JLabel getTimer(){ return timer;}
 
 
     /**
@@ -414,8 +420,11 @@ public class GUIWindow extends javax.swing.JFrame {
             this.mode = modes.valueOf(mode).name();
         }
     }
-    
-    //@Override
+
+    /**
+     *
+     * @param data
+     */
     public static void display(String data) {
         int result = JOptionPane.showConfirmDialog(null, data, "Alert", JOptionPane.PLAIN_MESSAGE);
     }

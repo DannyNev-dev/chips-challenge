@@ -35,9 +35,9 @@ private Timer timer = new Timer();
                 restarted = false;
             }
             if(currentSec < 10){
-                GUIWindow.timer.setText(currentMin + " : 0" + currentSec);
+                GUIWindow.getTimer().setText(currentMin + " : 0" + currentSec);
             }else {
-                GUIWindow.timer.setText(currentMin + " : " + currentSec);
+                GUIWindow.getTimer().setText(currentMin + " : " + currentSec);
             }
             //System.out.println( "Countdown " + currentMin + " : " + currentSec);
         }
