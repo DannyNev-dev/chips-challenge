@@ -38,11 +38,5 @@ public interface Entity extends Item {
    * @return the entity position
    */
   public Point getPosition();
-  
-  /**
-   * Change the Coordinates of the tile object where this entity is located.
-   * @param newCoordinates the entity new position
-   */
-  public void setPosition(Point newCoordinates);
 
 }
