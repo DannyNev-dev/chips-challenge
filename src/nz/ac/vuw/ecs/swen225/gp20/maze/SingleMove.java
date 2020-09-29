@@ -1,5 +1,12 @@
 package nz.ac.vuw.ecs.swen225.gp20.maze;
 
+import java.awt.Point;
+import java.util.List;
+
+import com.google.common.base.Preconditions;
+
+import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.Tile;
+
 /**
  * Indicates where should the player move to.
  * 
@@ -7,6 +14,55 @@ package nz.ac.vuw.ecs.swen225.gp20.maze;
  *
  */
 public class SingleMove implements Move {
+  
+  private final Direction direction;
+  
+  
+
+  /**
+   * Construct a new move made of a single step.
+   * @param direction where is this move going to
+   */
+  public SingleMove(Direction direction) {
+    Preconditions.checkArgument(direction != null, "The direction of a move can't be undefiened");
+    this.direction = direction;
+  }
+
+  @Override
+  public List<Point> getSteps() {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public Tile[][] apply(Tile[][] board) {
+    // TODO Auto-generated method stub
+    //throw new  NotImplementedException();
+    return null;
+  }
+
+  @Override
+  public Point getDestination(Point old) {
+    switch(direction) {
+      case UP:
+        return new Point(old.x-1, old.y);
+      
+      case RIGHT:
+        return new Point(old.x, old.y+1);
+        
+      case DOWN:
+        return new Point(old.x+1, old.y);
+      
+      default:
+        //assert(direction == Direction.LEFT);
+        return new Point(old.x, old.y-1);
+      
+   // default:
+      //throw new RuntimeException("The direction of this move is invalid");
+    }
+  }
+  
+  
 
   
 }
