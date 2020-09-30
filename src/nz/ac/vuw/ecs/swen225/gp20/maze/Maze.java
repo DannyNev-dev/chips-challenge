@@ -4,13 +4,16 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.google.common.base.Preconditions;
 import java.awt.Point;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Collectable;
+import nz.ac.vuw.ecs.swen225.gp20.maze.items.Item;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Key;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Player;
 import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.ExitTile;
 import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.Tile;
+import nz.ac.vuw.ecs.swen225.gp20.persistence.LevelReader;
 
 /**
  * This class manages the logic for the maze.
@@ -73,6 +76,23 @@ public class Maze {
     this.level = level;
     assert(isPlayerPosValid());
   }
+  
+  /**
+   * Create a new maze given a level
+   * @param level of the maze
+   * @throws IOException if no object has that level
+   */
+  public Maze(int level) throws IOException {
+    Preconditions.checkArgument(level >= 0, "levels can't be negative");
+    LevelReader loader = new LevelReader(level);
+    this.player = loader.loadPlayer();
+    this.board = loader.loadBoard();
+    //TODO clone board
+    this.target = loader.loadTarget();
+    this.level = level;
+    assert(isPlayerPosValid());
+    
+  }
 
   /**
    *Merge board.
@@ -89,6 +109,11 @@ public class Maze {
    * @return whether the move was successful
    */
   public boolean movePlayer(SingleMove move) {
+    if(status != GameState.PLAYING) {
+      //TODO remove when application checks the game status
+      return false;
+    }
+    
     Preconditions.checkArgument(move != null, "A well initialized move is required");
     Preconditions.checkArgument(isPlayerPosValid());
     Preconditions.checkState(status == GameState.PLAYING, "Moves can't be applied unless the game is still active");
@@ -113,12 +138,24 @@ public class Maze {
     //Change player position
     player.setPosition(newPos);
     
-    //Add player to new tile
-    board[newPos.x][newPos.y].replaceItem(player);
+    if(board[newPos.x][newPos.y].containsItem()) {
+      Item item = board[newPos.x][newPos.y].getItem();
+      if(item.isCollectable()) {
+        Collectable toCollect = (Collectable)item;
+        toCollect.pickup(player);
+      }
+    }
     
     if(isGameWon()) {
       status = GameState.GAME_WON;
+      System.out.print("Well done you completed the level!!!");
+      return false;
     }
+    
+    //Add player to new tile
+    board[newPos.x][newPos.y].replaceItem(player);
+    
+    
     
     assert(isPlayerPosValid());
     
@@ -209,11 +246,12 @@ public class Maze {
   }
   */
 
-  /**
+  /*
    * Manual Test.
    * 
    * @param args initial arguments
    */
+  /*
   public static void main(String... args) {
     //Preconditions.checkState(test, "test");
     System.out.println("The sky is " + Key.Colour.BLUE);
@@ -221,7 +259,7 @@ public class Maze {
     //assert(false);
   }
   
-  
+  */
   /*
    * Get a copy of the tile where the player is located.
    * @return the tile where the player is standing

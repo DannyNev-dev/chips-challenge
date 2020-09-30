@@ -1,6 +1,4 @@
-
 package nz.ac.vuw.ecs.swen225.gp20.recnplay;
-
 
 /**
  * An interface will be implemented by ActionSave and ActionLoad
@@ -9,7 +7,5 @@ package nz.ac.vuw.ecs.swen225.gp20.recnplay;
  *
  */
 public interface Plugin {
-
 	void onEvent(Event e);
-	
 }
