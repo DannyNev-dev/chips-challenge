@@ -34,6 +34,7 @@ private Timer timer = new Timer();
                 currentSec = stoppedSec;
                 currentMin = stoppedMin;
                 restarted = false;
+                start();
             }
             if(currentSec < 10){
                 GUIWindow.getTimer().setText(currentMin + " : 0" + currentSec);
@@ -65,8 +66,8 @@ private Timer timer = new Timer();
      * Set to tell when to restart the old countdown.
      * @return always true
      */
-    public boolean setRestarted(){
-        return restarted = true;
+    public void setRestarted(boolean b){
+         restarted = b;
     }
 
     /**
