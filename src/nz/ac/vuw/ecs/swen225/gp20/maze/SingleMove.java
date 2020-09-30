@@ -1,6 +1,7 @@
 package nz.ac.vuw.ecs.swen225.gp20.maze;
 
 import java.awt.Point;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.google.common.base.Preconditions;
@@ -16,7 +17,7 @@ import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.Tile;
 public class SingleMove implements Move {
   
   private final Direction direction;
-  
+  List<Point> steps;
   
 
   /**
@@ -26,13 +27,30 @@ public class SingleMove implements Move {
   public SingleMove(Direction direction) {
     Preconditions.checkArgument(direction != null, "The direction of a move can't be undefiened");
     this.direction = direction;
+    //steps = new ArrayList<Point>();
   }
+  
+  
+ 
+  /**
+   * Get the direction this move is pointing to.
+   * @return were the move is going to
+   */
+  public Direction getDirection() {
+    return direction;
+  }
+
+
 
   @Override
   public List<Point> getSteps() {
-    // TODO Auto-generated method stub
-    return null;
+    return steps;
   }
+  
+  private void setSteps(List<Point> steps) {
+    this.steps = steps;
+  }
+  
 
   @Override
   public Tile[][] apply(Tile[][] board) {
@@ -43,23 +61,33 @@ public class SingleMove implements Move {
 
   @Override
   public Point getDestination(Point old) {
+    //Store new position for the steps
+    Point destination = null;
     switch(direction) {
       case UP:
-        return new Point(old.x-1, old.y);
+        destination = new Point(old.x, old.y-1);
       
       case RIGHT:
-        return new Point(old.x, old.y+1);
+        destination = new Point(old.x+1, old.y);
         
       case DOWN:
-        return new Point(old.x+1, old.y);
+        destination = new Point(old.x, old.y+1);
       
-      default:
-        //assert(direction == Direction.LEFT);
-        return new Point(old.x, old.y-1);
+      case LEFT:
+        
+        destination = new Point(old.x-1, old.y);
       
    // default:
       //throw new RuntimeException("The direction of this move is invalid");
     }
+    assert(direction != null);
+    
+    List<Point> steps = new ArrayList<Point>();
+    steps.add(old);
+    steps.add(destination);
+    setSteps(steps);
+    
+    return destination;
   }
   
   
