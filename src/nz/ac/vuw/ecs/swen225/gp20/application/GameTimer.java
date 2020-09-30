@@ -26,7 +26,7 @@ private Timer timer = new Timer();
             if( currentSec == 0 && currentMin > 0){
                 currentSec = 59;
                 currentMin--;
-            }else if( currentMin == 0 && currentSec == 0){
+            }else if( timeOut()){
                 timer.cancel();
                 GUIWindow.display("Game Over\nYou run out of time!");
                 System.exit(0);
@@ -73,7 +73,7 @@ private Timer timer = new Timer();
      * Tells whether or not time is out.
      * @return time left
      */
-    public boolean timeOut(){ return currentSec == 0 && currentMin ==0 ;}
+    private boolean timeOut(){ return currentSec == 0 && currentMin ==0 ;}
 
     /**
      * Method will be used to display timer with images
