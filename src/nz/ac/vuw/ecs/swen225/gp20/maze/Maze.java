@@ -7,6 +7,7 @@ import java.awt.Point;
 import java.util.Collections;
 import java.util.List;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Collectable;
+import nz.ac.vuw.ecs.swen225.gp20.maze.items.Item;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Key;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Player;
 import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.ExitTile;
@@ -113,6 +114,14 @@ public class Maze {
     //Change player position
     player.setPosition(newPos);
     
+    if(board[newPos.x][newPos.y].containsItem()) {
+      Item item = board[newPos.x][newPos.y].getItem();
+      if(item.isCollectable()) {
+        Collectable toCollect = (Collectable)item;
+        toCollect.pickup(player);
+      }
+    }
+    
     //Add player to new tile
     board[newPos.x][newPos.y].replaceItem(player);
     
@@ -209,11 +218,12 @@ public class Maze {
   }
   */
 
-  /**
+  /*
    * Manual Test.
    * 
    * @param args initial arguments
    */
+  /*
   public static void main(String... args) {
     //Preconditions.checkState(test, "test");
     System.out.println("The sky is " + Key.Colour.BLUE);
@@ -221,7 +231,7 @@ public class Maze {
     //assert(false);
   }
   
-  
+  */
   /*
    * Get a copy of the tile where the player is located.
    * @return the tile where the player is standing
