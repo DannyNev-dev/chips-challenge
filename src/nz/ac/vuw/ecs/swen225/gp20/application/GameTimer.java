@@ -44,7 +44,7 @@ private Timer timer = new Timer();
     };
 
     /**
-     * Runs a countdown starting at 2 minutes
+     * Runs a countdown starting at 2 minutes.
      */
     public void start(){
        // timeOut = false;
@@ -52,8 +52,7 @@ private Timer timer = new Timer();
     }
 
     /**
-     * Stops countdown and stored the current timer components
-     * to be able to restart it later
+     * Stops countdown and stored the current timer components to be able to restart it later.
      */
     public void pause(){
         stoppedSec = currentSec;
@@ -62,7 +61,7 @@ private Timer timer = new Timer();
     }
 
     /**
-     * Set to tell when to restart the old countdown
+     * Set to tell when to restart the old countdown.
      * @return always true
      */
     public boolean setRestarted(){
@@ -71,6 +70,7 @@ private Timer timer = new Timer();
 
     /**
      * Tells whether or not time is out.
+     * @return time left
      */
     public boolean timeOut(){ return currentSec == 0 && currentMin ==0 ;}
 

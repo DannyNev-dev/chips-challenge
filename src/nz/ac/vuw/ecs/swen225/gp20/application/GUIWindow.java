@@ -265,17 +265,17 @@ public class GUIWindow extends javax.swing.JFrame {
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         int numSelected;
         JRadioButton one = new JRadioButton("1");
-        JRadioButton two = new JRadioButton("2");
+        //JRadioButton two = new JRadioButton("2");
         
         //Group the radio buttons.
         ButtonGroup levelSelected = new ButtonGroup();
         levelSelected.add(one);
-        levelSelected.add(two);
+        //levelSelected.add(two);
         
         final JComponent[] inputs = new JComponent[]{
             new JLabel("Choose a level to play"),
             one,
-            two,
+            //two,
         };
         
         int result = JOptionPane.showConfirmDialog(null, inputs, "Welcome", JOptionPane.PLAIN_MESSAGE);
@@ -288,31 +288,37 @@ public class GUIWindow extends javax.swing.JFrame {
                 c = new GameTimer();
                 setLevelNumber(numSelected);
                 render = new Render(m);
-                //boardCanvas = render.getView();
+                boardCanvas = render.getView();
+                this.add(boardCanvas);
                 c.start(); // starts time out
+                pack();
 
         }
   
     }//GEN-LAST:event_formWindowOpened
 
     private void formKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyReleased
-
+        SingleMove sMove = null;
           if (evt.getKeyCode() == KeyEvent.VK_LEFT) {
-            new SingleMove(Move.Direction.LEFT);
+            sMove = new SingleMove(Move.Direction.LEFT);
             System.out.println("Left");
         }
         if (evt.getKeyCode() == KeyEvent.VK_DOWN) {
-           new SingleMove(Move.Direction.DOWN);
+           sMove = new SingleMove(Move.Direction.DOWN);
             System.out.println("Down");
         }
         if (evt.getKeyCode() == KeyEvent.VK_RIGHT) {
-            new SingleMove(Move.Direction.RIGHT);
+            sMove = new SingleMove(Move.Direction.RIGHT);
             System.out.println("Right");
         }
         if (evt.getKeyCode() == KeyEvent.VK_UP) {
-            new SingleMove(Move.Direction.UP);
+            sMove = new SingleMove(Move.Direction.UP);
             System.out.println("UP");
         }
+        m.movePlayer(sMove);
+        render.updateRender();
+        this.eventListener.onEvent(Event.eventOfMove(sMove));
+        //this.add(comp)
     }//GEN-LAST:event_formKeyReleased
 
     /**
@@ -376,9 +382,9 @@ public class GUIWindow extends javax.swing.JFrame {
     private String mode;
     private int level;
     private enum modes { Run, Load, Save, Replay}
-    private static GameTimer c;
+    private GameTimer c;
     private Render render;
-    private static Maze m;
+    private Maze m;
     private EventListener eventListener;
     private Move move;
     
