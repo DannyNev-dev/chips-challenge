@@ -28,6 +28,17 @@ RecnPlay
 
 
 Render
+	Class Render
+		//Application requesting information
+		Line 28 / Application
+		Line 36 / Application
+		//Render requesting information
+		Line 73 / Maze
+
+	Class View //(In render)
+		Line 73 / Maze
+		Line 85 / Maze
+		
 		
 
 
