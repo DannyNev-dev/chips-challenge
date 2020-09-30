@@ -88,7 +88,7 @@ class View {
 		mainPanel = new MainPanel();
 		f.add(mainPanel);
 		f.pack();
-		f.setVisible(true);
+		//f.setVisible(true);
 	}
 
 	public JPanel getMainPanel() {
