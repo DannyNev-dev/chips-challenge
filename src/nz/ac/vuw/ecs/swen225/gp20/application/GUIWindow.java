@@ -410,7 +410,6 @@ public class GUIWindow extends javax.swing.JFrame {
     private Render render;
     private Maze m;
     private EventListener eventListener;
-    private Move move;
 
     /**
      * initialize the number images  by linking each face to its image and storing them.
