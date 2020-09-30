@@ -1,51 +1,57 @@
 package nz.ac.vuw.ecs.swen225.gp20.render;
 
-import nz.ac.vuw.ecs.swen225.gp20.maze.Maze;
-import nz.ac.vuw.ecs.swen225.gp20.maze.items.Player;
-import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.Tile;
-import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.*;
-
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Graphics;
 import java.awt.GridLayout;
-import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import nz.ac.vuw.ecs.swen225.gp20.maze.Maze;
+import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.Tile;
+/**
+ * Render class
+ * This class renders the maze and provides a return method for the GUI.
+ * @author Jordan Simmons
+ **/
 public class Render {
 
 	private View view;
 	private Maze maze;
-
+	/**
+	 * Constructor for the the Render function
+	 * @param maze - this is the game state pulled from maze package
+	 */
 	public Render(Maze maze) {
 		this.maze = maze;
 		view = new View(maze);
 	}
-
+	
+	/**
+	 * This updates the JPanel so it can be returned to Application package
+	 */
 	public void updateRender() {
 		maze.getBoard();
 		view.refresh(maze);
 	}
-
-	public JPanel getView() {
-		return view.getMainPanel();
-	}
-
-	/*
-	 * testing only public static void main(String[] args) { Maze m = new Maze(null,
-	 * null, 1, 1); new Render(m); }
+	
+	/**
+	 * Returns the current JPanel to Application package
+	 * @return JPanel of the updated gameboard
 	 */
+	public JPanel getView() {
+		return view.getBoardPanel();
+	}
 }
 
-//game controller is fine
+/**
+ * View Class creates a JPanel to return to Application Package
+ * @author Jordan Simmons
+ *
+ */
 
 class View {
 
@@ -55,10 +61,13 @@ class View {
 	private int ySize;
 	Tile[][] board;
 	private int tileSize = 41;
-
 	private final static int GAP = 2;
-	private MainPanel mainPanel;
-
+	private BoardPanel BoardPanel;
+	
+	/**
+	 * Constructor for View
+	 * @param maze - the game state from the maze application
+	 */
 	View(Maze maze) {
 		this.maze = maze;
 		board = maze.getBoard();
@@ -67,7 +76,11 @@ class View {
 		dispList = new DispTile[xSize][ySize];
 		createAndShowGUI();
 	}
-
+	
+	/**
+	 * Refreshes the view of the maze. This is called when a change in the maze occurs
+	 * @param maze - the game state from the maze application
+	 */
 	void refresh(Maze maze) {
 		this.maze = maze;
 		board = maze.getBoard();
@@ -79,42 +92,34 @@ class View {
 				}
 			}
 		}
-		mainPanel.repaint();
+		BoardPanel.repaint();
 	}
-
+	
+	/**
+	 * Creates the JPanel to be returned
+	 */
 	private void createAndShowGUI() {
 		JFrame f = new JFrame("TestFrame");
 		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		mainPanel = new MainPanel();
-		f.add(mainPanel);
+		BoardPanel = new BoardPanel();
+		f.add(BoardPanel);
 		f.pack();
 	}
 
-	public JPanel getMainPanel() {
-		return mainPanel;
+	/**
+	 * Gets the main panel so it can be returned to the Application Package
+	 * @return - returns a JPanel with the current game state displayed.
+	 */
+	public JPanel getBoardPanel() {
+		return BoardPanel;
 	}
-
-	JButton getButton() {
-		return mainPanel.getButton();
-	}
-
-	class MainPanel extends JPanel {
-
-		private BottomPanel bPanel;
-
-		MainPanel() {
-
-			setLayout(new BorderLayout(GAP, GAP));
-			add(new BoardPanel(), BorderLayout.CENTER);
-		}
-
-		JButton getButton() {
-			return bPanel.getButton();
-		}
-	}
-
+	
+	/**
+	 * BoardPanel class creates the actual JPanel which is returned to Application package
+	 * @author Jordan Simmons
+	 *
+	 */
 	class BoardPanel extends JPanel {
-
 		BoardPanel() {
 			setBorder(BorderFactory.createLineBorder(Color.BLACK, GAP));
 			GridLayout layout = new GridLayout(xSize - 6, ySize - 6);
@@ -133,13 +138,13 @@ class View {
 			}
 
 		}
-
-		@Override
-		protected void paintComponent(Graphics g) {
-			super.paintComponent(g);
-		}
 	}
-
+	
+	/**
+	 * This creates the tiles to be displayed using the tiles passed from the maze application.
+	 * @author Jordan Simmons
+	 *
+	 */
 	class DispTile extends JLabel {
 
 		DispTile() {
@@ -148,25 +153,4 @@ class View {
 		}
 	}
 
-	class Player extends JLabel {
-
-		@Override
-		protected void paintComponent(Graphics g) {
-			super.paintComponent(g);
-			g.setColor(Color.BLUE);
-		}
-	}
-
-	class BottomPanel extends JPanel {
-
-		JButton button = new JButton("Move Player");
-
-		BottomPanel() {
-			add(button);
-		}
-
-		JButton getButton() {
-			return button;
-		}
-	}
 }
