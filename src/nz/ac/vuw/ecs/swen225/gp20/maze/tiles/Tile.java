@@ -40,6 +40,12 @@ public abstract class Tile {
    * @return the sequence of characters identifying this tile
    */
   public abstract String getName();
+  
+  /**
+   * get item
+   * @return item in this cell
+   */
+  public Item getItem() { return item; }
 
   /**
    * Specify whether an entity could access the given tile, this might depend by
