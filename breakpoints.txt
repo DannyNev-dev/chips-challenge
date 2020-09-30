@@ -3,11 +3,11 @@ Application
 		Line 200 / Record and Play
 		Line 298 / Maze , Render
 		Line 299 / Render
-		Lane 332 / Maze
-		Line 333 / Render 
-		Line 334 / Record & Play
-		Line 338 / Render
-		Line 443 / Record & Play
+		Lane 327 / Maze
+		Line 328 / Render 
+		Line 329 / Record & Play
+		Line 333 / Render
+		Line 438 / Record & Play
 Maze
 	Class Maze
 		Line 87 / LevelReader (Persistance package)

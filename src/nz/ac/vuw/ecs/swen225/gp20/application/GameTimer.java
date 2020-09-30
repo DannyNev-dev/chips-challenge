@@ -34,7 +34,7 @@ private Timer timer = new Timer();
                 currentSec = stoppedSec;
                 currentMin = stoppedMin;
                 restarted = false;
-                start();
+                //start();
             }
             if(currentSec < 10){
                 GUIWindow.getTimer().setText(currentMin + " : 0" + currentSec);

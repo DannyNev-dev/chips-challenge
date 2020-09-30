@@ -256,11 +256,11 @@ public class GUIWindow extends javax.swing.JFrame {
             //close current game, it will not affect other game in different windows
             evt.getWindow().dispose();
             //System.exit(0); //close all windows
-        } else {
+        }// else {
             //close current game, it will not affect other game in different windows
-            c.setRestarted(true);
+           // c.setRestarted(true);
             //c.start();
-        }
+       // }
     }//GEN-LAST:event_formWindowClosing
 
     /**
@@ -315,19 +315,14 @@ public class GUIWindow extends javax.swing.JFrame {
         SingleMove sMove = null;
         if (evt.getKeyCode() == KeyEvent.VK_LEFT) {
             sMove = new SingleMove(Move.Direction.LEFT);
-            System.out.println("Left");
-        }
-        if (evt.getKeyCode() == KeyEvent.VK_DOWN) {
+        }else if (evt.getKeyCode() == KeyEvent.VK_DOWN) {
             sMove = new SingleMove(Move.Direction.DOWN);
-            System.out.println("Down");
-        }
-        if (evt.getKeyCode() == KeyEvent.VK_RIGHT) {
+        } else if (evt.getKeyCode() == KeyEvent.VK_RIGHT) {
             sMove = new SingleMove(Move.Direction.RIGHT);
-            System.out.println("Right");
-        }
-        if (evt.getKeyCode() == KeyEvent.VK_UP) {
+        }else if (evt.getKeyCode() == KeyEvent.VK_UP) {
             sMove = new SingleMove(Move.Direction.UP);
-            System.out.println("UP");
+        }else{
+            return;
         }
         m.movePlayer(sMove);
         render.updateRender();
