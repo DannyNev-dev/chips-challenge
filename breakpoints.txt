@@ -10,6 +10,11 @@ Maze
 		Line 87 / LevelReader (Persistance package)
 
 Persistence
+	Class LevelReader
+		Line 99 / Maze
+		Line 159 / Maze
+		Line 177 / Maze
+		Line 186 / Maze
 
 
 RecnPlay
