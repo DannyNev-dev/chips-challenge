@@ -1,6 +1,5 @@
 package nz.ac.vuw.ecs.swen225.gp20.render;
 
-
 import nz.ac.vuw.ecs.swen225.gp20.maze.Maze;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Player;
 import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.Tile;
@@ -21,136 +20,139 @@ import javax.swing.JPanel;
 
 public class Render {
 
-    private View view;
-    private Maze maze;
+	private View view;
+	private Maze maze;
 
-    public Render(Maze maze) {
-    	this.maze = maze;
-        view = new View(maze);
-    }
+	public Render(Maze maze) {
+		this.maze = maze;
+		view = new View(maze);
+	}
 
-    public void updateRender() {
-    	maze.getBoard();
-        view.refresh(maze);
-    }
-    
-    public JPanel getView() {
-    	return view.getMainPanel();
-    }
+	public void updateRender() {
+		maze.getBoard();
+		view.refresh(maze);
+	}
 
-    /*testing only */
-    public static void main(String[] args) {
-    	Maze m = new Maze(null, null, 1, 1);
-        new Render(m);
-    }
+	public JPanel getView() {
+		return view.getMainPanel();
+	}
+
+	/*
+	 * testing only public static void main(String[] args) { Maze m = new Maze(null,
+	 * null, 1, 1); new Render(m); }
+	 */
 }
 
 //game controller is fine
 
 class View {
-	
+
 	private Maze maze;
 	private int xSize;
 	private int ySize;
 	Tile[][] board;
 	private int tileSize = 41;
 
-    private final static int GAP = 2;
-    private MainPanel mainPanel;
+	private final static int GAP = 2;
+	private MainPanel mainPanel;
 
-    View(Maze maze){
-    	this.maze = maze;
-    	board = maze.getBoard();
-    	xSize = board.length;
-    	ySize = board[0].length;
-        createAndShowGUI();
-    }
+	View(Maze maze) {
+		this.maze = maze;
+		board = maze.getBoard();
+		xSize = board.length;
+		ySize = board[0].length;
+		createAndShowGUI();
+	}
 
-    void refresh(Maze maze) {
-    	this.maze = maze;
-        mainPanel.repaint();
-    }
+	void refresh(Maze maze) {
+		this.maze = maze;
+		mainPanel.repaint();
+	}
 
-    private void createAndShowGUI() {
-        JFrame f = new JFrame("TestFrame");
-        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        mainPanel = new MainPanel();
-        f.add(mainPanel);
-        f.pack();
-        f.setVisible(true);
-    }
-    
-    public JPanel getMainPanel() {
-    	return mainPanel;
-    }
+	private void createAndShowGUI() {
+		JFrame f = new JFrame("TestFrame");
+		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		mainPanel = new MainPanel();
+		f.add(mainPanel);
+		f.pack();
+		f.setVisible(true);
+	}
 
-    JButton getButton() {   return mainPanel.getButton();   }
+	public JPanel getMainPanel() {
+		return mainPanel;
+	}
 
-    class MainPanel extends JPanel {
+	JButton getButton() {
+		return mainPanel.getButton();
+	}
 
-        private BottomPanel bPanel;
+	class MainPanel extends JPanel {
 
-        MainPanel() {
-        	
-            setLayout(new BorderLayout(GAP,GAP));
-            add(new BoardPanel(), BorderLayout.CENTER);
-        }
+		private BottomPanel bPanel;
 
-        JButton getButton() {   return bPanel.getButton();  }
-    }
+		MainPanel() {
 
-    class BoardPanel extends JPanel {
-    	
-        BoardPanel()   {
-            setBorder(BorderFactory.createLineBorder(Color.BLACK, GAP));
-            GridLayout layout = new GridLayout(xSize, 
-            ySize);
-            setLayout(layout);
+			setLayout(new BorderLayout(GAP, GAP));
+			add(new BoardPanel(), BorderLayout.CENTER);
+		}
 
-            for (int i = 0; i < xSize; i++)   {
+		JButton getButton() {
+			return bPanel.getButton();
+		}
+	}
 
-                for (int j = 0; j < ySize; j++)  {
-                	DispTile t = new DispTile();
-                	ImageIcon ic = new ImageIcon(board[i][j].getName() + ".png");
-                	t.setIcon(ic);
-                    add(t);
-                }
-            }
+	class BoardPanel extends JPanel {
 
-        }
-        
+		BoardPanel() {
+			setBorder(BorderFactory.createLineBorder(Color.BLACK, GAP));
+			GridLayout layout = new GridLayout(xSize-6, ySize-6);
+			setLayout(layout);
 
-        @Override
-        protected void paintComponent(Graphics g) {
-            super.paintComponent(g);
-        }
-    }
+			for (int i = 3; i < xSize-3; i++) {
 
-    class DispTile extends JLabel {
+				for (int j = 3; j < ySize-3; j++) {
+						DispTile t = new DispTile();
+						ImageIcon ic = new ImageIcon("src/nz/ac/vuw/ecs/swen225/gp20/render/TileFile/" + board[i][j].getName() + ".png");
+						t.setIcon(ic);
+						add(t);
+				}
+			}
 
-    	DispTile() {
-            setPreferredSize(new Dimension(tileSize, tileSize));
-            setBorder(BorderFactory.createLineBorder(Color.BLACK, GAP));
-        }
-    }
+		}
 
-    class Player extends JLabel{
+		@Override
+		protected void paintComponent(Graphics g) {
+			super.paintComponent(g);
+		}
+	}
 
-        @Override
-        protected void paintComponent(Graphics g) {
-            super.paintComponent(g);
-            g.setColor(Color.BLUE);
-        }
-    }
+	class DispTile extends JLabel {
 
-    class BottomPanel extends JPanel {
+		DispTile() {
+			setPreferredSize(new Dimension(tileSize, tileSize));
+			setBorder(BorderFactory.createLineBorder(Color.BLACK, GAP));
+		}
+	}
 
-        JButton button = new JButton("Move Player");
+	class Player extends JLabel {
 
-        BottomPanel(){
-            add(button);
-        }
+		@Override
+		protected void paintComponent(Graphics g) {
+			super.paintComponent(g);
+			g.setColor(Color.BLUE);
+		}
+	}
 
-        JButton getButton() {   return button;  }
-    }
+	class BottomPanel extends JPanel {
+
+		JButton button = new JButton("Move Player");
+
+		BottomPanel() {
+			add(button);
+		}
+
+		JButton getButton() {
+			return button;
+		}
+	}
 }
