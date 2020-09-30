@@ -94,6 +94,7 @@ public class LevelReader {
 		    			item = new Key(Colour.GREEN);
 		    			break;
 		    		case "none":
+		    			System.out.println("empty tile created");
 		    			break;
 		    		case "treasure":
 		    			item = new Treasure();
@@ -138,7 +139,7 @@ public class LevelReader {
 	    		tile = new InfoTile(jsonObj.getString("item"),null);
 	    		break;
 	    	default:
-	    		System.out.print("Incorrect Json Format");	//may need to throw custom exception
+	    		System.out.print("Incorrect Json Format for type");	//may need to throw custom exception
 	    		break;
 	    	}
     	return tile;	

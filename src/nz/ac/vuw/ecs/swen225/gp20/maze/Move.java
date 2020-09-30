@@ -38,6 +38,7 @@ public interface Move {
   
   /**
    * Get the coordinates of the cell the entity passed through while moving.
+   * NOTE: the returned list will be null until the move is linked with a starting position and destination
    * @return the ordered list of coordinates for each visited tile
    */
   public List<Point> getSteps();

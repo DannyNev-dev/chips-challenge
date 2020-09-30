@@ -6,11 +6,16 @@
 package nz.ac.vuw.ecs.swen225.gp20.application;
 
 import nz.ac.vuw.ecs.swen225.gp20.maze.Maze;
+import nz.ac.vuw.ecs.swen225.gp20.maze.Move;
+import nz.ac.vuw.ecs.swen225.gp20.maze.SingleMove;
 import nz.ac.vuw.ecs.swen225.gp20.persistence.LevelReader;
+import nz.ac.vuw.ecs.swen225.gp20.recnplay.Event;
+import nz.ac.vuw.ecs.swen225.gp20.recnplay.EventListener;
 import nz.ac.vuw.ecs.swen225.gp20.render.Render;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.io.IOException;
 
 /**
@@ -26,6 +31,7 @@ public class GUIWindow extends javax.swing.JFrame {
     public GUIWindow() {
         numberOnPanel();
         initComponents();
+        this.eventListener = EventListener.eventListenerFactory();
     }
 
     /**
@@ -59,6 +65,11 @@ public class GUIWindow extends javax.swing.JFrame {
             }
             public void windowOpened(java.awt.event.WindowEvent evt) {
                 formWindowOpened(evt);
+            }
+        });
+        addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                formKeyReleased(evt);
             }
         });
 
@@ -254,17 +265,17 @@ public class GUIWindow extends javax.swing.JFrame {
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         int numSelected;
         JRadioButton one = new JRadioButton("1");
-        JRadioButton two = new JRadioButton("2");
+        //JRadioButton two = new JRadioButton("2");
         
         //Group the radio buttons.
         ButtonGroup levelSelected = new ButtonGroup();
         levelSelected.add(one);
-        levelSelected.add(two);
+        //levelSelected.add(two);
         
         final JComponent[] inputs = new JComponent[]{
             new JLabel("Choose a level to play"),
             one,
-            two,
+            //two,
         };
         
         int result = JOptionPane.showConfirmDialog(null, inputs, "Welcome", JOptionPane.PLAIN_MESSAGE);
@@ -277,12 +288,38 @@ public class GUIWindow extends javax.swing.JFrame {
                 c = new GameTimer();
                 setLevelNumber(numSelected);
                 render = new Render(m);
-                //boardCanvas = render.getView();
+                boardCanvas = render.getView();
+                this.add(boardCanvas);
                 c.start(); // starts time out
+                pack();
 
         }
   
     }//GEN-LAST:event_formWindowOpened
+
+    private void formKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyReleased
+        SingleMove sMove = null;
+          if (evt.getKeyCode() == KeyEvent.VK_LEFT) {
+            sMove = new SingleMove(Move.Direction.LEFT);
+            System.out.println("Left");
+        }
+        if (evt.getKeyCode() == KeyEvent.VK_DOWN) {
+           sMove = new SingleMove(Move.Direction.DOWN);
+            System.out.println("Down");
+        }
+        if (evt.getKeyCode() == KeyEvent.VK_RIGHT) {
+            sMove = new SingleMove(Move.Direction.RIGHT);
+            System.out.println("Right");
+        }
+        if (evt.getKeyCode() == KeyEvent.VK_UP) {
+            sMove = new SingleMove(Move.Direction.UP);
+            System.out.println("UP");
+        }
+        m.movePlayer(sMove);
+        render.updateRender();
+        this.eventListener.onEvent(Event.eventOfMove(sMove));
+        //this.add(comp)
+    }//GEN-LAST:event_formKeyReleased
 
     /**
      * @param args the command line arguments
@@ -345,9 +382,11 @@ public class GUIWindow extends javax.swing.JFrame {
     private String mode;
     private int level;
     private enum modes { Run, Load, Save, Replay}
-    private static GameTimer c;
+    private GameTimer c;
     private Render render;
-    private static Maze m;
+    private Maze m;
+    private EventListener eventListener;
+    private Move move;
     
    /**
      * initialize the number images  by linking each face to its image and storing them.
@@ -378,6 +417,7 @@ public class GUIWindow extends javax.swing.JFrame {
     public void setLevelNumber(int level) {
        this.level = level;
         levelNumber.setText("0" + level);
+        this.eventListener.onEvent(Event.eventOfLevelSetting(level));
         try {
           m =  LevelReader.deserializeLevel(level);
         } catch (IOException e) {
@@ -432,12 +472,12 @@ public class GUIWindow extends javax.swing.JFrame {
         int result = JOptionPane.showConfirmDialog(null, data, "Alert", JOptionPane.PLAIN_MESSAGE);
     }
     
-     /**
-     * create a pop up window
-     * @param data text shown inside the window
-     * @param title of the window
-     */
-    public void display(String data, String title) {
-        int result = JOptionPane.showConfirmDialog(null, data, title, JOptionPane.PLAIN_MESSAGE);
-    }
+//     /**
+//     * create a pop up window
+//     * @param data text shown inside the window
+//     * @param title of the window
+//     */
+//    public void display(String data, String title) {
+//        int result = JOptionPane.showConfirmDialog(null, data, title, JOptionPane.PLAIN_MESSAGE);
+//    }
 }
