@@ -29,6 +29,7 @@ private Timer timer = new Timer();
             }else if( currentMin == 0 && currentSec == 0){
                 timer.cancel();
                 GUIWindow.display("Game Over\nYou run out of time!");
+                System.exit(0);
             }else if( restarted ){
                 currentSec = stoppedSec;
                 currentMin = stoppedMin;
