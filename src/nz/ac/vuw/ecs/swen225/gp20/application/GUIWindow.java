@@ -7,7 +7,9 @@ package nz.ac.vuw.ecs.swen225.gp20.application;
 
 import nz.ac.vuw.ecs.swen225.gp20.maze.Maze;
 import nz.ac.vuw.ecs.swen225.gp20.persistence.LevelReader;
+import nz.ac.vuw.ecs.swen225.gp20.recnplay.EventListener;
 import nz.ac.vuw.ecs.swen225.gp20.render.Render;
+import nz.ac.vuw.ecs.swen225.gp20.recnplay.Event;
 
 import javax.swing.*;
 import java.awt.*;
@@ -26,6 +28,7 @@ public class GUIWindow extends javax.swing.JFrame {
     public GUIWindow() {
         numberOnPanel();
         initComponents();
+        this.eventListener = EventListener.eventListenerFactory();
     }
 
     /**
@@ -348,6 +351,7 @@ public class GUIWindow extends javax.swing.JFrame {
     private static GameTimer c;
     private Render render;
     private static Maze m;
+    private EventListener eventListener;
     
    /**
      * initialize the number images  by linking each face to its image and storing them.
@@ -378,6 +382,7 @@ public class GUIWindow extends javax.swing.JFrame {
     public void setLevelNumber(int level) {
        this.level = level;
         levelNumber.setText("0" + level);
+        this.eventListener.onEvent(Event.eventOfLevelSetting(level));
         try {
           m =  LevelReader.deserializeLevel(level);
         } catch (IOException e) {
