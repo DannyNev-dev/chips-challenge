@@ -22,6 +22,11 @@ public interface Collectable extends Item {
    */
   public boolean pickup(Player player);
   
+  @Override
+  public default boolean isCollectable() {
+    return true;
+  }
+  
   
   @Override
   public default boolean isAccessible(Entity entity) {

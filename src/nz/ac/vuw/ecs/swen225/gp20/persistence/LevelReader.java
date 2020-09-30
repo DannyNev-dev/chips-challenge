@@ -25,6 +25,7 @@ import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.ItemTile;
 import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.Tile;
 import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.Wall;
 
+// TODO: Auto-generated Javadoc
 /**
  * Contains methods and static variables required for reading levels from json files
  * Contains methods that return a maze which will be parsed maze module.
@@ -33,46 +34,92 @@ import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.Wall;
  */
 public class LevelReader {
 	
+	/** The level num. */
+	int levelNum;
+	
+	/** The maze obj. */
+	JsonObject mazeObj;
+	
+	/**
+	 * Instantiates a new level reader.
+	 *
+	 * @param levelNum the level num
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
+	public LevelReader(int levelNum) throws IOException{
+		this.levelNum = levelNum;
+		mazeObj = loadJson();
+	}
+	
 	/**
 	 * Deserialize level.
 	 *
-	 * @param levelNum the level num
 	 * @return the maze
+	 */
+	public Tile[][] loadBoard() {
+		
+		Player p = loadPlayer();
+		int target = loadTarget();
+	    
+	    JsonArray jList = mazeObj.getJsonArray("board");
+	    
+		return makeBoard(jList,target,p);		
+	}
+	
+	/**
+	 * Load json.
+	 *
+	 * @return the json object
 	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
-	public static Maze deserializeLevel(int levelNum) throws IOException{
-		//invalid number check, i assume that int primitive cannot be null
-		if(levelNum<=0 || levelNum>2) {
-			System.out.println("Invalid Level Number");
-			throw new IOException("Not a valid level Number");
-		}			
+	public JsonObject loadJson() throws IOException {
 		System.out.println("Loading Level" + levelNum);
-		//open corresponding level file
-		Reader reader = Files.newBufferedReader(Paths.get("levels//level"+levelNum+".json"));
-	    
+		//invalid number check, i assume that int primitive cannot be null
+		if(levelNum<=0 || levelNum>1) {
+			System.out.println("Invalid Level Number, not created");
+			throw new IOException("Not a valid level Number");
+		}	
+		Reader reader = Files.newBufferedReader(Paths.get("levels//level"+levelNum+".json"));    
 		JsonReader jReader = Json.createReader(reader);
 	    JsonObject mazeObj = jReader.readObject();
 		reader.close();
+		return mazeObj;	
+	}
+	
+	/**
+	 * Load player.
+	 *
+	 * @return the player
+	 */
+	public  Player loadPlayer()
+	{
 		//create player object from JSON
 		int x = mazeObj.getJsonObject("player").getInt("x");
 		int y = mazeObj.getJsonObject("player").getInt("y");
 	    Player p = new Player(new Point(x,y));
-	    //target is the number of chips (treasures) that need to be collected
-	    int target = mazeObj.getInt("target");
-	    
-	    //get json array of objects that each contain a list and then begin nested loop to parse each json object into out desired classes
-	    JsonArray jList = mazeObj.getJsonArray("board");
-	    
-		return new Maze(p,makeBoard(jList,target,p),target,levelNum);	//after merge parse level num		
+		return p;
 	}
+	
+	/**
+	 * Load target.
+	 *
+	 * @return the int
+	 */
+	public int loadTarget()  
+	{
+	    //target is the number of chips (treasures) that need to be collected
+	    return mazeObj.getInt("target");
+	}
+	
 	/**
 	 * Parses the tile.
 	 *
 	 * @param jsonObj the json obj
 	 * @param target the target
+	 * @param p the player
 	 * @return the tile
 	 */
-	public static Tile parseTile(JsonObject jsonObj,int target,Player p) {	
+	public Tile parseTile(JsonObject jsonObj,int target,Player p) {	
 		
 		Item item = null;
 		Tile tile = null;
@@ -146,13 +193,14 @@ public class LevelReader {
 	}
 
 /**
- * Make the board for the maze from the json array
- * @param jList
- * @param target
- * @param p
- * @return
+ * Make the board for the maze from the json array.
+ *
+ * @param jList the j list
+ * @param target the target
+ * @param p the p
+ * @return the tile[][]
  */
-public static Tile[][] makeBoard(JsonArray jList,int target,Player p){
+public Tile[][] makeBoard(JsonArray jList,int target,Player p){
 	int length = jList.size();
     //initialize board
     Tile[][] board = new Tile[jList.getJsonObject(0).getJsonArray("row").size()][length];	    

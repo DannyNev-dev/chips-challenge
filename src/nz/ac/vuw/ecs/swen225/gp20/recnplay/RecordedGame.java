@@ -12,23 +12,33 @@ import java.util.ArrayList;
 public class RecordedGame {
 	
 	int level;
-	ArrayList<Event> steps;
+	ArrayList<Event> actions;
 	
 	public RecordedGame(int level) {
 		this.level = level;
 		// init arraylist
-		this.steps = new ArrayList<Event>();
+		this.actions = new ArrayList<Event>();
 	}
 
-	public ArrayList<Event> getSteps(){
-		return steps;
+	public ArrayList<Event> getActions(){
+		return actions;
 	}
 	
 	public int getLevel(){
 		return level;
 	}
 
-	public void add(Event event) {
-		this.steps.add(event);
+	public void setLevel(int level) {
+		this.level = level;
+	}
+	
+	public void addAction(Event event) {
+		if (event.getType().equals(Event.Type.SetLevel)) {
+			setLevel(event.getLevel());
+		}
+		else {
+			event.setLevel(this.level);
+			this.actions.add(event);
+		}	
 	}
 }
