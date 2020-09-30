@@ -288,10 +288,10 @@ public class GUIWindow extends javax.swing.JFrame {
                 c = new GameTimer();
                 setLevelNumber(numSelected);
                 render = new Render(m);
-                boardCanvas = render.getView();
-                this.add(boardCanvas);
+                //boardCanvas = render.getView();
+               // this.add(boardCanvas);
                 c.start(); // starts time out
-                pack();
+               // pack();
 
         }
   
@@ -318,7 +318,7 @@ public class GUIWindow extends javax.swing.JFrame {
         m.movePlayer(sMove);
         render.updateRender();
         this.eventListener.onEvent(Event.eventOfMove(sMove));
-        //this.add(comp)
+
     }//GEN-LAST:event_formKeyReleased
 
     /**
