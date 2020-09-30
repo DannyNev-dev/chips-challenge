@@ -71,10 +71,9 @@ class View {
 	void refresh(Maze maze) {
 		this.maze = maze;
 		board = maze.getBoard();
-		for (int i = 0; i < dispList.length - 7; i++) {
+		for (int i = 0; i < dispList.length; i++) {
 			for (int j = 0; j < dispList[0].length; j++) {
 				if (dispList[i][j] != null) {
-					System.out.println(board[i][j].getName());
 					dispList[i][j].setIcon(new ImageIcon(
 							"src/nz/ac/vuw/ecs/swen225/gp20/render/TileFile/" + board[i][j].getName() + ".png"));
 				}
