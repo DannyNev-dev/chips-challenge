@@ -1,6 +1,5 @@
 package test.nz.ac.vuw.ecs.swen225.gp20.persistence;
 
-import static org.junit.Assert.assertThrows;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.IOException;
@@ -38,9 +37,8 @@ public class LvlReaderTest {
 	 */
 	@Test
 	void test2() throws IOException {
-		//assertTrue(LevelReader.deserializeLevel(1).board[0][0] instanceof Tile);
 	}
-//exception testing
+
 	@Test
 	void eTest1() {
 		assertThrows(IOException.class, () -> LevelReader.deserializeLevel(8));
