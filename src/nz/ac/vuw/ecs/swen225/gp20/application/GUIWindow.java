@@ -8,7 +8,6 @@ package nz.ac.vuw.ecs.swen225.gp20.application;
 import nz.ac.vuw.ecs.swen225.gp20.maze.Maze;
 import nz.ac.vuw.ecs.swen225.gp20.maze.Move;
 import nz.ac.vuw.ecs.swen225.gp20.maze.SingleMove;
-import nz.ac.vuw.ecs.swen225.gp20.persistence.LevelReader;
 import nz.ac.vuw.ecs.swen225.gp20.recnplay.Event;
 import nz.ac.vuw.ecs.swen225.gp20.recnplay.EventListener;
 import nz.ac.vuw.ecs.swen225.gp20.render.Render;
@@ -444,7 +443,7 @@ public class GUIWindow extends javax.swing.JFrame {
         levelNumber.setText("0" + level);
         this.eventListener.onEvent(Event.eventOfLevelSetting(level));
         try {
-            m =  LevelReader.deserializeLevel(level);
+            m =  new Maze(level);
         } catch (IOException e) {
             e.printStackTrace();
         }
