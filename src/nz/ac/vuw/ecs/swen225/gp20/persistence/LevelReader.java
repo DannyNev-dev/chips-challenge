@@ -116,7 +116,7 @@ public class LevelReader {
 	 *
 	 * @param jsonObj the json obj
 	 * @param target the target
-	 * @param p the p
+	 * @param p the player
 	 * @return the tile
 	 */
 	public Tile parseTile(JsonObject jsonObj,int target,Player p) {	

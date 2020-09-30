@@ -6,7 +6,6 @@ import java.io.IOException;
 
 import org.junit.jupiter.api.Test;
 
-import nz.ac.vuw.ecs.swen225.gp20.maze.Maze;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Player;
 import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.Tile;
 import nz.ac.vuw.ecs.swen225.gp20.persistence.LevelReader;
