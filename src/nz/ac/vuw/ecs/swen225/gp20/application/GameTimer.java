@@ -23,17 +23,23 @@ private Timer timer = new Timer();
     @Override
         public void run() {
             currentSec--;
-            if( currentSec == 0){
+            if( currentSec == 0 && currentMin > 0){
                 currentSec = 59;
                 currentMin--;
-            }else if( currentMin == 0 && currentSec == 1){
+            }else if( currentMin == 0 && currentSec == 0){
                 timer.cancel();
+                GUIWindow.display("Game Over\nYou run out of time!");
             }else if( restarted ){
                 currentSec = stoppedSec;
                 currentMin = stoppedMin;
                 restarted = false;
             }
-            System.out.println( "Countdown " + currentMin + " : " + currentSec);
+            if(currentSec < 10){
+                GUIWindow.timer.setText(currentMin + " : 0" + currentSec);
+            }else {
+                GUIWindow.timer.setText(currentMin + " : " + currentSec);
+            }
+            //System.out.println( "Countdown " + currentMin + " : " + currentSec);
         }
     };
 
@@ -41,6 +47,7 @@ private Timer timer = new Timer();
      * Runs a countdown starting at 2 minutes
      */
     public void start(){
+       // timeOut = false;
         timer.scheduleAtFixedRate(task, 1000, 1000);
     }
 
@@ -63,6 +70,11 @@ private Timer timer = new Timer();
     }
 
     /**
+     * Tells whether or not time is out.
+     */
+    public boolean timeOut(){ return currentSec == 0 && currentMin ==0 ;}
+
+    /**
      * Method will be used to display timer with images
      * @return integer of the current minute
      */
@@ -79,11 +91,5 @@ private Timer timer = new Timer();
         return String.valueOf(currentSec).toCharArray();
     }
 
-
-
-//    public static void main(String args[]) {
-//        GameTimer g = new GameTimer();
-//        g.start();
-//    }
 }
     
