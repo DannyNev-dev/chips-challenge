@@ -90,6 +90,11 @@ public class Maze {
    * @return whether the move was successful
    */
   public boolean movePlayer(SingleMove move) {
+    if(status != GameState.PLAYING) {
+      //TODO remove when application checks the game status
+      return false;
+    }
+    
     Preconditions.checkArgument(move != null, "A well initialized move is required");
     Preconditions.checkArgument(isPlayerPosValid());
     Preconditions.checkState(status == GameState.PLAYING, "Moves can't be applied unless the game is still active");
@@ -122,12 +127,16 @@ public class Maze {
       }
     }
     
+    if(isGameWon()) {
+      status = GameState.GAME_WON;
+      System.out.print("Well done you completed the level!!!");
+      return false;
+    }
+    
     //Add player to new tile
     board[newPos.x][newPos.y].replaceItem(player);
     
-    if(isGameWon()) {
-      status = GameState.GAME_WON;
-    }
+    
     
     assert(isPlayerPosValid());
     
