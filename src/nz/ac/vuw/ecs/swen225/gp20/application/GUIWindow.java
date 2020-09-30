@@ -272,30 +272,7 @@ public class GUIWindow extends javax.swing.JFrame {
             c = new GameTimer();
             setLevelNumber(numSelected);
             render = new Render(m);
-            boardCanvas = render.getView();
-            boardCanvas.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-            boardCanvas.setMaximumSize(new java.awt.Dimension(451, 451));
-            boardCanvas.setMinimumSize(new java.awt.Dimension(451, 451));
-            boardCanvas.setPreferredSize(new java.awt.Dimension(451, 451));
-            boardCanvas.setRequestFocusEnabled(false);
-            boardCanvas.setSize(new java.awt.Dimension(451, 441));
-
-            javax.swing.GroupLayout boardCanvasLayout = new javax.swing.GroupLayout(boardCanvas);
-            boardCanvas.setLayout(boardCanvasLayout);
-            boardCanvasLayout.setHorizontalGroup(
-                    boardCanvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGap(0, 447, Short.MAX_VALUE)
-            );
-            boardCanvasLayout.setVerticalGroup(
-                    boardCanvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGap(0, 447, Short.MAX_VALUE)
-            );
-            gameCanvas.add(boardCanvas);
-
-            //boardCanvas.doLayout();
-            //this.add(boardCanvas);
-            //boardCanvas.repaint();
-            //pack();
+            setBoardCanvas();
             c.start(); // starts time out
 
 
@@ -412,9 +389,28 @@ public class GUIWindow extends javax.swing.JFrame {
      * @return return a canvas for the Render module to display it in the game's
      * GUI.
      */
-//    public JPanel getBoardCanvas() {
-//        return boardCanvas;
-//    }
+    public void setBoardCanvas() {
+        boardCanvas = render.getView();
+            boardCanvas.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+            boardCanvas.setMaximumSize(new java.awt.Dimension(451, 451));
+            boardCanvas.setMinimumSize(new java.awt.Dimension(451, 451));
+            boardCanvas.setPreferredSize(new java.awt.Dimension(451, 451));
+            boardCanvas.setRequestFocusEnabled(false);
+            boardCanvas.setSize(new java.awt.Dimension(451, 441));
+
+            javax.swing.GroupLayout boardCanvasLayout = new javax.swing.GroupLayout(boardCanvas);
+            boardCanvas.setLayout(boardCanvasLayout);
+            boardCanvasLayout.setHorizontalGroup(
+                    boardCanvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGap(0, 447, Short.MAX_VALUE)
+            );
+            boardCanvasLayout.setVerticalGroup(
+                    boardCanvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGap(0, 447, Short.MAX_VALUE)
+            );
+            gameCanvas.add(boardCanvas);
+            boardCanvas.setLocation(80,60);
+    }
 
     /**
      * Displays the level on the GUI by receiving the information from the maze
