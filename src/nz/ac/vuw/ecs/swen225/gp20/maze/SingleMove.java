@@ -61,21 +61,51 @@ public class SingleMove implements Move {
 
   @Override
   public Point getDestination(Point old) {
+    switch(direction) {
+      case UP:
+        return new Point(old.x-1, old.y);
+      
+      case RIGHT:
+        return new Point(old.x, old.y+1);
+        
+      case DOWN:
+        return new Point(old.x+1, old.y);
+      
+      default:
+        //assert(direction == Direction.LEFT);
+        return new Point(old.x, old.y-1);
+      
+   // default:
+      //throw new RuntimeException("The direction of this move is invalid");
+    }
+  }
+
+  
+  
+  
+  /*
+   * with side effects
+   * 
+   *
+  /*
+   * @Override
+  public Point getDestination(Point old) {
     //Store new position for the steps
+    //X row Y col
     Point destination = null;
     switch(direction) {
       case UP:
-        destination = new Point(old.x, old.y-1);
-      
-      case RIGHT:
-        destination = new Point(old.x+1, old.y);
-        
-      case DOWN:
-        destination = new Point(old.x, old.y+1);
-      
-      case LEFT:
-        
         destination = new Point(old.x-1, old.y);
+        break;
+      case RIGHT:
+        destination = new Point(old.x, old.y+1);
+        break;
+      case DOWN:
+        destination = new Point(old.x+1, old.y);
+        break;
+      case LEFT:
+        break;
+        destination = new Point(old.x, old.y-1);
       
    // default:
       //throw new RuntimeException("The direction of this move is invalid");
@@ -89,6 +119,7 @@ public class SingleMove implements Move {
     
     return destination;
   }
+   */
   
   
 
