@@ -7,6 +7,7 @@ package nz.ac.vuw.ecs.swen225.gp20.application;
 
 import nz.ac.vuw.ecs.swen225.gp20.maze.Maze;
 import nz.ac.vuw.ecs.swen225.gp20.persistence.LevelReader;
+import nz.ac.vuw.ecs.swen225.gp20.render.Render;
 
 import javax.swing.*;
 import java.awt.*;
@@ -275,6 +276,8 @@ public class GUIWindow extends javax.swing.JFrame {
             }
                 c = new GameTimer();
                 setLevelNumber(numSelected);
+                render = new Render(m);
+                //boardCanvas = render.getView();
                 c.start(); // starts time out
 
         }
@@ -343,7 +346,8 @@ public class GUIWindow extends javax.swing.JFrame {
     private int level;
     private enum modes { Run, Load, Save, Replay}
     private static GameTimer c;
-    private static Maze maze;
+    private Render render;
+    private static Maze m;
     
    /**
      * initialize the number images  by linking each face to its image and storing them.
@@ -356,7 +360,6 @@ public class GUIWindow extends javax.swing.JFrame {
             
         }
     }
-    
                             
     /**
      * Display board grid on the GUI by receiving information from the Render module.
@@ -376,7 +379,7 @@ public class GUIWindow extends javax.swing.JFrame {
        this.level = level;
         levelNumber.setText("0" + level);
         try {
-            LevelReader.deserializeLevel(level);
+          m =  LevelReader.deserializeLevel(level);
         } catch (IOException e) {
             e.printStackTrace();
         }
