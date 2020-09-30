@@ -196,6 +196,11 @@ public class GUIWindow extends javax.swing.JFrame {
 
         saveButton.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         saveButton.setText("Save Game");
+        saveButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+            	saveBottonActionPerformed(evt);
+            }
+        });
         fileButton.add(saveButton);
 
         jMenuBar1.add(fileButton);
@@ -222,6 +227,7 @@ public class GUIWindow extends javax.swing.JFrame {
 
     private void saveBottonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveBottonActionPerformed
         // TODO add your handling code here:
+    	EventListener.getRecord().saveToJson();
     }//GEN-LAST:event_saveBottonActionPerformed
 
     private void replayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_replayActionPerformed
