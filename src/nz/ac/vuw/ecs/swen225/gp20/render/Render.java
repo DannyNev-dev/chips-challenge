@@ -11,6 +11,8 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.GridLayout;
+import java.util.ArrayList;
+
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -47,6 +49,7 @@ public class Render {
 
 class View {
 
+	private DispTile[][] dispList;
 	private Maze maze;
 	private int xSize;
 	private int ySize;
@@ -61,11 +64,22 @@ class View {
 		board = maze.getBoard();
 		xSize = board.length;
 		ySize = board[0].length;
+		dispList = new DispTile[xSize][ySize];
 		createAndShowGUI();
 	}
 
 	void refresh(Maze maze) {
 		this.maze = maze;
+		board = maze.getBoard();
+		for (int i = 0; i < dispList.length - 7; i++) {
+			for (int j = 0; j < dispList[0].length; j++) {
+				if (dispList[i][j] != null) {
+					System.out.println(board[i][j].getName());
+					dispList[i][j].setIcon(new ImageIcon(
+							"src/nz/ac/vuw/ecs/swen225/gp20/render/TileFile/" + board[i][j].getName() + ".png"));
+				}
+			}
+		}
 		mainPanel.repaint();
 	}
 
@@ -105,16 +119,18 @@ class View {
 
 		BoardPanel() {
 			setBorder(BorderFactory.createLineBorder(Color.BLACK, GAP));
-			GridLayout layout = new GridLayout(xSize-6, ySize-6);
+			GridLayout layout = new GridLayout(xSize - 6, ySize - 6);
 			setLayout(layout);
 
-			for (int i = 3; i < xSize-3; i++) {
+			for (int i = 3; i < xSize - 3; i++) {
 
-				for (int j = 3; j < ySize-3; j++) {
-						DispTile t = new DispTile();
-						ImageIcon ic = new ImageIcon("src/nz/ac/vuw/ecs/swen225/gp20/render/TileFile/" + board[i][j].getName() + ".png");
-						t.setIcon(ic);
-						add(t);
+				for (int j = 3; j < ySize - 3; j++) {
+					DispTile t = new DispTile();
+					dispList[i][j] = t;
+					ImageIcon ic = new ImageIcon(
+							"src/nz/ac/vuw/ecs/swen225/gp20/render/TileFile/" + board[i][j].getName() + ".png");
+					t.setIcon(ic);
+					add(t);
 				}
 			}
 
