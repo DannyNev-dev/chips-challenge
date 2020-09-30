@@ -26,14 +26,9 @@ public class Record{
 
 	private RecordedGame recordedGame;
 
-	public Record(int level){  // create a new record with empty recordedGame
-		this.recordedGame = new RecordedGame(level);
-	}
-	
-	
-	public Record(RecordedGame rg) {
-		this.recordedGame = rg;
-		
+	public Record() {
+		// Use level -1 by default, when level is set, the event listener will update level to user choice.
+		this.recordedGame = new RecordedGame(-1);
 	}
 	
 	public void update(Event event) {

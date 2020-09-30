@@ -33,10 +33,11 @@ public class RecordedGame {
 	}
 	
 	public void addAction(Event event) {
-		if (event.getType().equals("SetLevel")) {
+		if (event.getType().equals(Event.Type.SetLevel)) {
 			setLevel(event.getLevel());
 		}
 		else {
+			event.setLevel(this.level);
 			this.actions.add(event);
 		}	
 	}

@@ -17,7 +17,7 @@ import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.Wall;
  */
 public class EventListener implements Plugin {
 
-	private Record record;
+	private static Record record;
 	// This event listener shall be called by application in two kinds of state change
 	// level set: in GUIWindow.setLevelNumber()
 	//            In this case, an event being created and level being set, the event object being passed in 
@@ -33,12 +33,20 @@ public class EventListener implements Plugin {
 	// DO NOT RUN PLUGIN CALLBACK WHEN mode is REPLAYING!!!
 	
 	
+	public static Record getRecord() {
+		return record;
+	}
+
 	@Override
 	public void onEvent(Event e) {
-		this.record.update(e);
+		// All event listener instances update the same record instance
+		EventListener.record.update(e);
 	}
 	
 	public static EventListener eventListenerFactory() {
+		if (record == null) {
+			record = new Record();
+		}
 		return new EventListener();
 	}
 }
