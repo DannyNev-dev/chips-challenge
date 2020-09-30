@@ -44,10 +44,8 @@ public class Record{
 	}
 	
 	private String getSaveFileName() {	
-		//DateFormat df = new SimpleDateFormat("dd-MM-yy");
-		//Date dateobj = new Date();
-		//System.out.println(df.format(dateobj));
-		return "Level" + recordedGame.level + ".json";
+		String fileName = new SimpleDateFormat("dd_MM_yyyy_HH_mm").format(new Date());
+		return "Level" + recordedGame.level + "_" + fileName + ".json";
 		// Calculate filename to save, if preferred folder is specified, it shall be passed from App in initializer
 	}
 

@@ -1,4 +1,3 @@
-
 package nz.ac.vuw.ecs.swen225.gp20.recnplay;
 
 import javax.json.Json;
@@ -18,7 +17,6 @@ import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.Wall;
  */
 public class EventListener implements Plugin {
 
-	
 	private RecordedGame rg;
 	// This event listener shall be called by application in two kinds of state change
 	// level set: in GUIWindow.setLevelNumber()
@@ -36,12 +34,13 @@ public class EventListener implements Plugin {
 	
 	@Override
 	public void onEvent(Event e) {
-		if (e.getType().equals("SetLevel")) {
-			rg.add(e);
-		}
-		else if (e.getType().equals("Move")) {}
-		else if (e.getType().equals("PickupKey")) {}
-		else {}
+//		if (e.getType().equals("SetLevel")) {
+//			rg.add(e);
+//		}
+//		else if (e.getType().equals("Move")) {}
+//		else if (e.getType().equals("PickupKey")) {}
+//		else {}
+		rg.add(e);
 	}
 	
 	public static EventListener eventListenerFactory() {

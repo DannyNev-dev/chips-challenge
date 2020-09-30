@@ -1,5 +1,7 @@
 package nz.ac.vuw.ecs.swen225.gp20.recnplay;
 
+import java.awt.Point;
+import nz.ac.vuw.ecs.swen225.gp20.maze.Move.Direction;
 import nz.ac.vuw.ecs.swen225.gp20.maze.SingleMove;
 
 /**
@@ -69,7 +71,7 @@ public class Event {
 	public SingleMove getMove() {
 		return this.move;
 	}
-	        
+
 	public Event(Type type, int level, SingleMove move, boolean pickupKey, boolean pickupChip) {
 		this.type = type;
 		this.level = level;
