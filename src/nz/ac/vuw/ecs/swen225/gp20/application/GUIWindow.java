@@ -113,12 +113,18 @@ public class GUIWindow extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(levelAndTimerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(levelText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(levelAndTimerLayout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, levelAndTimerLayout.createSequentialGroup()
+                        .addGap(0, 32, Short.MAX_VALUE)
                         .addGroup(levelAndTimerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(timerText, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(levelNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(timer, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 17, Short.MAX_VALUE))))
+                            .addGroup(levelAndTimerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(levelAndTimerLayout.createSequentialGroup()
+                                    .addGap(6, 6, 6)
+                                    .addComponent(timer, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(levelNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(levelAndTimerLayout.createSequentialGroup()
+                                .addComponent(timerText, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(5, 5, 5)))
+                        .addGap(33, 33, 33))))
         );
         levelAndTimerLayout.setVerticalGroup(
             levelAndTimerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -137,19 +143,21 @@ public class GUIWindow extends javax.swing.JFrame {
         timerText.getAccessibleContext().setAccessibleName("time");
 
         boardCanvas.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        boardCanvas.setPreferredSize(new java.awt.Dimension(562, 469));
+        boardCanvas.setMaximumSize(new java.awt.Dimension(451, 451));
+        boardCanvas.setMinimumSize(new java.awt.Dimension(451, 451));
+        boardCanvas.setPreferredSize(new java.awt.Dimension(451, 451));
         boardCanvas.setRequestFocusEnabled(false);
-        boardCanvas.setSize(new java.awt.Dimension(562, 469));
+        boardCanvas.setSize(new java.awt.Dimension(451, 441));
 
         javax.swing.GroupLayout boardCanvasLayout = new javax.swing.GroupLayout(boardCanvas);
         boardCanvas.setLayout(boardCanvasLayout);
         boardCanvasLayout.setHorizontalGroup(
             boardCanvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 558, Short.MAX_VALUE)
+            .addGap(0, 447, Short.MAX_VALUE)
         );
         boardCanvasLayout.setVerticalGroup(
             boardCanvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 465, Short.MAX_VALUE)
+            .addGap(0, 447, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout gameCanvasLayout = new javax.swing.GroupLayout(gameCanvas);
@@ -157,23 +165,20 @@ public class GUIWindow extends javax.swing.JFrame {
         gameCanvasLayout.setHorizontalGroup(
             gameCanvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(gameCanvasLayout.createSequentialGroup()
-                .addGap(86, 86, 86)
+                .addGap(78, 78, 78)
                 .addComponent(boardCanvas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 125, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 190, Short.MAX_VALUE)
                 .addComponent(levelAndTimer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(93, 93, 93))
+                .addGap(103, 103, 103))
         );
         gameCanvasLayout.setVerticalGroup(
             gameCanvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(gameCanvasLayout.createSequentialGroup()
                 .addGap(52, 52, 52)
-                .addGroup(gameCanvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(gameCanvasLayout.createSequentialGroup()
-                        .addComponent(boardCanvas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(67, Short.MAX_VALUE))
-                    .addGroup(gameCanvasLayout.createSequentialGroup()
-                        .addComponent(levelAndTimer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(67, 67, 67))))
+                .addGroup(gameCanvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(boardCanvas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(levelAndTimer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(85, Short.MAX_VALUE))
         );
 
         gameButton.setText("Game");
@@ -290,7 +295,7 @@ public class GUIWindow extends javax.swing.JFrame {
             c = new GameTimer();
             setLevelNumber(numSelected);
             render = new Render(m);
-            boardCanvas = render.getView();
+            boardCanvas.update(render.getView().getGraphics());
             //boardCanvas.doLayout();
             //this.add(boardCanvas);
             //boardCanvas.repaint();
@@ -411,9 +416,9 @@ public class GUIWindow extends javax.swing.JFrame {
      * @return return a canvas for the Render module to display it in the game's
      * GUI.
      */
-    public JPanel getBoardCanvas() {
-        return boardCanvas;
-    }
+//    public JPanel getBoardCanvas() {
+//        return boardCanvas;
+//    }
 
     /**
      * Displays the level on the GUI by receiving the information from the maze
