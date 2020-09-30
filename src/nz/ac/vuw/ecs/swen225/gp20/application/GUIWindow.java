@@ -6,13 +6,15 @@
 package nz.ac.vuw.ecs.swen225.gp20.application;
 
 import nz.ac.vuw.ecs.swen225.gp20.maze.Maze;
+import nz.ac.vuw.ecs.swen225.gp20.maze.Move;
 import nz.ac.vuw.ecs.swen225.gp20.persistence.LevelReader;
+import nz.ac.vuw.ecs.swen225.gp20.recnplay.Event;
 import nz.ac.vuw.ecs.swen225.gp20.recnplay.EventListener;
 import nz.ac.vuw.ecs.swen225.gp20.render.Render;
-import nz.ac.vuw.ecs.swen225.gp20.recnplay.Event;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.io.IOException;
 
 /**
@@ -352,6 +354,7 @@ public class GUIWindow extends javax.swing.JFrame {
     private Render render;
     private static Maze m;
     private EventListener eventListener;
+    private Move move;
     
    /**
      * initialize the number images  by linking each face to its image and storing them.
@@ -387,6 +390,22 @@ public class GUIWindow extends javax.swing.JFrame {
           m =  LevelReader.deserializeLevel(level);
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void keyTyped(KeyEvent event) {
+
+        if (KeyEvent.VK_LEFT == 37) {
+            Move.Direction = LEFT;
+        }
+        if (KeyEvent.VK_DOWN == 40) {
+            Move.Direction = DOWN;
+        }
+        if (event.getKeyChar() == 39) {
+            cTDirection = RIGHT;
+        }
+        if (event.getKeyChar() == 38) {
+            cTDirection = UP;
         }
     }
 
@@ -437,12 +456,12 @@ public class GUIWindow extends javax.swing.JFrame {
         int result = JOptionPane.showConfirmDialog(null, data, "Alert", JOptionPane.PLAIN_MESSAGE);
     }
     
-     /**
-     * create a pop up window
-     * @param data text shown inside the window
-     * @param title of the window
-     */
-    public void display(String data, String title) {
-        int result = JOptionPane.showConfirmDialog(null, data, title, JOptionPane.PLAIN_MESSAGE);
-    }
+//     /**
+//     * create a pop up window
+//     * @param data text shown inside the window
+//     * @param title of the window
+//     */
+//    public void display(String data, String title) {
+//        int result = JOptionPane.showConfirmDialog(null, data, title, JOptionPane.PLAIN_MESSAGE);
+//    }
 }

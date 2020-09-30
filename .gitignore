@@ -15,6 +15,9 @@ local.properties
 .idea/
 out/
 
+# netBeans
+build/
+
 
 #Info about .gitignore
 https://www.atlassian.com/git/tutorials/saving-changes/gitignore
