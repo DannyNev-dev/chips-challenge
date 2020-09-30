@@ -7,6 +7,7 @@ package nz.ac.vuw.ecs.swen225.gp20.application;
 
 import nz.ac.vuw.ecs.swen225.gp20.maze.Maze;
 import nz.ac.vuw.ecs.swen225.gp20.maze.Move;
+import nz.ac.vuw.ecs.swen225.gp20.maze.SingleMove;
 import nz.ac.vuw.ecs.swen225.gp20.persistence.LevelReader;
 import nz.ac.vuw.ecs.swen225.gp20.recnplay.Event;
 import nz.ac.vuw.ecs.swen225.gp20.recnplay.EventListener;
@@ -64,6 +65,11 @@ public class GUIWindow extends javax.swing.JFrame {
             }
             public void windowOpened(java.awt.event.WindowEvent evt) {
                 formWindowOpened(evt);
+            }
+        });
+        addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                formKeyReleased(evt);
             }
         });
 
@@ -289,6 +295,26 @@ public class GUIWindow extends javax.swing.JFrame {
   
     }//GEN-LAST:event_formWindowOpened
 
+    private void formKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyReleased
+
+          if (evt.getKeyCode() == KeyEvent.VK_LEFT) {
+            new SingleMove(Move.Direction.LEFT);
+            System.out.println("Left");
+        }
+        if (evt.getKeyCode() == KeyEvent.VK_DOWN) {
+           new SingleMove(Move.Direction.DOWN);
+            System.out.println("Down");
+        }
+        if (evt.getKeyCode() == KeyEvent.VK_RIGHT) {
+            new SingleMove(Move.Direction.RIGHT);
+            System.out.println("Right");
+        }
+        if (evt.getKeyCode() == KeyEvent.VK_UP) {
+            new SingleMove(Move.Direction.UP);
+            System.out.println("UP");
+        }
+    }//GEN-LAST:event_formKeyReleased
+
     /**
      * @param args the command line arguments
      */
@@ -390,22 +416,6 @@ public class GUIWindow extends javax.swing.JFrame {
           m =  LevelReader.deserializeLevel(level);
         } catch (IOException e) {
             e.printStackTrace();
-        }
-    }
-
-    public void keyTyped(KeyEvent event) {
-
-        if (KeyEvent.VK_LEFT == 37) {
-            Move.Direction = LEFT;
-        }
-        if (KeyEvent.VK_DOWN == 40) {
-            Move.Direction = DOWN;
-        }
-        if (event.getKeyChar() == 39) {
-            cTDirection = RIGHT;
-        }
-        if (event.getKeyChar() == 38) {
-            cTDirection = UP;
         }
     }
 
