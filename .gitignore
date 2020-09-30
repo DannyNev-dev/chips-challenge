@@ -17,6 +17,7 @@ out/
 
 # netBeans
 build/
+.DS_Store
 
 
 #Info about .gitignore

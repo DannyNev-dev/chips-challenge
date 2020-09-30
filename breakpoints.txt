@@ -1,10 +1,13 @@
 Application 
 	Class GUIWindow 
-		Line 324 / Maze
-		Line 325 / Render
-		Line 326 / Record & Replay
-		Line 426 / Record & Replay
-		Line 428 / Persistence
+		Line 200 / Record and Play
+		Line 298 / Maze , Render
+		Line 299 / Render
+		Lane 332 / Maze
+		Line 333 / Render 
+		Line 334 / Record & Play
+		Line 338 / Render
+		Line 443 / Record & Play
 Maze
 	Class Maze
 		Line 87 / LevelReader (Persistance package)
