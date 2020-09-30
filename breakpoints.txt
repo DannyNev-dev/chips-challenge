@@ -1,10 +1,10 @@
 Application 
 	Class GUIWindow 
-		Line 318 / Maze
-		Line 319 / Render
-		Line 320 / Record & Replay
-		Line 420 / Record & Replay
-		Line 422 / Persistence
+		Line 324 / Maze
+		Line 325 / Render
+		Line 326 / Record & Replay
+		Line 426 / Record & Replay
+		Line 428 / Persistence
 Maze
 
 

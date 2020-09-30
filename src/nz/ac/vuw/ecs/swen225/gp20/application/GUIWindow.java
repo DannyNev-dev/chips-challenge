@@ -266,35 +266,41 @@ public class GUIWindow extends javax.swing.JFrame {
         int numSelected;
         JRadioButton one = new JRadioButton("1");
         //JRadioButton two = new JRadioButton("2");
-        
         //Group the radio buttons.
         ButtonGroup levelSelected = new ButtonGroup();
         levelSelected.add(one);
         //levelSelected.add(two);
-        
+        //Default option, level one
+        one.setSelected(true);
         final JComponent[] inputs = new JComponent[]{
-            new JLabel("Choose a level to play"),
-            one,
-            //two,
+                new JLabel("Choose a level to play"),
+                one,
+                //two,
         };
-        
         int result = JOptionPane.showConfirmDialog(null, inputs, "Welcome", JOptionPane.PLAIN_MESSAGE);
         if (result == JOptionPane.OK_OPTION) {
             if (one.isSelected()) {
                 numSelected = 1;
             } else{
-                numSelected = 2;
+                //Here user has clicked OK without choosing option
+                //numSelected = 2;
+                System.exit(0);
+                return;
             }
-                c = new GameTimer();
-                setLevelNumber(numSelected);
-                render = new Render(m);
-                //boardCanvas = render.getView();
-               // this.add(boardCanvas);
-                c.start(); // starts time out
-               // pack();
+            c = new GameTimer();
+            setLevelNumber(numSelected);
+            render = new Render(m);
+            boardCanvas = render.getView();
+            //boardCanvas.doLayout();
+            //this.add(boardCanvas);
+            //boardCanvas.repaint();
+            //pack();
+            c.start(); // starts time out
 
+
+        }else {
+            System.exit(0);  //changed to prevent bug when closing
         }
-  
     }//GEN-LAST:event_formWindowOpened
 
     private void formKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyReleased
