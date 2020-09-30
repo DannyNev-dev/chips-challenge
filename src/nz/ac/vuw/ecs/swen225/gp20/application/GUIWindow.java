@@ -243,7 +243,7 @@ public class GUIWindow extends javax.swing.JFrame {
      * @param evt default event.
      */
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        c.pause();
+        //c.pause();
         int confirm = JOptionPane.showConfirmDialog(null,
                 "Are you sure you want to leave this match?\n You will lose all your progress if\n you leave without saving",
                 "Leave Game?", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
@@ -253,7 +253,7 @@ public class GUIWindow extends javax.swing.JFrame {
             //System.exit(0); //close all windows
         } else {
             //close current game, it will not affect other game in different windows
-            c.setRestarted();
+            c.setRestarted(true);
             //c.start();
         }
     }//GEN-LAST:event_formWindowClosing
