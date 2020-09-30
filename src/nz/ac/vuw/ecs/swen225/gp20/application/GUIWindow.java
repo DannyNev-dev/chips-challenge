@@ -44,6 +44,7 @@ public class GUIWindow extends javax.swing.JFrame {
     private void initComponents() {
 
         gameCanvas = new javax.swing.JPanel();
+        boardCanvas = new javax.swing.JPanel();
         levelAndTimer = new javax.swing.JPanel();
         levelText = new javax.swing.JLabel();
         levelNumber = new javax.swing.JLabel();
@@ -56,7 +57,7 @@ public class GUIWindow extends javax.swing.JFrame {
         fileButton = new javax.swing.JMenu();
         saveButton = new javax.swing.JMenuItem();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setBackground(new java.awt.Color(0, 207, 18));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
@@ -73,6 +74,17 @@ public class GUIWindow extends javax.swing.JFrame {
         });
 
         gameCanvas.setBackground(new java.awt.Color(0, 208, 18));
+
+        javax.swing.GroupLayout boardCanvasLayout = new javax.swing.GroupLayout(boardCanvas);
+        boardCanvas.setLayout(boardCanvasLayout);
+        boardCanvasLayout.setHorizontalGroup(
+            boardCanvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 463, Short.MAX_VALUE)
+        );
+        boardCanvasLayout.setVerticalGroup(
+            boardCanvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 422, Short.MAX_VALUE)
+        );
 
         levelAndTimer.setBackground(new java.awt.Color(204, 204, 204));
         levelAndTimer.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, null, null, null, new java.awt.Color(102, 102, 102)));
@@ -145,6 +157,11 @@ public class GUIWindow extends javax.swing.JFrame {
                 .addContainerGap(726, Short.MAX_VALUE)
                 .addComponent(levelAndTimer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(100, 100, 100))
+            .addGroup(gameCanvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, gameCanvasLayout.createSequentialGroup()
+                    .addContainerGap(128, Short.MAX_VALUE)
+                    .addComponent(boardCanvas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(492, Short.MAX_VALUE)))
         );
         gameCanvasLayout.setVerticalGroup(
             gameCanvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -152,6 +169,11 @@ public class GUIWindow extends javax.swing.JFrame {
                 .addContainerGap(64, Short.MAX_VALUE)
                 .addComponent(levelAndTimer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(82, 82, 82))
+            .addGroup(gameCanvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, gameCanvasLayout.createSequentialGroup()
+                    .addContainerGap(64, Short.MAX_VALUE)
+                    .addComponent(boardCanvas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(102, Short.MAX_VALUE)))
         );
 
         gameButton.setText("Game");
@@ -232,6 +254,7 @@ public class GUIWindow extends javax.swing.JFrame {
         } else {
             //close current game, it will not affect other game in different windows
             c.setRestarted();
+            //c.start();
         }
     }//GEN-LAST:event_formWindowClosing
 
@@ -266,7 +289,7 @@ public class GUIWindow extends javax.swing.JFrame {
             }
             c = new GameTimer();
             setLevelNumber(numSelected);
-            //boardCanvas.setVisible(false);
+            boardCanvas.setVisible(false);
             render = new Render(m);
             boardCanvas = render.getView();
             //boardCanvas.doLayout();
