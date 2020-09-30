@@ -31,7 +31,8 @@ public class Event {
 	private boolean pickupKey;
 	
 	private boolean pickupChip;
-
+	
+	
 	public int getLevel() {
 		return level;
 	}
@@ -84,9 +85,8 @@ public class Event {
     	return new Event(Type.SetLevel, level, null, false, false);
     }
 	
-    public static Event eventOfMove(SingleMove move) {  
-    	return new Event(Type.Move, 0, move, false, false);
-    	
+    public static Event eventOfMove(SingleMove move) {
+    	return new Event(Type.Move, 0, move, false, false);   	
     }
     
     public static Event eventOfPickUpKey(boolean pickUpKey) { 
