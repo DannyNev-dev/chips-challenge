@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.google.common.base.Preconditions;
 import java.awt.Point;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Collectable;
@@ -12,6 +13,7 @@ import nz.ac.vuw.ecs.swen225.gp20.maze.items.Key;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Player;
 import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.ExitTile;
 import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.Tile;
+import nz.ac.vuw.ecs.swen225.gp20.persistence.LevelReader;
 
 /**
  * This class manages the logic for the maze.
@@ -73,6 +75,23 @@ public class Maze {
     this.target = target;
     this.level = level;
     assert(isPlayerPosValid());
+  }
+  
+  /**
+   * Create a new maze given a level
+   * @param level of the maze
+   * @throws IOException if no object has that level
+   */
+  public Maze(int level) throws IOException {
+    Preconditions.checkArgument(level >= 0, "levels can't be negative");
+    LevelReader loader = new LevelReader(level);
+    this.player = loader.loadPlayer();
+    this.board = loader.loadBoard();
+    //TODO clone board
+    this.target = loader.loadTarget();
+    this.level = level;
+    assert(isPlayerPosValid());
+    
   }
 
   /**
