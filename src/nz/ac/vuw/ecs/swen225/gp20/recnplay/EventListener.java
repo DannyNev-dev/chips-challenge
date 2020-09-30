@@ -17,7 +17,7 @@ import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.Wall;
  */
 public class EventListener implements Plugin {
 
-	private RecordedGame rg;
+	private Record record;
 	// This event listener shall be called by application in two kinds of state change
 	// level set: in GUIWindow.setLevelNumber()
 	//            In this case, an event being created and level being set, the event object being passed in 
@@ -32,15 +32,10 @@ public class EventListener implements Plugin {
     // Application shall have a mode flag to distinguish if it/s in replaying
 	// DO NOT RUN PLUGIN CALLBACK WHEN mode is REPLAYING!!!
 	
+	
 	@Override
 	public void onEvent(Event e) {
-//		if (e.getType().equals("SetLevel")) {
-//			rg.add(e);
-//		}
-//		else if (e.getType().equals("Move")) {}
-//		else if (e.getType().equals("PickupKey")) {}
-//		else {}
-		rg.add(e);
+		this.record.update(e);
 	}
 	
 	public static EventListener eventListenerFactory() {

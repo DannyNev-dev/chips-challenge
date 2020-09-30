@@ -25,9 +25,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class Record{
 
 	private RecordedGame recordedGame;
-	
-	//private FileWriter jsonFile;
-	
 
 	public Record(int level){  // create a new record with empty recordedGame
 		this.recordedGame = new RecordedGame(level);
@@ -39,12 +36,12 @@ public class Record{
 		
 	}
 	
-	public void updateSteps(Event event) {
-		recordedGame.steps.add(event);
+	public void update(Event event) {
+		recordedGame.addAction(event);
 	}
 	
 	private String getSaveFileName() {	
-		String fileName = new SimpleDateFormat("dd_MM_yyyy_HH_mm").format(new Date());
+		String fileName = new SimpleDateFormat("dd_MM_yyyy_HH-mm").format(new Date());
 		return "Level" + recordedGame.level + "_" + fileName + ".json";
 		// Calculate filename to save, if preferred folder is specified, it shall be passed from App in initializer
 	}
@@ -57,15 +54,9 @@ public class Record{
         try {
             // Java objects to JSON file
             mapper.writeValue(new File(getSaveFileName()), this.recordedGame);
-
-            // Java objects to JSON string - compact-print
-            // String jsonString = mapper.writeValueAsString(this.recordedGame);
-
-            // Java objects to JSON string - pretty-print
-            String jsonInString2 = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(this.recordedGame);
-
-            System.out.println(jsonInString2);
-
+            String jsonString = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(this.recordedGame);
+            System.out.println(jsonString);
+            
         } catch (IOException e) {
         	e.printStackTrace();
         }       

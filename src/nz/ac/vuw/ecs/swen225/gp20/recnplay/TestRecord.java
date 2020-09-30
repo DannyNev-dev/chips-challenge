@@ -26,14 +26,12 @@ public class TestRecord {
 //        Event event4 = new Event(Type.Move, 1, new SingleMove(Direction.DOWN), false, false);
 //        Event event5 = new Event(Type.Move, 1, new SingleMove(Direction.RIGHT), false, false);
 //        Event event6 = new Event(Type.Move, 1, new SingleMove(Direction.UP), false, false);
-        rg.add(event1);
-        rg.add(event2);
-        rg.add(event2);
-        rg.add(event3);
-        rg.add(event4);
-        rg.add(event5);
-//        rg.add(event6);
-        
+        rg.addAction(event1);
+        rg.addAction(event2);
+        rg.addAction(event2);
+        rg.addAction(event3);
+        rg.addAction(event4);
+        rg.addAction(event5);
         
         return rg;
 
