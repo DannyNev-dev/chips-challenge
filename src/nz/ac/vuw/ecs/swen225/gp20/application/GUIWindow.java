@@ -109,7 +109,7 @@ public class GUIWindow extends javax.swing.JFrame {
         timerText.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
         timer.setBackground(new java.awt.Color(0, 0, 0));
-        timer.setFont(new java.awt.Font("Arial Rounded MT Bold", 1, 55)); // NOI18N
+        timer.setFont(new java.awt.Font("Arial Rounded MT Bold", 1, 48)); // NOI18N
         timer.setForeground(new java.awt.Color(0, 0, 204));
         timer.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         timer.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, null, new java.awt.Color(0, 0, 0), null, null));
@@ -195,11 +195,6 @@ public class GUIWindow extends javax.swing.JFrame {
 
         saveButton.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         saveButton.setText("Save Game");
-        saveButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-            	saveBottonActionPerformed(evt);
-            }
-        });
         fileButton.add(saveButton);
 
         jMenuBar1.add(fileButton);
@@ -249,12 +244,13 @@ public class GUIWindow extends javax.swing.JFrame {
      */
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         //c.pause();
+        c.pause();
         int confirm = JOptionPane.showConfirmDialog(null,
                 "Are you sure you want to leave this match?\n You will lose all your progress if\n you leave without saving",
                 "Leave Game?", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
         if (confirm == JOptionPane.OK_OPTION) {
             //close current game, it will not affect other game in different windows
-            evt.getWindow().dispose();
+            System.exit(0);
             //System.exit(0); //close all windows
         }// else {
             //close current game, it will not affect other game in different windows
