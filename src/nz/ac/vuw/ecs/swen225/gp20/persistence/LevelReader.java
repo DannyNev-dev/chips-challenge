@@ -72,7 +72,7 @@ public class LevelReader {
 	 * @return the tile
 	 * @throws Exception 
 	 */
-	public static Tile parseTile(JsonObject jsonObj,int target,Player p) throws Exception {	
+	public static Tile parseTile(JsonObject jsonObj,int target,Player p) throws RuntimeException {	
 		
 		Item item = null;
 		Tile tile = null;
@@ -105,7 +105,7 @@ public class LevelReader {
 		    			item = p;
 		    			break;
 		    		default:
-		    			throw new Exception("Invalid JSON input for the item");
+		    			throw new RuntimeException("Invalid JSON input for the item");
 		    			//System.out.println("");	//may need to throw custom exception
 		    			
 	    		}
@@ -124,7 +124,7 @@ public class LevelReader {
 		    			item = new Block(Colour.BLUE);
 		    			break;
 		    		default:
-		    			throw new Exception("Invalid JSON input for the door colour");
+		    			throw new RuntimeException("Invalid JSON input for the door colour");
 		    			//System.out.println("Invalid JSON input for the door colour");	//may need to throw custom exception
 	    		}
 	    		tile = new ItemTile(item);
@@ -139,7 +139,7 @@ public class LevelReader {
 	    		tile = new InfoTile(jsonObj.getString("item"),null);
 	    		break;
 	    	default:
-	    		throw new Exception("Json Array element has no matching type");
+	    		throw new RuntimeException("Json Array element has no matching type");
 	    		//System.out.print("Incorrect Json Format");	//may need to throw custom exception
 	    	}
     	return tile;	
@@ -153,7 +153,7 @@ public class LevelReader {
  * @return
  * @throws Exception 
  */
-public static Tile[][] makeBoard(JsonArray jList,int target,Player p) throws Exception{
+public static Tile[][] makeBoard(JsonArray jList,int target,Player p) throws RuntimeException{
 	int length = jList.size();
     //initialize board
     Tile[][] board = new Tile[jList.getJsonObject(0).getJsonArray("row").size()][length];	    
