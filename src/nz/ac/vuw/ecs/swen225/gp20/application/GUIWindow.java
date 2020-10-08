@@ -421,24 +421,42 @@ public class GUIWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_jFileChooser2ActionPerformed
 
     /**
+     * Forms a warning message if user wins game bottom.
+     */
+    private void formWindowWon() {
+        c.pause();
+        if (level == 1) {
+            int confirm = JOptionPane.showConfirmDialog(null,
+                    "Congratulations! You have won\nDo you want to play level 2?",
+                    "Game Won", JOptionPane.WARNING_MESSAGE);
+            if (confirm == JOptionPane.OK_OPTION) {
+                //close all windows
+                level = 2;
+                setLevelNumber(level);
+                c = new GameTimer();
+                c.start();
+            }else if( confirm == JOptionPane.CANCEL_OPTION) {
+                System.exit(0); //close all windows
+            }
+        } else{
+            display(" Congratulations!\nYou completed all levels");
+            System.exit(0);
+        }
+    }
+
+    /**
      * Forms a warning message if user clicks exit bottom.
      * @param evt default event.
      */
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        //c.pause();
         c.pause();
         int confirm = JOptionPane.showConfirmDialog(null,
                 "Are you sure you want to leave this match?\n You will lose all your progress if\n you leave without saving",
                 "Leave Game?", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
         if (confirm == JOptionPane.OK_OPTION) {
-            //close current game, it will not affect other game in different windows
+            //closes all windows
             System.exit(0);
-            //System.exit(0); //close all windows
-        }// else {
-            //close current game, it will not affect other game in different windows
-           // c.setRestarted(true);
-            //c.start();
-       // }
+        }
     }//GEN-LAST:event_formWindowClosing
 
     /**
@@ -510,12 +528,14 @@ public class GUIWindow extends javax.swing.JFrame {
         boardCanvas.setVisible(false);
         render = new Render(m);
         boardCanvas = render.getView();
-        //boardCanvas.doLayout();
         gameCanvas.add(boardCanvas);
         boardCanvas.setLocation(70,35);
         validate();
         repaint();
         setVisible(true);
+        if( m.getStatus().name().equals("GAME_WON")){
+            this.formWindowWon();
+        }
 
     }//GEN-LAST:event_keyReleasedSetMove
 
