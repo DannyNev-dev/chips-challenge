@@ -31,6 +31,7 @@ public class GUIWindow extends javax.swing.JFrame {
         numberOnPanel();
         initComponents();
         this.eventListener = EventListener.eventListenerFactory();
+        this.setFocusable(true);
     }
 
     /**
@@ -114,12 +115,12 @@ public class GUIWindow extends javax.swing.JFrame {
         levelText.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         levelText.setText("L E V E L");
 
-        levelNumber.setBackground(new java.awt.Color(0, 0, 0));
+        levelNumber.setBackground(new java.awt.Color(204, 204, 204));
         levelNumber.setFont(new java.awt.Font("Arial Narrow", 1, 80)); // NOI18N
         levelNumber.setForeground(new java.awt.Color(0, 0, 204));
         levelNumber.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         levelNumber.setToolTipText("");
-        levelNumber.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, null, new java.awt.Color(0, 0, 0), null, null));
+        levelNumber.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         levelNumber.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
         timerText.setFont(new java.awt.Font("Arial Narrow", 1, 48)); // NOI18N
@@ -128,18 +129,18 @@ public class GUIWindow extends javax.swing.JFrame {
         timerText.setText("T I M E");
         timerText.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
-        timer.setBackground(new java.awt.Color(0, 0, 0));
+        timer.setBackground(new java.awt.Color(204, 204, 204));
         timer.setFont(new java.awt.Font("Arial Rounded MT Bold", 1, 48)); // NOI18N
         timer.setForeground(new java.awt.Color(0, 0, 204));
         timer.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        timer.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, null, new java.awt.Color(0, 0, 0), null, null));
+        timer.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         timer.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
-        chipsLeft.setBackground(new java.awt.Color(0, 0, 0));
+        chipsLeft.setBackground(new java.awt.Color(204, 204, 204));
         chipsLeft.setFont(new java.awt.Font("Arial Rounded MT Bold", 1, 48)); // NOI18N
         chipsLeft.setForeground(new java.awt.Color(0, 0, 204));
         chipsLeft.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        chipsLeft.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, null, new java.awt.Color(0, 0, 0), null, null));
+        chipsLeft.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         chipsLeft.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
         chipsleftText2.setFont(new java.awt.Font("Arial Narrow", 1, 48)); // NOI18N
@@ -183,6 +184,7 @@ public class GUIWindow extends javax.swing.JFrame {
         timerText.getAccessibleContext().setAccessibleName("time");
 
         autoReplay.setBackground(new java.awt.Color(51, 51, 255));
+        autoReplay.setForeground(new java.awt.Color(255, 255, 255));
         autoReplay.setText("A U T O R E P L A Y");
         autoReplay.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -191,6 +193,7 @@ public class GUIWindow extends javax.swing.JFrame {
         });
 
         forwards.setBackground(new java.awt.Color(51, 51, 255));
+        forwards.setForeground(new java.awt.Color(255, 255, 255));
         forwards.setText(">");
         forwards.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -199,9 +202,11 @@ public class GUIWindow extends javax.swing.JFrame {
         });
 
         backwards.setBackground(new java.awt.Color(51, 51, 255));
+        backwards.setForeground(new java.awt.Color(255, 255, 255));
         backwards.setText("< ");
 
         setReplay.setBackground(new java.awt.Color(51, 51, 255));
+        setReplay.setForeground(new java.awt.Color(255, 255, 255));
         setReplay.setText("A C T I V A T E    R E P L A Y    M O D E");
         setReplay.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -485,19 +490,16 @@ public class GUIWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowOpened
 
     private void keyReleasedSetMove(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_keyReleasedSetMove
+        requestFocus();
         SingleMove sMove;// = null;
         if (evt.getKeyCode() == KeyEvent.VK_LEFT) {
-            System.out.println("left");
             sMove = new SingleMove(Move.Direction.LEFT);
         }else if (evt.getKeyCode() == KeyEvent.VK_DOWN) {
             sMove = new SingleMove(Move.Direction.DOWN);
-            System.out.println("down");
         } else if (evt.getKeyCode() == KeyEvent.VK_RIGHT) {
             sMove = new SingleMove(Move.Direction.RIGHT);
-            System.out.println("right");
         }else if (evt.getKeyCode() == KeyEvent.VK_UP) {
             sMove = new SingleMove(Move.Direction.UP);
-            System.out.println("UP");
         }else{
             return;
         }
