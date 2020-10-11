@@ -3,13 +3,16 @@ package test.nz.ac.vuw.ecs.swen225.gp20.maze;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.awt.Point;
+import java.io.IOException;
 
 import org.junit.jupiter.api.Test;
 
 import nz.ac.vuw.ecs.swen225.gp20.maze.Maze;
 import nz.ac.vuw.ecs.swen225.gp20.maze.Move;
+import nz.ac.vuw.ecs.swen225.gp20.maze.Move.Direction;
 import nz.ac.vuw.ecs.swen225.gp20.maze.SingleMove;
 import nz.ac.vuw.ecs.swen225.gp20.maze.Maze.GameState;
+import nz.ac.vuw.ecs.swen225.gp20.maze.items.Key;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Player;
 import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.ItemTile;
 import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.Tile;
@@ -119,6 +122,88 @@ class MazeTest {
     }
   }
   
+  /**
+   * Player collects a chip from level 1.
+   */
+  @Test
+  void collectChipLevelOneTest() {
+    try {
+      
+      Maze maze = new Maze(1);
+      int target = maze.getChipsLeft();
+      //Move the player to a tile containing a chip
+      maze.movePlayer(new SingleMove(Direction.LEFT));
+      maze.movePlayer(new SingleMove(Direction.LEFT));
+      
+      //Check the chips left has decrease by exactly one
+      assertEquals(target - 1, maze.getChipsLeft());
+      
+      
+    } catch (IOException e) {
+      assert false : "data for level one should be stored";
+    }
+  }
+  
+  /**
+   * Player collects a key from level 1.
+   */
+  @Test
+  void collectKeyLevelOneTest() {
+    try {
+      
+      Maze maze = new Maze(1);
+      assertTrue(maze.getPlayerInventory().isEmpty(), 
+          "No items should be in the inventory at the start of level one");
+      int target = maze.getChipsLeft();
+      //Move the player to a tile containing a key
+      maze.movePlayer(new SingleMove(Direction.DOWN));
+      maze.movePlayer(new SingleMove(Direction.LEFT));
+      maze.movePlayer(new SingleMove(Direction.LEFT));
+      
+      //Check the chips left has not changed
+      assertEquals(target, maze.getChipsLeft());
+      //Check that inventory contains only one item
+      assertEquals(maze.getPlayerInventory().size(), 1);
+      //Check the collected item is a key
+      assertTrue(maze.getPlayerInventory().get(0) instanceof Key);
+      
+      
+    } catch (IOException e) {
+      assert false : "data for level one should be stored";
+    }
+  }
+  
+  /**
+   * Player open door.
+   */
+  @Test
+  void openDoorLevelOneTest() {
+    try {
+      
+      Maze maze = new Maze(1);
+      assertTrue(maze.getPlayerInventory().isEmpty(), 
+          "No items should be in the inventory at the start of level one");
+      int target = maze.getChipsLeft();
+      //Move the player to a tile containing a key
+      maze.movePlayer(new SingleMove(Direction.DOWN));
+      maze.movePlayer(new SingleMove(Direction.LEFT));
+      maze.movePlayer(new SingleMove(Direction.LEFT));
+      //Check a key has been picked up
+      assertTrue(maze.getPlayerInventory().get(0) instanceof Key);
+      
+      maze.movePlayer(new SingleMove(Direction.DOWN));
+      assertTrue(maze.movePlayer(new SingleMove(Direction.LEFT)), 
+          "The player hasn't be able to successfully move through the door, "
+          + "even though they had the correct key");
+      
+      //TODO 
+      //has key dissappiared? so far we decided to keep the key
+      
+      
+    } catch (IOException e) {
+      assert false : "data for level one should be stored";
+    }
+  }
   
   
   
