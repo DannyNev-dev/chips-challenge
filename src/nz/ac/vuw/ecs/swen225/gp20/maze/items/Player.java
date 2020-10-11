@@ -125,6 +125,15 @@ public class Player implements Entity {
   public String getName() {
     return name;
   }
+  
+  @Override
+  public void dropCollectable(Collectable toDrop) throws IllegalArgumentException {
+    if (!inventory.contains(toDrop)) {
+      throw new IllegalArgumentException("The given collectable is not in the player inventory");
+    }
+    
+    inventory.remove(toDrop);
+  }
 
   
   

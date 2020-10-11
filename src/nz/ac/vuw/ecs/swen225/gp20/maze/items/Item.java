@@ -18,6 +18,7 @@ public interface Item {
   
   /**
    * Check if this item can be added to the player inventory.
+   * By default items can't be collected
    * 
    * @return whether this item can be picked up by the player
    */
