@@ -69,10 +69,9 @@ public class GUIWindow extends javax.swing.JFrame {
         item6 = new javax.swing.JLabel();
         item7 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
-        gameButton = new javax.swing.JMenu();
-        newGame = new javax.swing.JMenuItem();
-        replay = new javax.swing.JMenuItem();
-        fileButton = new javax.swing.JMenu();
+        gameMenu = new javax.swing.JMenu();
+        rulesLegend = new javax.swing.JMenuItem();
+        fileMenu = new javax.swing.JMenu();
         saveButton = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -355,29 +354,30 @@ public class GUIWindow extends javax.swing.JFrame {
                 .addContainerGap(32, Short.MAX_VALUE))
         );
 
-        gameButton.setText("Game");
+        gameMenu.setText("Game");
 
-        newGame.setText("New Game");
-        gameButton.add(newGame);
-
-        replay.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.CTRL_DOWN_MASK));
-        replay.setText("Replay");
-        replay.addActionListener(new java.awt.event.ActionListener() {
+        rulesLegend.setText("Instructions - Rules");
+        rulesLegend.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                replayActionPerformed(evt);
+                rulesLegendActionPerformed(evt);
             }
         });
-        gameButton.add(replay);
+        gameMenu.add(rulesLegend);
 
-        jMenuBar1.add(gameButton);
+        jMenuBar1.add(gameMenu);
 
-        fileButton.setText("File");
+        fileMenu.setText("File");
 
         saveButton.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         saveButton.setText("Save Game");
-        fileButton.add(saveButton);
+        saveButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveButtonActionPerformed(evt);
+            }
+        });
+        fileMenu.add(saveButton);
 
-        jMenuBar1.add(fileButton);
+        jMenuBar1.add(fileMenu);
 
         setJMenuBar(jMenuBar1);
 
@@ -402,13 +402,8 @@ public class GUIWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_loadBottonActionPerformed
 
     private void saveBottonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveBottonActionPerformed
-        // TODO add your handling code here:
-    	EventListener.getRecord().saveToJson();
+       EventListener.getRecord().saveToJson();
     }//GEN-LAST:event_saveBottonActionPerformed
-
-    private void replayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_replayActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_replayActionPerformed
 
     private void loadBottonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_loadBottonMouseClicked
         // TODO add your handling code here:
@@ -536,6 +531,7 @@ public class GUIWindow extends javax.swing.JFrame {
         if( m.getStatus().name().equals("GAME_WON")){
             this.formWindowWon();
         }
+        transferFocus();
 
     }//GEN-LAST:event_keyReleasedSetMove
 
@@ -550,6 +546,21 @@ public class GUIWindow extends javax.swing.JFrame {
     private void setReplayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setReplayActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_setReplayActionPerformed
+
+    private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
+        EventListener.getRecord().saveToJson();
+    }//GEN-LAST:event_saveButtonActionPerformed
+
+    private void rulesLegendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rulesLegendActionPerformed
+        display("Use the arrows on your key board to move Chap around the board.\n"
+                +"To win the game make sure you collect all the chips on \n"
+                +"the board within 2 minutes and go to the blue tile.\n"
+                +"On level 2 do not let the bug reach Chap!\n"
+                +"If you want to see all your moves play Replay mode.\n"
+                + "Use the \"<\" and \">\" buttons to replay step by step.\n"
+                +"You can also save the game and resume later by going to \"File\" and\n"
+                +"click on \"Save\"");
+    }//GEN-LAST:event_rulesLegendActionPerformed
 
     /**
      * @param args the command line arguments
@@ -599,10 +610,10 @@ public class GUIWindow extends javax.swing.JFrame {
     private javax.swing.JLabel changeSpeedText;
     private static javax.swing.JLabel chipsLeft;
     private javax.swing.JLabel chipsleftText2;
-    private javax.swing.JMenu fileButton;
+    private javax.swing.JMenu fileMenu;
     private javax.swing.JButton forwards;
-    private javax.swing.JMenu gameButton;
     private javax.swing.JPanel gameCanvas;
+    private javax.swing.JMenu gameMenu;
     private javax.swing.JPanel inventoryPanel;
     private javax.swing.JLabel inventoryText;
     private javax.swing.JLabel item0;
@@ -617,8 +628,7 @@ public class GUIWindow extends javax.swing.JFrame {
     private javax.swing.JPanel levelAndTimer;
     private javax.swing.JLabel levelNumber;
     private javax.swing.JLabel levelText;
-    private javax.swing.JMenuItem newGame;
-    private javax.swing.JMenuItem replay;
+    private javax.swing.JMenuItem rulesLegend;
     private javax.swing.JMenuItem saveButton;
     private javax.swing.JButton setReplay;
     private javax.swing.JSlider speedChooser;
