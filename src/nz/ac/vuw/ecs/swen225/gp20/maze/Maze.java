@@ -1,15 +1,16 @@
 package nz.ac.vuw.ecs.swen225.gp20.maze;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkState;
 
-import com.google.common.base.Preconditions;
 import java.awt.Point;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Collectable;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Item;
-import nz.ac.vuw.ecs.swen225.gp20.maze.items.Key;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Player;
 import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.ExitTile;
 import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.Tile;
@@ -26,8 +27,10 @@ public class Maze {
   //Reference to the main player controlled by the user
   private Player player;
   
-  //2-D array of tiles grouping each location on the maze
-  private Tile[][] board;
+  //private List<Entity> bugs = new ArrayList<>();
+  
+  //Representation of the board state
+  private Board board;
   
   //Total number of chips to collect
   private final int target;
@@ -41,7 +44,7 @@ public class Maze {
    * @author Emanuel Evans (ID: 300472656)
    *
    */
-  public enum GameState{
+  public enum GameState {
     /**
      * When the player is still able to move.
      */
@@ -60,37 +63,40 @@ public class Maze {
    * Load a maze.
    * 
    * @param player coordinates of the Tile containing the player
-   * @param board 2-D array of tiles grouping each location on the maze
+   * @param boardData 2-D array of tiles grouping each location on the maze
    * @param target Chips left to collect
    * @param level the level of the current board
    */
-  public Maze(Player player, Tile[][] board, int target, int level) {
-    Preconditions.checkArgument(player != null, "There must be a player on the board");
-    Preconditions.checkArgument(board != null);
-    Preconditions.checkArgument(target >= 0, "there can't be a negative target");
-    Preconditions.checkArgument(level >= 0, "levels can't be negative");
+  public Maze(Player player, Tile[][] boardData, int target, int level) {
+    
+    //TODO remove this constructor!!
+    
+    checkArgument(player != null, "There must be a player on the board");
+    checkArgument(boardData != null);
+    checkArgument(target >= 0, "there can't be a negative target");
+    checkArgument(level >= 0, "levels can't be negative");
     this.player = player;
-    this.board = board;
+    this.board = new Board(boardData);
     //TODO clone board
     this.target = target;
     this.level = level;
-    assert(isPlayerPosValid());
+    assert (isPlayerPosValid());
   }
   
   /**
-   * Create a new maze given a level
+   * Create a new maze given a level.
    * @param level of the maze
    * @throws IOException if no object has that level
    */
   public Maze(int level) throws IOException {
-    Preconditions.checkArgument(level >= 0, "levels can't be negative");
+    checkArgument(level >= 0, "levels can't be negative");
     LevelReader loader = new LevelReader(level);
     this.player = loader.loadPlayer();
-    this.board = loader.loadBoard();
+    this.board = new Board(loader.loadBoard());
     //TODO clone board
     this.target = loader.loadTarget();
     this.level = level;
-    assert(isPlayerPosValid());
+    assert (isPlayerPosValid());
     
   }
 
@@ -98,9 +104,17 @@ public class Maze {
    *Merge board.
    *@return board
    */
-  public Tile[][] getBoard (){
+  public Tile[][] getBoard() {
+    return board.getBoard();
+  }
+  
+  /*
+  public Board getBoard() {
     return board;
   }
+  */
+  
+  
 
   /**
    * Move the player from it's current position to a different tile in the board.
@@ -109,70 +123,70 @@ public class Maze {
    * @return whether the move was successful
    */
   public boolean movePlayer(SingleMove move) {
-    if(status != GameState.PLAYING) {
+    if (status != GameState.PLAYING) {
       //TODO remove when application checks the game status
       return false;
     }
     
-    Preconditions.checkArgument(move != null, "A well initialized move is required");
-    Preconditions.checkArgument(isPlayerPosValid());
-    Preconditions.checkState(status == GameState.PLAYING, "Moves can't be applied unless the game is still active");
+    checkArgument(move != null, "A well initialized move is required");
+    checkArgument(isPlayerPosValid());
+    checkState(status == GameState.PLAYING, "Moves can't be applied unless the game is active");
     
     //TODO improve move functionality this is just an initial approach
     
     Point oldPos = player.getPosition();
     
     Point newPos = move.getDestination(oldPos);
-    if(!isPointInsideBoard(newPos)) {
+    if (!board.isPointInsideBoard(newPos)) {
       //Trying to move outside the board;
       return false;
     }
     
     //Check if player can enter the new tile
-    if(!board[newPos.x][newPos.y].isAccessible(player)) {
+    if (!board.getTile(newPos).isAccessible(player)) {
       return false;
     }
     
     //Remove player from old tile
-    board[oldPos.x][oldPos.y].replaceItem(null);
+    board.getTile(oldPos).replaceItem(null);
     //Change player position
     player.setPosition(newPos);
     
-    if(board[newPos.x][newPos.y].containsItem()) {
-      Item item = board[newPos.x][newPos.y].getItem();
-      if(item.isCollectable()) {
-        Collectable toCollect = (Collectable)item;
+    if (board.getTile(newPos).containsItem()) {
+      Item item = board.getTile(newPos).getItem();
+      if (item.isCollectable()) {
+        Collectable toCollect = (Collectable) item;
         toCollect.pickup(player);
       }
     }
     
-    if(isGameWon()) {
+    if (isGameWon()) {
       status = GameState.GAME_WON;
       System.out.print("Well done you completed the level!!!");
       return false;
     }
     
     //Add player to new tile
-    board[newPos.x][newPos.y].replaceItem(player);
+    board.getTile(newPos).replaceItem(player);
     
     
     
-    assert(isPlayerPosValid());
+    assert (isPlayerPosValid());
     
     return true;
   }
   
-  private boolean isPointInsideBoard(Point pos) {
-    return pos.x >=0 && pos.x < board.length 
-        && pos.y >=0 && pos.y < board[0].length;
-  }
+  
+  
+  
+  
   
   private boolean isGameWon() {
     //Get the coordinates of the tile where the player should be located
     Point playerPos = player.getPosition();
     
     //Check if it is on the exit tile
-    return board[playerPos.x][playerPos.y] instanceof ExitTile;
+    return board.getTile(playerPos) instanceof ExitTile;
   }
   
   /**
@@ -181,7 +195,9 @@ public class Maze {
    */
   public int getChipsLeft() {
     int remainingChips = target - player.getChipsCollected();
-    assertTrue(remainingChips >= 0);
+    assert remainingChips >= 0 : "The chips that still have to be collected can't be negative";
+    assert remainingChips <= target : 
+      "The chips to be collected can't more than the initial number of chips";
     return remainingChips;
   }
   
@@ -191,7 +207,7 @@ public class Maze {
    * @return unmodifiable list of collected items
    */
   public List<Collectable> getPlayerInventory() {
-    Preconditions.checkNotNull(player, "There must be a player on the board to get its inventory");
+    checkNotNull(player, "There must be a player on the board to get its inventory");
     return Collections.unmodifiableList(player.getInventory());
   }
   
@@ -209,13 +225,13 @@ public class Maze {
     //Get the coordinates of the tile where the player should be located
     Point playerPos = player.getPosition();
     
-    if(!isPointInsideBoard(playerPos)) {
+    if (!board.isPointInsideBoard(playerPos)) {
       //Player position is outside the board;
       throw new RuntimeException("The player must be within the board boundaries");
     }
     
     //Validate the player position against the board, hence check that tile contains a player
-    if (!board[playerPos.x][playerPos.y].containsItemType(Player.class)) {
+    if (!board.getTile(playerPos).containsItemType(Player.class)) {
       throw new RuntimeException(
           "The position of the given player doesn't match the player tile in the board");
     }
@@ -224,7 +240,7 @@ public class Maze {
   }
   
   /**
-   * Retrieve the number indicating the level that this maze is representing
+   * Retrieve the number indicating the level that this maze is representing.
    * @return the level of this maze
    */
   public int getLevel() {
@@ -232,7 +248,7 @@ public class Maze {
   }
 
   /**
-   * Check what the current state of the game is
+   * Check what the current state of the game is.
    * @return the current state of the game
    */
   public GameState getStatus() {

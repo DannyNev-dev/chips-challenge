@@ -14,11 +14,6 @@ public class Treasure implements Collectable {
   private static final String name = "treasure";
 
   @Override
-  public boolean isAccessible(Entity entity) {
-    return true;
-  }
-
-  @Override
   public String getName() {
     return name;
   }
