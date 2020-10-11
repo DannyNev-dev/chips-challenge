@@ -9,8 +9,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import nz.ac.vuw.ecs.swen225.gp20.maze.items.BugEntity;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Collectable;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Item;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Player;
@@ -29,7 +27,7 @@ public class Maze {
   //Reference to the main player controlled by the user
   private Player player;
   
-  private List<BugEntity> bugs = new ArrayList<>();
+  //private List<Entity> bugs = new ArrayList<>();
   
   //Representation of the board state
   private Board board;
@@ -74,7 +72,7 @@ public class Maze {
     //TODO remove this constructor!!
     
     checkArgument(player != null, "There must be a player on the board");
-    checkArgument(board != null);
+    checkArgument(boardData != null);
     checkArgument(target >= 0, "there can't be a negative target");
     checkArgument(level >= 0, "levels can't be negative");
     this.player = player;
@@ -109,6 +107,12 @@ public class Maze {
   public Tile[][] getBoard() {
     return board.getBoard();
   }
+  
+  /*
+  public Board getBoard() {
+    return board;
+  }
+  */
   
   
 
