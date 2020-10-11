@@ -428,7 +428,7 @@ public class GUIWindow extends javax.swing.JFrame {
                 //close all windows
                 level = 2;
                 setLevelNumber(level);
-                c = new GameTimer();
+                c = new GameTimer(1, 60);
                 c.start();
             }else if( confirm == JOptionPane.CANCEL_OPTION) {
                 System.exit(0); //close all windows
@@ -444,6 +444,8 @@ public class GUIWindow extends javax.swing.JFrame {
      * @param evt default event.
      */
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        pausedAtMin = c.getCurrentMin();
+        pausedAtSec = c.getCurrentSec();
         c.pause();
         int confirm = JOptionPane.showConfirmDialog(null,
                 "Are you sure you want to leave this match?\n You will lose all your progress if\n you leave without saving",
@@ -451,6 +453,9 @@ public class GUIWindow extends javax.swing.JFrame {
         if (confirm == JOptionPane.OK_OPTION) {
             //closes all windows
             System.exit(0);
+        }else if( confirm == JOptionPane.OK_CANCEL_OPTION){
+            c = new GameTimer(pausedAtMin,pausedAtSec); //timer continues from where it was left of.
+            c.start();
         }
     }//GEN-LAST:event_formWindowClosing
 
@@ -483,7 +488,7 @@ public class GUIWindow extends javax.swing.JFrame {
                 System.exit(0);
                 return;
             }
-            c = new GameTimer();
+            c = new GameTimer(1, 60);
             setLevelNumber(numSelected);
             boardCanvas.setVisible(false);
             render = new Render(m);
@@ -555,6 +560,7 @@ public class GUIWindow extends javax.swing.JFrame {
         display("Use the arrows on your key board to move Chap around the board.\n"
                 +"To win the game make sure you collect all the chips on \n"
                 +"the board within 2 minutes and go to the blue tile.\n"
+                +"Open doors by collecting keys of the same color.\n"
                 +"On level 2 do not let the bug reach Chap!\n"
                 +"If you want to see all your moves play Replay mode.\n"
                 + "Use the \"<\" and \">\" buttons to replay step by step.\n"
@@ -644,6 +650,8 @@ public class GUIWindow extends javax.swing.JFrame {
     private Render render;
     private Maze m;
     private EventListener eventListener;
+    private int pausedAtMin;
+    private int pausedAtSec;
 
     /**
      * initialize the number images  by linking each face to its image and storing them.
