@@ -14,6 +14,12 @@ public class GameTimer {
 private int currentMin =1, currentSec =60, stoppedSec, stoppedMin;
 private boolean restarted = false;
 
+
+public GameTimer(int min, int sec){
+    this.currentMin=min;
+    this.currentSec=sec;
+}
+
 private Timer timer = new Timer();
 
     /**
@@ -37,9 +43,9 @@ private Timer timer = new Timer();
                 //start();
             }
             if(currentSec < 10){
-                GUIWindow.getTimer().setText(currentMin + " : 0" + currentSec);
+                GUIWindow.getTimer().setText(currentMin + ":0" + currentSec);
             }else {
-                GUIWindow.getTimer().setText(currentMin + " : " + currentSec);
+                GUIWindow.getTimer().setText(currentMin + ":" + currentSec);
             }
             //System.out.println( "Countdown " + currentMin + " : " + currentSec);
         }
@@ -49,7 +55,6 @@ private Timer timer = new Timer();
      * Runs a countdown starting at 2 minutes.
      */
     public void start(){
-       // timeOut = false;
         timer.scheduleAtFixedRate(task, 1000, 1000);
     }
 
@@ -57,17 +62,7 @@ private Timer timer = new Timer();
      * Stops countdown and stored the current timer components to be able to restart it later.
      */
     public void pause(){
-        stoppedSec = currentSec;
-        stoppedMin = currentMin;
         timer.cancel();
-    }
-
-    /**
-     * Set to tell when to restart the old countdown.
-     * @return always true
-     */
-    public void setRestarted(boolean b){
-         restarted = b;
     }
 
     /**
@@ -77,11 +72,19 @@ private Timer timer = new Timer();
     private boolean timeOut(){ return currentSec == 0 && currentMin ==0 ;}
 
     /**
-     * Method will be used to display timer with images
+     * Minute shown on timer.
      * @return integer of the current minute
      */
-    public int getMinute(){
+    public int getCurrentMin(){
         return currentMin;
+    }
+
+    /**
+     * Seconds shown on the timer.
+     * @return integer of the current minute
+     */
+    public int getCurrentSec(){
+        return currentSec;
     }
 
     /**

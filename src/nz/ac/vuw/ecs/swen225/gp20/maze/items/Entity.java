@@ -44,5 +44,16 @@ public interface Entity extends Item {
    * @param newCoordinates the entity new position
    */
   public void setPosition(Point newCoordinates);
+  
+  
+  /**
+   * Instruct the current entity to drop the given Collectable.
+   * By default this action is not allowed
+   * @param toDrop collectable to drop
+   * @throws IllegalArgumentException if the given collectable is not in the entity inventory
+   */
+  public default void dropCollectable(Collectable toDrop) throws IllegalArgumentException {
+    throw new UnsupportedOperationException("This entity cannot drop an item");
+  }
 
 }

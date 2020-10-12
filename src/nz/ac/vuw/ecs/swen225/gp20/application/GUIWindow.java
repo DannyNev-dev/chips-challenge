@@ -31,6 +31,7 @@ public class GUIWindow extends javax.swing.JFrame {
         numberOnPanel();
         initComponents();
         this.eventListener = EventListener.eventListenerFactory();
+        this.setFocusable(true);
     }
 
     /**
@@ -49,11 +50,28 @@ public class GUIWindow extends javax.swing.JFrame {
         levelNumber = new javax.swing.JLabel();
         timerText = new javax.swing.JLabel();
         timer = new javax.swing.JLabel();
+        chipsLeft = new javax.swing.JLabel();
+        chipsleftText2 = new javax.swing.JLabel();
+        autoReplay = new javax.swing.JButton();
+        forwards = new javax.swing.JButton();
+        backwards = new javax.swing.JButton();
+        setReplay = new javax.swing.JButton();
+        speedChooser = new javax.swing.JSlider();
+        changeSpeedText = new javax.swing.JLabel();
+        inventoryPanel = new javax.swing.JPanel();
+        inventoryText = new javax.swing.JLabel();
+        item0 = new javax.swing.JLabel();
+        item1 = new javax.swing.JLabel();
+        item2 = new javax.swing.JLabel();
+        item3 = new javax.swing.JLabel();
+        item4 = new javax.swing.JLabel();
+        item5 = new javax.swing.JLabel();
+        item6 = new javax.swing.JLabel();
+        item7 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
-        gameButton = new javax.swing.JMenu();
-        newGame = new javax.swing.JMenuItem();
-        replay = new javax.swing.JMenuItem();
-        fileButton = new javax.swing.JMenu();
+        gameMenu = new javax.swing.JMenu();
+        rulesLegend = new javax.swing.JMenuItem();
+        fileMenu = new javax.swing.JMenu();
         saveButton = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -68,21 +86,23 @@ public class GUIWindow extends javax.swing.JFrame {
         });
         addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
-                formKeyReleased(evt);
+                keyReleasedSetMove(evt);
             }
         });
 
         gameCanvas.setBackground(new java.awt.Color(0, 208, 18));
 
+        boardCanvas.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+
         javax.swing.GroupLayout boardCanvasLayout = new javax.swing.GroupLayout(boardCanvas);
         boardCanvas.setLayout(boardCanvasLayout);
         boardCanvasLayout.setHorizontalGroup(
             boardCanvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 463, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
         boardCanvasLayout.setVerticalGroup(
             boardCanvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 422, Short.MAX_VALUE)
+            .addGap(0, 450, Short.MAX_VALUE)
         );
 
         levelAndTimer.setBackground(new java.awt.Color(204, 204, 204));
@@ -94,12 +114,12 @@ public class GUIWindow extends javax.swing.JFrame {
         levelText.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         levelText.setText("L E V E L");
 
-        levelNumber.setBackground(new java.awt.Color(0, 0, 0));
+        levelNumber.setBackground(new java.awt.Color(204, 204, 204));
         levelNumber.setFont(new java.awt.Font("Arial Narrow", 1, 80)); // NOI18N
         levelNumber.setForeground(new java.awt.Color(0, 0, 204));
         levelNumber.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         levelNumber.setToolTipText("");
-        levelNumber.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, null, new java.awt.Color(0, 0, 0), null, null));
+        levelNumber.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         levelNumber.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
         timerText.setFont(new java.awt.Font("Arial Narrow", 1, 48)); // NOI18N
@@ -108,101 +128,256 @@ public class GUIWindow extends javax.swing.JFrame {
         timerText.setText("T I M E");
         timerText.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
-        timer.setBackground(new java.awt.Color(0, 0, 0));
-        timer.setFont(new java.awt.Font("Arial Rounded MT Bold", 1, 55)); // NOI18N
+        timer.setBackground(new java.awt.Color(204, 204, 204));
+        timer.setFont(new java.awt.Font("Arial Rounded MT Bold", 1, 48)); // NOI18N
         timer.setForeground(new java.awt.Color(0, 0, 204));
         timer.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        timer.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, null, new java.awt.Color(0, 0, 0), null, null));
+        timer.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         timer.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+
+        chipsLeft.setBackground(new java.awt.Color(204, 204, 204));
+        chipsLeft.setFont(new java.awt.Font("Arial Rounded MT Bold", 1, 48)); // NOI18N
+        chipsLeft.setForeground(new java.awt.Color(0, 0, 204));
+        chipsLeft.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        chipsLeft.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        chipsLeft.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+
+        chipsleftText2.setFont(new java.awt.Font("Arial Narrow", 1, 48)); // NOI18N
+        chipsleftText2.setForeground(new java.awt.Color(0, 153, 153));
+        chipsleftText2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        chipsleftText2.setText("C H I P S");
+        chipsleftText2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
         javax.swing.GroupLayout levelAndTimerLayout = new javax.swing.GroupLayout(levelAndTimer);
         levelAndTimer.setLayout(levelAndTimerLayout);
         levelAndTimerLayout.setHorizontalGroup(
             levelAndTimerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, levelAndTimerLayout.createSequentialGroup()
-                .addComponent(levelText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, levelAndTimerLayout.createSequentialGroup()
-                .addContainerGap(38, Short.MAX_VALUE)
-                .addGroup(levelAndTimerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(levelAndTimerLayout.createSequentialGroup()
-                        .addGap(6, 6, 6)
-                        .addComponent(timer, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(levelAndTimerLayout.createSequentialGroup()
+                .addGap(49, 49, 49)
+                .addGroup(levelAndTimerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(levelNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(timerText, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(38, 38, 38))
+                    .addComponent(timerText, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(timer, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(chipsleftText2, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(chipsLeft, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(levelText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         levelAndTimerLayout.setVerticalGroup(
             levelAndTimerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(levelAndTimerLayout.createSequentialGroup()
-                .addContainerGap()
                 .addComponent(levelText, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(levelNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(levelNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(timerText, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(timer, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(90, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(timer, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(chipsleftText2, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(chipsLeft, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(32, 32, 32))
         );
 
         timerText.getAccessibleContext().setAccessibleName("time");
+
+        autoReplay.setBackground(new java.awt.Color(51, 51, 255));
+        autoReplay.setForeground(new java.awt.Color(255, 255, 255));
+        autoReplay.setText("A U T O R E P L A Y");
+        autoReplay.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                autoReplayActionPerformed(evt);
+            }
+        });
+
+        forwards.setBackground(new java.awt.Color(51, 51, 255));
+        forwards.setForeground(new java.awt.Color(255, 255, 255));
+        forwards.setText(">");
+        forwards.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                forwardsActionPerformed(evt);
+            }
+        });
+
+        backwards.setBackground(new java.awt.Color(51, 51, 255));
+        backwards.setForeground(new java.awt.Color(255, 255, 255));
+        backwards.setText("< ");
+
+        setReplay.setBackground(new java.awt.Color(51, 51, 255));
+        setReplay.setForeground(new java.awt.Color(255, 255, 255));
+        setReplay.setText("A C T I V A T E    R E P L A Y    M O D E");
+        setReplay.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                setReplayActionPerformed(evt);
+            }
+        });
+
+        speedChooser.setMaximum(10);
+        speedChooser.setPaintLabels(true);
+        speedChooser.setPaintTicks(true);
+        speedChooser.setValue(5);
+
+        changeSpeedText.setBackground(new java.awt.Color(51, 51, 255));
+        changeSpeedText.setForeground(new java.awt.Color(255, 255, 255));
+        changeSpeedText.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        changeSpeedText.setText("C H A N G E   S P E E D");
+        changeSpeedText.setAutoscrolls(true);
+
+        inventoryPanel.setBackground(new java.awt.Color(204, 204, 204));
+        inventoryPanel.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+
+        inventoryText.setFont(new java.awt.Font("Lucida Grande", 1, 18)); // NOI18N
+        inventoryText.setForeground(new java.awt.Color(0, 153, 153));
+        inventoryText.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        inventoryText.setText("I N V E N T O R Y");
+        inventoryText.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+
+        item0.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+
+        item1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+
+        item2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+
+        item3.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+
+        item4.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+
+        item5.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+
+        item6.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+
+        item7.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+
+        javax.swing.GroupLayout inventoryPanelLayout = new javax.swing.GroupLayout(inventoryPanel);
+        inventoryPanel.setLayout(inventoryPanelLayout);
+        inventoryPanelLayout.setHorizontalGroup(
+            inventoryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(inventoryPanelLayout.createSequentialGroup()
+                .addGroup(inventoryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(inventoryPanelLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(inventoryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(item0, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(item4, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(inventoryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(inventoryPanelLayout.createSequentialGroup()
+                                .addComponent(item5, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(item6, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(item7, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(inventoryPanelLayout.createSequentialGroup()
+                                .addComponent(item1, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(item2, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(item3, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(inventoryPanelLayout.createSequentialGroup()
+                        .addGap(16, 16, 16)
+                        .addComponent(inventoryText, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        inventoryPanelLayout.setVerticalGroup(
+            inventoryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(inventoryPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(inventoryText, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(inventoryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(item0, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(item1, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(item2, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(item3, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(inventoryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(item4, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(item5, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(item6, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(item7, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(37, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout gameCanvasLayout = new javax.swing.GroupLayout(gameCanvas);
         gameCanvas.setLayout(gameCanvasLayout);
         gameCanvasLayout.setHorizontalGroup(
             gameCanvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, gameCanvasLayout.createSequentialGroup()
-                .addContainerGap(726, Short.MAX_VALUE)
-                .addComponent(levelAndTimer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(100, 100, 100))
-            .addGroup(gameCanvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, gameCanvasLayout.createSequentialGroup()
-                    .addContainerGap(128, Short.MAX_VALUE)
-                    .addComponent(boardCanvas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(492, Short.MAX_VALUE)))
+            .addGroup(gameCanvasLayout.createSequentialGroup()
+                .addGroup(gameCanvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(gameCanvasLayout.createSequentialGroup()
+                        .addGap(57, 57, 57)
+                        .addGroup(gameCanvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, gameCanvasLayout.createSequentialGroup()
+                                .addComponent(backwards, javax.swing.GroupLayout.PREFERRED_SIZE, 239, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(forwards, javax.swing.GroupLayout.DEFAULT_SIZE, 226, Short.MAX_VALUE))
+                            .addComponent(setReplay, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(boardCanvas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(autoReplay, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(gameCanvasLayout.createSequentialGroup()
+                        .addGap(190, 190, 190)
+                        .addComponent(changeSpeedText, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(gameCanvasLayout.createSequentialGroup()
+                        .addGap(46, 46, 46)
+                        .addComponent(speedChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 491, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(119, 119, 119)
+                .addGroup(gameCanvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(inventoryPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(levelAndTimer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(0, 68, Short.MAX_VALUE))
         );
         gameCanvasLayout.setVerticalGroup(
             gameCanvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, gameCanvasLayout.createSequentialGroup()
-                .addContainerGap(64, Short.MAX_VALUE)
-                .addComponent(levelAndTimer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(82, 82, 82))
-            .addGroup(gameCanvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, gameCanvasLayout.createSequentialGroup()
-                    .addContainerGap(64, Short.MAX_VALUE)
+            .addGroup(gameCanvasLayout.createSequentialGroup()
+                .addGap(34, 34, 34)
+                .addGroup(gameCanvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(boardCanvas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(102, Short.MAX_VALUE)))
+                    .addComponent(levelAndTimer, javax.swing.GroupLayout.PREFERRED_SIZE, 456, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(gameCanvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(gameCanvasLayout.createSequentialGroup()
+                        .addGap(28, 28, 28)
+                        .addComponent(setReplay, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(gameCanvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(forwards, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(backwards, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(autoReplay, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(changeSpeedText, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(speedChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(gameCanvasLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(inventoryPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(32, Short.MAX_VALUE))
         );
 
-        gameButton.setText("Game");
+        gameMenu.setText("Game");
 
-        newGame.setText("New Game");
-        gameButton.add(newGame);
-
-        replay.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.CTRL_DOWN_MASK));
-        replay.setText("Replay");
-        replay.addActionListener(new java.awt.event.ActionListener() {
+        rulesLegend.setText("Instructions - Rules");
+        rulesLegend.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                replayActionPerformed(evt);
+                rulesLegendActionPerformed(evt);
             }
         });
-        gameButton.add(replay);
+        gameMenu.add(rulesLegend);
 
-        jMenuBar1.add(gameButton);
+        jMenuBar1.add(gameMenu);
 
-        fileButton.setText("File");
+        fileMenu.setText("File");
 
         saveButton.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_DOWN_MASK));
         saveButton.setText("Save Game");
         saveButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-            	saveBottonActionPerformed(evt);
+                saveButtonActionPerformed(evt);
             }
         });
-        fileButton.add(saveButton);
+        fileMenu.add(saveButton);
 
-        jMenuBar1.add(fileButton);
+        jMenuBar1.add(fileMenu);
 
         setJMenuBar(jMenuBar1);
 
@@ -210,7 +385,9 @@ public class GUIWindow extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(gameCanvas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(gameCanvas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 6, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -225,13 +402,8 @@ public class GUIWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_loadBottonActionPerformed
 
     private void saveBottonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveBottonActionPerformed
-        // TODO add your handling code here:
-    	EventListener.getRecord().saveToJson();
+       EventListener.getRecord().saveToJson();
     }//GEN-LAST:event_saveBottonActionPerformed
-
-    private void replayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_replayActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_replayActionPerformed
 
     private void loadBottonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_loadBottonMouseClicked
         // TODO add your handling code here:
@@ -244,23 +416,47 @@ public class GUIWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_jFileChooser2ActionPerformed
 
     /**
+     * Forms a warning message if user wins game bottom.
+     */
+    private void formWindowWon() {
+        c.pause();
+        if (level == 1) {
+            int confirm = JOptionPane.showConfirmDialog(null,
+                    "Congratulations! You have won\nDo you want to play level 2?",
+                    "Game Won", JOptionPane.WARNING_MESSAGE);
+            if (confirm == JOptionPane.OK_OPTION) {
+                //close all windows
+                level = 2;
+                setLevelNumber(level);
+                c = new GameTimer(1, 60);
+                c.start();
+            }else if( confirm == JOptionPane.CANCEL_OPTION) {
+                System.exit(0); //close all windows
+            }
+        } else{
+            display(" Congratulations!\nYou completed all levels");
+            System.exit(0);
+        }
+    }
+
+    /**
      * Forms a warning message if user clicks exit bottom.
      * @param evt default event.
      */
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        //c.pause();
+        pausedAtMin = c.getCurrentMin();
+        pausedAtSec = c.getCurrentSec();
+        c.pause();
         int confirm = JOptionPane.showConfirmDialog(null,
                 "Are you sure you want to leave this match?\n You will lose all your progress if\n you leave without saving",
                 "Leave Game?", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
         if (confirm == JOptionPane.OK_OPTION) {
-            //close current game, it will not affect other game in different windows
-            evt.getWindow().dispose();
-            //System.exit(0); //close all windows
-        }// else {
-            //close current game, it will not affect other game in different windows
-           // c.setRestarted(true);
-            //c.start();
-       // }
+            //closes all windows
+            System.exit(0);
+        }else if( confirm == JOptionPane.OK_CANCEL_OPTION){
+            c = new GameTimer(pausedAtMin,pausedAtSec); //timer continues from where it was left of.
+            c.start();
+        }
     }//GEN-LAST:event_formWindowClosing
 
     /**
@@ -292,14 +488,14 @@ public class GUIWindow extends javax.swing.JFrame {
                 System.exit(0);
                 return;
             }
-            c = new GameTimer();
+            c = new GameTimer(1, 60);
             setLevelNumber(numSelected);
             boardCanvas.setVisible(false);
             render = new Render(m);
             boardCanvas = render.getView();
             //boardCanvas.doLayout();
             gameCanvas.add(boardCanvas);
-            boardCanvas.setLocation(100,50);
+            boardCanvas.setLocation(70, 35);
             validate();
             repaint();
             setVisible(true);
@@ -311,8 +507,9 @@ public class GUIWindow extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_formWindowOpened
 
-    private void formKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyReleased
-        SingleMove sMove = null;
+    private void keyReleasedSetMove(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_keyReleasedSetMove
+        requestFocus();
+        SingleMove sMove;// = null;
         if (evt.getKeyCode() == KeyEvent.VK_LEFT) {
             sMove = new SingleMove(Move.Direction.LEFT);
         }else if (evt.getKeyCode() == KeyEvent.VK_DOWN) {
@@ -331,14 +528,45 @@ public class GUIWindow extends javax.swing.JFrame {
         boardCanvas.setVisible(false);
         render = new Render(m);
         boardCanvas = render.getView();
-        //boardCanvas.doLayout();
         gameCanvas.add(boardCanvas);
-        boardCanvas.setLocation(100,50);
+        boardCanvas.setLocation(70,35);
         validate();
         repaint();
         setVisible(true);
+        if( m.getStatus().name().equals("GAME_WON")){
+            this.formWindowWon();
+        }
+        transferFocus();
 
-    }//GEN-LAST:event_formKeyReleased
+    }//GEN-LAST:event_keyReleasedSetMove
+
+    private void autoReplayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_autoReplayActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_autoReplayActionPerformed
+
+    private void forwardsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_forwardsActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_forwardsActionPerformed
+
+    private void setReplayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_setReplayActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_setReplayActionPerformed
+
+    private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
+        EventListener.getRecord().saveToJson();
+    }//GEN-LAST:event_saveButtonActionPerformed
+
+    private void rulesLegendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rulesLegendActionPerformed
+        display("Use the arrows on your key board to move Chap around the board.\n"
+                +"To win the game make sure you collect all the chips on \n"
+                +"the board within 2 minutes and go to the blue tile.\n"
+                +"Open doors by collecting keys of the same color.\n"
+                +"On level 2 do not let the bug reach Chap!\n"
+                +"If you want to see all your moves play Replay mode.\n"
+                + "Use the \"<\" and \">\" buttons to replay step by step.\n"
+                +"You can also save the game and resume later by going to \"File\" and\n"
+                +"click on \"Save\"");
+    }//GEN-LAST:event_rulesLegendActionPerformed
 
     /**
      * @param args the command line arguments
@@ -382,17 +610,34 @@ public class GUIWindow extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton autoReplay;
+    private javax.swing.JButton backwards;
     private javax.swing.JPanel boardCanvas;
-    private javax.swing.JMenu fileButton;
-    private javax.swing.JMenu gameButton;
+    private javax.swing.JLabel changeSpeedText;
+    private static javax.swing.JLabel chipsLeft;
+    private javax.swing.JLabel chipsleftText2;
+    private javax.swing.JMenu fileMenu;
+    private javax.swing.JButton forwards;
     private javax.swing.JPanel gameCanvas;
+    private javax.swing.JMenu gameMenu;
+    private javax.swing.JPanel inventoryPanel;
+    private javax.swing.JLabel inventoryText;
+    private javax.swing.JLabel item0;
+    private javax.swing.JLabel item1;
+    private javax.swing.JLabel item2;
+    private javax.swing.JLabel item3;
+    private javax.swing.JLabel item4;
+    private javax.swing.JLabel item5;
+    private javax.swing.JLabel item6;
+    private javax.swing.JLabel item7;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel levelAndTimer;
     private javax.swing.JLabel levelNumber;
     private javax.swing.JLabel levelText;
-    private javax.swing.JMenuItem newGame;
-    private javax.swing.JMenuItem replay;
+    private javax.swing.JMenuItem rulesLegend;
     private javax.swing.JMenuItem saveButton;
+    private javax.swing.JButton setReplay;
+    private javax.swing.JSlider speedChooser;
     private static javax.swing.JLabel timer;
     private javax.swing.JLabel timerText;
     // End of variables declaration//GEN-END:variables
@@ -405,6 +650,8 @@ public class GUIWindow extends javax.swing.JFrame {
     private Render render;
     private Maze m;
     private EventListener eventListener;
+    private int pausedAtMin;
+    private int pausedAtSec;
 
     /**
      * initialize the number images  by linking each face to its image and storing them.

@@ -28,7 +28,7 @@ public class Wall extends Tile {
   
   @Override
   public Item replaceItem(Item newItem) {
-    throw new RuntimeException("Items can't be added to a wall");
+    throw new UnsupportedOperationException("Items can't be added to a wall");
   }
 
   @Override
