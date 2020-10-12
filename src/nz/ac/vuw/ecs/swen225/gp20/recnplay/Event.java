@@ -17,12 +17,11 @@ public class Event {
 	public enum Type{
 		SetLevel, // if Event object is SetLevel
 		
-		Move,  // if Event object is Move
+		ChapMove,  // if Event object is Move of Chap
 		
-		ChapDies;  // if Chap dies when meets bug
-//		PickUpKey,  // if Event object is PickUpKey
-//		
-//		PickUpChip;	  // if Event object is PickUpChip
+		BugMove,  // if Event object is Move of Bug
+		
+		ChapDies;  // if Event object is ChapDies
 	}
 	
 	private SingleMove move;
@@ -31,11 +30,7 @@ public class Event {
 	
 	private boolean chapDies;
 	
-//	private boolean pickupKey;
-//	
-//	private boolean pickupChip;
-	
-	
+
 	public int getLevel() {
 		return level;
 	}
@@ -43,22 +38,6 @@ public class Event {
 	public void setLevel(int level) {
 		this.level = level;
 	}
-
-//	public boolean isPickupKey() {
-//		return pickupKey;
-//	}
-//
-//	public void setPickupKey(boolean pickupKey) {
-//		this.pickupKey = pickupKey;
-//	}
-//
-//	public boolean isPickupChip() {
-//		return pickupChip;
-//	}
-//
-//	public void setPickupChip(boolean pickupChip) {
-//		this.pickupChip = pickupChip;
-//	}
 
 	public void setType(Type type) {
 		this.type = type;
@@ -76,40 +55,27 @@ public class Event {
 		return this.move;
 	}
 	
-	public boolean chapDies() {
-		return chapDies;
-	}
-
-	public void setPickupChip(boolean chapDies) {
-		this.chapDies = chapDies;
-	} 
-
+	
 	public Event(Type type, int level, SingleMove move, boolean chapDies) {
 		this.type = type;
 		this.level = level;
 		this.move = move;
 		this.chapDies = chapDies;
-//		this.pickupKey = pickupKey;
-//		this.pickupChip = pickupChip;
 	}  
 	
     public static Event eventOfLevelSetting(int level) {
     	return new Event(Type.SetLevel, level, null, false);
     }
 	
-    public static Event eventOfMove(SingleMove move) {
-    	return new Event(Type.Move, 0, move, false);   	
+    public static Event eventOfChapMove(SingleMove move) {
+    	return new Event(Type.ChapMove, 0, move, false);   	
+    }
+    
+    public static Event eventOfBugMoveDies(SingleMove move) {
+    	return new Event(Type.BugMove, 0, move, false);   	
     }
     
     public static Event eventOfChapDies(boolean chapDies) {
-    	return new Event(Type.Move, 0, null, true);   	
-    }
-    
-//    public static Event eventOfPickUpKey(boolean pickUpKey) { 
-//    	return new Event(Type.PickUpKey, 0, null, true, false);
-//    }
-//    
-//    public static Event eventOfPickUpChip(boolean pickUpChip) {
-//    	return new Event(Type.PickUpChip, 0, null, false, true);  
-//    }
+    	return new Event(Type.ChapDies, 0, null, true);   	
+    } 
 }
