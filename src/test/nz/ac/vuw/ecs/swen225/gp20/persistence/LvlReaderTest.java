@@ -21,6 +21,14 @@ public class LvlReaderTest {
 //Functionality Tests	
 	/**
 	 * Test 1.
+<<<<<<< HEAD
+	 * Test that we are able to create a maze from the level
+	 * @throws Exception 
+	 */
+	@Test
+	void test1() throws Exception {
+		assertEquals(LevelReader.deserializeLevel(1).getClass(),Maze.class);	
+=======
 	 * Test that we are able to create a board
 	 *
 	 * @throws IOException Signals that an I/O exception has occurred.
@@ -29,6 +37,7 @@ public class LvlReaderTest {
 	void test1() throws IOException {
 		LevelReader lR = new LevelReader(1);
 		assertEquals(lR.loadBoard().getClass(),Tile[][].class);	
+>>>>>>> origin
 	}
 	
 	/**

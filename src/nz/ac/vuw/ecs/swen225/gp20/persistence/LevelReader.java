@@ -55,6 +55,19 @@ public class LevelReader {
 	 * Deserialize level.
 	 *
 	 * @return the maze
+<<<<<<< HEAD
+	 * @throws Exception 
+	 */
+	public static Maze deserializeLevel(int levelNum) throws Exception{
+		//invalid number check, i assume that int primitive cannot be null
+		if(levelNum<=0 || levelNum>2) {
+			throw new IOException("Not a valid level Number");
+		}			
+		//System.out.println("Loading Level" + levelNum);
+		//open corresponding level file
+		Reader reader = Files.newBufferedReader(Paths.get("levels//level"+levelNum+".json"));
+	    
+=======
 	 */
 	public Tile[][] loadBoard() {
 		
@@ -80,6 +93,7 @@ public class LevelReader {
 			throw new IOException("Not a valid level Number");
 		}	
 		Reader reader = Files.newBufferedReader(Paths.get("levels//level"+levelNum+".json"));    
+>>>>>>> origin
 		JsonReader jReader = Json.createReader(reader);
 	    JsonObject mazeObj = jReader.readObject();
 		reader.close();
@@ -118,8 +132,13 @@ public class LevelReader {
 	 * @param target the target
 	 * @param p the player
 	 * @return the tile
+	 * @throws Exception 
 	 */
+<<<<<<< HEAD
+	public static Tile parseTile(JsonObject jsonObj,int target,Player p) throws RuntimeException {	
+=======
 	public Tile parseTile(JsonObject jsonObj,int target,Player p) {	
+>>>>>>> origin
 		
 		Item item = null;
 		Tile tile = null;
@@ -153,10 +172,11 @@ public class LevelReader {
 		    			item = p;
 		    			break;
 		    		default:
-		    			System.out.println("Invalid JSON input for the item");	//may need to throw custom exception
-		    			break;
+		    			throw new RuntimeException("Invalid JSON input for the item");
+		    			//System.out.println("");	//may need to throw custom exception
+		    			
 	    		}
-	    		tile = new ItemTile(item);
+	    		tile = new ItemTile(item);	//item is null if incorrect json input for item is present
 	    		break;
 	    	case "Door":
 	    		var = jsonObj.getString("item");	
@@ -171,8 +191,8 @@ public class LevelReader {
 		    			item = new Block(Colour.BLUE);
 		    			break;
 		    		default:
-		    			System.out.println("Invalid JSON input for the door colour");	//may need to throw custom exception
-		    			break;
+		    			throw new RuntimeException("Invalid JSON input for the door colour");
+		    			//System.out.println("Invalid JSON input for the door colour");	//may need to throw custom exception
 	    		}
 	    		tile = new ItemTile(item);
 	    		break;
@@ -186,13 +206,28 @@ public class LevelReader {
 	    		tile = new InfoTile(jsonObj.getString("item"),null);
 	    		break;
 	    	default:
+<<<<<<< HEAD
+	    		throw new RuntimeException("Json Array element has no matching type");
+	    		//System.out.print("Incorrect Json Format");	//may need to throw custom exception
+=======
 	    		System.out.print("Incorrect Json Format for type");	//may need to throw custom exception
 	    		break;
+>>>>>>> origin
 	    	}
     	return tile;	
 	}
 
 /**
+<<<<<<< HEAD
+ * Make the board for the maze from the json array
+ * @param jList
+ * @param target
+ * @param p
+ * @return
+ * @throws Exception 
+ */
+public static Tile[][] makeBoard(JsonArray jList,int target,Player p) throws RuntimeException{
+=======
  * Make the board for the maze from the json array.
  *
  * @param jList the j list
@@ -201,6 +236,7 @@ public class LevelReader {
  * @return the tile[][]
  */
 public Tile[][] makeBoard(JsonArray jList,int target,Player p){
+>>>>>>> origin
 	int length = jList.size();
     //initialize board
     Tile[][] board = new Tile[jList.getJsonObject(0).getJsonArray("row").size()][length];	    
