@@ -22,11 +22,10 @@ public class LvlReaderTest {
 	/**
 	 * Test 1.
 	 * Test that we are able to create a maze from the level
-	 *
-	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws Exception 
 	 */
 	@Test
-	void test1() throws IOException {
+	void test1() throws Exception {
 		assertEquals(LevelReader.deserializeLevel(1).getClass(),Maze.class);	
 	}
 	
