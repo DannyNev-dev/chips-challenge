@@ -9,10 +9,14 @@ local.properties
 .loadpath
 .project
 .classpath
+.iml
 
 # Intellj
 .idea/
 out/
+
+# netBeans
+build/
 
 
 #Info about .gitignore

@@ -92,6 +92,12 @@ public class Player implements Entity {
   public Point getPosition() {
     return position;
   }
+  
+  @Override
+  public void setPosition(Point newCoordinates) {
+    //TODO not quite safe
+    position = newCoordinates;
+  }
 
   @Override
   public boolean isAccessible(Entity entity) {

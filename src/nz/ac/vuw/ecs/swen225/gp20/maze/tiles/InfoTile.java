@@ -17,7 +17,16 @@ public class InfoTile extends Tile {
   /**
    * Create an info tile which gives hints about the current level to the player.
    * @param info text to display
-   * @param item Only an Entity is allowed to stand on the ki
+   */
+  public InfoTile(String info) {
+    super(null);
+    this.info = info;
+  }
+  
+  /**
+   * Create an info tile which gives hints about the current level to the player.
+   * @param info text to display
+   * @param item Only an Entity is allowed to stand on the info tile
    */
   public InfoTile(String info, Item item) {
     super(item);
