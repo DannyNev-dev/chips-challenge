@@ -102,17 +102,20 @@ public class Maze {
 
   /**
    *Merge board.
-   *@return board
+   *@return board grouping data about the maze's tiles
    */
   public Tile[][] getBoard() {
     return board.getBoard();
   }
   
-  /*
-  public Board getBoard() {
+  /**
+   * Ideally this will be the only method to get the board. TODO .
+   * @return board grouping data about the maze's tiles
+   */
+  public Board getBoardObject() {
     return board;
   }
-  */
+  
   
   
 
@@ -209,6 +212,15 @@ public class Maze {
   public List<Collectable> getPlayerInventory() {
     checkNotNull(player, "There must be a player on the board to get its inventory");
     return Collections.unmodifiableList(player.getInventory());
+  }
+  
+  /**
+   * Get the position of the player within the board.
+   * @return a point holding a copy of the player's coordinates
+   */
+  public Point getPlayerPosition() {
+    checkArgument(isPlayerPosValid());
+    return new Point(player.getPosition().x, player.getPosition().y);
   }
   
   /**
