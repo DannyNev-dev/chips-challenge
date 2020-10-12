@@ -39,12 +39,15 @@ public class Maze {
   
   private GameState status = GameState.PLAYING;
   
+  //The last crucial event which happened in the game
+  private SpecialEvent lastEvent;
+  
   /**
    * Define the what are the different states a game can be in.
    * @author Emanuel Evans (ID: 300472656)
    *
    */
-  public enum GameState {
+  public static enum GameState {
     /**
      * When the player is still able to move.
      */
@@ -58,6 +61,28 @@ public class Maze {
      */
     GAME_WON
   }
+  
+  public static enum SpecialEvent {
+    /**
+     * When Chap picks up a key and puts it in his inventory.
+     */
+    KEY_PICKED_UP,
+    
+    /**
+     * When Chap uses a key to remove a block form the make. 
+     * Removing a block is usually referred as opening a door,
+     * As it gives a better idea of what is happening. However,
+     * In the game logic the term block is used because once it is removed it can't go back. 
+     * Therefore it isn't exactly a door as it can't be closed after it was unlocked with a key.  
+     */
+    DOOR_OPENED,
+    /**
+     * When Chap dies due because he visited a dangerous cell.
+     */
+    CHAP_DIED
+    
+  }
+  
 
   /**
    * Load a maze.
@@ -137,6 +162,8 @@ public class Maze {
     
     //TODO improve move functionality this is just an initial approach
     
+    lastEvent = null; //Reset any special events from the last movement
+    
     Point oldPos = player.getPosition();
     
     Point newPos = move.getDestination(oldPos);
@@ -157,9 +184,17 @@ public class Maze {
     
     if (board.getTile(newPos).containsItem()) {
       Item item = board.getTile(newPos).getItem();
+      
+      /*
       if (item.isCollectable()) {
         Collectable toCollect = (Collectable) item;
-        toCollect.pickup(player);
+        lastEvent = toCollect.pickup(player);
+      } else 
+      */
+      if (item.hasAction()) {
+        //Interacting with an item might trigger a special event to be recorded
+        //For instance a key could be picked up
+        lastEvent = item.applyAction(player);
       }
     }
     
@@ -266,6 +301,16 @@ public class Maze {
   public GameState getStatus() {
     return status;
   }
+  
+  /**
+   * Check what the current state of the game is.
+   * @return a special even if it occurred in the last player move otherwise null
+   */
+  public SpecialEvent getLastSpecialEvent() {
+    return lastEvent;
+  }
+  
+  
   
   /* 
    * for when the timer is over?
