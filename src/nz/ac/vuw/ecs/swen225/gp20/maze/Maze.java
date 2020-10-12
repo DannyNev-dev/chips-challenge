@@ -67,7 +67,10 @@ public class Maze {
      * When Chap picks up a key and puts it in his inventory.
      */
     KEY_PICKED_UP,
-    
+    /**
+     * When Chap collects a treasure (chip)
+     */
+    TREASURE_PICKED_UP,
     /**
      * When Chap uses a key to remove a block form the make. 
      * Removing a block is usually referred as opening a door,

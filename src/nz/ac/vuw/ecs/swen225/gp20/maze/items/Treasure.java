@@ -33,7 +33,7 @@ public class Treasure implements Collectable {
     
     //Casting is used to avoid the need of an additional method
     ((Player) entity).collectChip();
-    return null;
+    return SpecialEvent.TREASURE_PICKED_UP;
   }
 
 }
