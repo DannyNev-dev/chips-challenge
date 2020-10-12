@@ -1,10 +1,12 @@
 package test.nz.ac.vuw.ecs.swen225.gp20.maze;
 
+import static nz.ac.vuw.ecs.swen225.gp20.maze.items.Harmful.DangerType;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.awt.Point;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Block;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.ExitLock;
+import nz.ac.vuw.ecs.swen225.gp20.maze.items.Harmful;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Key;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Key.Colour;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Player;
@@ -116,6 +118,24 @@ class TilesTest {
       
       assertEquals(type.name().toLowerCase() + "KeyTile", keyTile.getName());
     }
+  }
+  
+  /**
+   * Test the creation of a fire cell.
+   */
+  @Test
+  void fireNameTest() {
+    Tile tile = new ItemTile(new Harmful(DangerType.FIRE));
+    assertEquals("fireTile", tile.getName());
+  }
+  
+  /**
+   * Test the creation of a poison cell.
+   */
+  @Test
+  void poisonNameTest() {
+    Tile tile = new ItemTile(new Harmful(DangerType.POISON));
+    assertEquals("poisonTile", tile.getName());
   }
 
 }

@@ -68,7 +68,7 @@ public class Maze {
      */
     KEY_PICKED_UP,
     /**
-     * When Chap collects a treasure (chip)
+     * When Chap collects a treasure (chip).
      */
     TREASURE_PICKED_UP,
     /**
@@ -80,9 +80,14 @@ public class Maze {
      */
     DOOR_OPENED,
     /**
-     * When Chap dies due because he visited a dangerous cell.
+     * Chap dies when he visited a dangerous cell.
+     * This value specified that he died because of poisoning
      */
-    CHAP_DIED
+    CHAP_DIED_POISONED,
+    /**
+     * Specify that the player has died due to a fire.
+     */
+    CHAP_DIED_BURNT
     
   }
   
@@ -201,7 +206,12 @@ public class Maze {
       }
     }
     
-    if (isGameWon()) {
+    if (lastEvent != null && lastEvent.name().contains("CHAP_DIED")) {
+      //Some tile or item has kill the player
+      status = GameState.GAME_LOST;
+      
+    } else if (isGameWon()) {
+      //The player has reached the final tile
       status = GameState.GAME_WON;
       System.out.print("Well done you completed the level!!!");
       return false;
