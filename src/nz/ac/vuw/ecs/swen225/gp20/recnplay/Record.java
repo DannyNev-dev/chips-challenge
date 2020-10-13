@@ -60,7 +60,21 @@ public class Record{
 	
 	// this method shall be called by Application when file loading dialog gets filepath(name).
 	private RecordedGame loadGame(String filename) {
+		
+		ObjectMapper mapper = new ObjectMapper();
+		
+		try {
+			// Json file to Java object
+			
+			RecordedGame rg = mapper.readValue(new File(filename), RecordedGame.class);
+			this.recordedGame = rg;
+		}
+		catch(IOException e) {    // will be add more specific exception cases
+			e.printStackTrace();
+			return null;
+		}
 		// load the file and deserialize it to a new RecordedGame object, return it.
-		return null;
+		return this.recordedGame;
 	}
+	
 }
