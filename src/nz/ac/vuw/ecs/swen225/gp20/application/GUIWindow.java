@@ -425,11 +425,9 @@ public class GUIWindow extends javax.swing.JFrame {
                     "Congratulations! You have won\nDo you want to play level 2?",
                     "Game Won", JOptionPane.WARNING_MESSAGE);
             if (confirm == JOptionPane.OK_OPTION) {
-                //close all windows
                 level = 2;
                 setLevelNumber(level);
                 c = new GameTimer(1, 60);
-                c.start();
             }else if( confirm == JOptionPane.CANCEL_OPTION) {
                 System.exit(0); //close all windows
             }
@@ -444,6 +442,7 @@ public class GUIWindow extends javax.swing.JFrame {
      * @param evt default event.
      */
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+       //stores data locally before this timer gets destroyed on c.paused()
         pausedAtMin = c.getCurrentMin();
         pausedAtSec = c.getCurrentSec();
         c.pause();
@@ -454,8 +453,8 @@ public class GUIWindow extends javax.swing.JFrame {
             //closes all windows
             System.exit(0);
         }else if( confirm == JOptionPane.OK_CANCEL_OPTION){
-            c = new GameTimer(pausedAtMin,pausedAtSec); //timer continues from where it was left of.
-            c.start();
+            //new timer continues from where it was left of.
+            c = new GameTimer(pausedAtMin,pausedAtSec);
         }
     }//GEN-LAST:event_formWindowClosing
 
@@ -466,40 +465,41 @@ public class GUIWindow extends javax.swing.JFrame {
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         int numSelected;
         JRadioButton one = new JRadioButton("1");
-        //JRadioButton two = new JRadioButton("2");
+        JRadioButton two = new JRadioButton("2");
         //Group the radio buttons.
         ButtonGroup levelSelected = new ButtonGroup();
         levelSelected.add(one);
-        //levelSelected.add(two);
+        levelSelected.add(two);
         //Default option, level one
         one.setSelected(true);
         final JComponent[] inputs = new JComponent[]{
                 new JLabel("Choose a level to play"),
                 one,
-                //two,
+                two,
         };
         int result = JOptionPane.showConfirmDialog(null, inputs, "Welcome", JOptionPane.PLAIN_MESSAGE);
         if (result == JOptionPane.OK_OPTION) {
             if (one.isSelected()) {
                 numSelected = 1;
+            }else if( two.isSelected()){
+                numSelected = 2;
             } else{
                 //Here user has clicked OK without choosing option
-                //numSelected = 2;
                 System.exit(0);
                 return;
             }
+
+            // New timer for every game (2 minutes long)
             c = new GameTimer(1, 60);
             setLevelNumber(numSelected);
             boardCanvas.setVisible(false);
             render = new Render(m);
             boardCanvas = render.getView();
-            //boardCanvas.doLayout();
             gameCanvas.add(boardCanvas);
             boardCanvas.setLocation(70, 35);
             validate();
             repaint();
             setVisible(true);
-            c.start(); // starts time out
 
 
         }else {
@@ -557,6 +557,9 @@ public class GUIWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_saveButtonActionPerformed
 
     private void rulesLegendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rulesLegendActionPerformed
+        pausedAtMin = c.getCurrentMin();
+        pausedAtSec = c.getCurrentSec();
+        c.pause();
         display("Use the arrows on your key board to move Chap around the board.\n"
                 +"To win the game make sure you collect all the chips on \n"
                 +"the board within 2 minutes and go to the blue tile.\n"
@@ -566,6 +569,7 @@ public class GUIWindow extends javax.swing.JFrame {
                 + "Use the \"<\" and \">\" buttons to replay step by step.\n"
                 +"You can also save the game and resume later by going to \"File\" and\n"
                 +"click on \"Save\"");
+        c = new GameTimer(pausedAtMin,pausedAtSec);
     }//GEN-LAST:event_rulesLegendActionPerformed
 
     /**
@@ -602,11 +606,6 @@ public class GUIWindow extends javax.swing.JFrame {
                 new GUIWindow().setVisible(true);
             }
         });
-
-        //if(mode.equals("Running")){
-//        c = new GameTimer();
-//        c.start();
-        //}
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
