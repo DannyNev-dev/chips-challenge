@@ -11,7 +11,6 @@ import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
 
-import nz.ac.vuw.ecs.swen225.gp20.maze.Maze;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Block;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.ExitLock;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Item;
@@ -25,7 +24,6 @@ import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.ItemTile;
 import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.Tile;
 import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.Wall;
 
-// TODO: Auto-generated Javadoc
 /**
  * Contains methods and static variables required for reading levels from json files
  * Contains methods that return a maze which will be parsed maze module.
@@ -42,11 +40,10 @@ public class LevelReader {
 	
 	/**
 	 * Instantiates a new level reader.
-	 *
-	 * @param levelNum the level num
-	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @param levelNum
+	 * @throws Exception
 	 */
-	public LevelReader(int levelNum) throws IOException{
+	public LevelReader(int levelNum) throws Exception{
 		this.levelNum = levelNum;
 		mazeObj = loadJson();
 	}
@@ -55,30 +52,13 @@ public class LevelReader {
 	 * Deserialize level.
 	 *
 	 * @return the maze
-<<<<<<< HEAD
-	 * @throws Exception 
-	 */
-	public static Maze deserializeLevel(int levelNum) throws Exception{
-		//invalid number check, i assume that int primitive cannot be null
-		if(levelNum<=0 || levelNum>2) {
-			throw new IOException("Not a valid level Number");
-		}			
-		//System.out.println("Loading Level" + levelNum);
-		//open corresponding level file
-		Reader reader = Files.newBufferedReader(Paths.get("levels//level"+levelNum+".json"));
-	    
-=======
 	 */
 	public Tile[][] loadBoard() {
-		
 		Player p = loadPlayer();
 		int target = loadTarget();
-	    
 	    JsonArray jList = mazeObj.getJsonArray("board");
-	    
 		return makeBoard(jList,target,p);		
 	}
-	
 	/**
 	 * Load json.
 	 *
@@ -86,14 +66,11 @@ public class LevelReader {
 	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public JsonObject loadJson() throws IOException {
-		System.out.println("Loading Level" + levelNum);
 		//invalid number check, i assume that int primitive cannot be null
 		if(levelNum<=0 || levelNum>1) {
-			System.out.println("Invalid Level Number, not created");
 			throw new IOException("Not a valid level Number");
 		}	
 		Reader reader = Files.newBufferedReader(Paths.get("levels//level"+levelNum+".json"));    
->>>>>>> origin
 		JsonReader jReader = Json.createReader(reader);
 	    JsonObject mazeObj = jReader.readObject();
 		reader.close();
@@ -126,108 +103,86 @@ public class LevelReader {
 	}
 	
 	/**
-	 * Parses the tile.
-	 *
-	 * @param jsonObj the json obj
-	 * @param target the target
-	 * @param p the player
-	 * @return the tile
-	 * @throws Exception 
-	 */
-<<<<<<< HEAD
-	public static Tile parseTile(JsonObject jsonObj,int target,Player p) throws RuntimeException {	
-=======
-	public Tile parseTile(JsonObject jsonObj,int target,Player p) {	
->>>>>>> origin
-		
-		Item item = null;
-		Tile tile = null;
-		String type = jsonObj.getString("type");
-		String var;
-		
-		switch(type) {
-    	//Create cells based on type
-	    	case "Tile":
-	    		var = jsonObj.getString("item");	
-	    		switch(var) {
-		    		case "bKey":
-		    			item = new Key(Colour.BLUE);    
-		    			break;
-		    		case "rKey":
-		    			item = new Key(Colour.RED);
-		    			break;
-		    		case "gKey":
-		    			item = new Key(Colour.GREEN);
-		    			break;
-		    		case "none":
-		    			System.out.println("empty tile created");
-		    			break;
-		    		case "treasure":
-		    			item = new Treasure();
-		    			break;
-		    		case "exitLock":
-		    			item = new ExitLock(target);
-		    			break;
-		    		case "player":
-		    			item = p;
-		    			break;
-		    		default:
-		    			throw new RuntimeException("Invalid JSON input for the item");
-		    			//System.out.println("");	//may need to throw custom exception
-		    			
-	    		}
-	    		tile = new ItemTile(item);	//item is null if incorrect json input for item is present
-	    		break;
-	    	case "Door":
-	    		var = jsonObj.getString("item");	
-	    		switch(var) {
-		    		case "green":
-		    			item = new Block(Colour.GREEN);    
-		    			break;
-		    		case "red":
-		    			item = new Block(Colour.RED);    
-		    			break;
-		    		case "blue":
-		    			item = new Block(Colour.BLUE);
-		    			break;
-		    		default:
-		    			throw new RuntimeException("Invalid JSON input for the door colour");
-		    			//System.out.println("Invalid JSON input for the door colour");	//may need to throw custom exception
-	    		}
-	    		tile = new ItemTile(item);
-	    		break;
-	    	case "ExitTile":
-	    		tile = new ExitTile();
-	    		break;
-	    	case "Wall":
-	    		tile = new Wall();
-	    		break;
-	    	case "Info":
-	    		tile = new InfoTile(jsonObj.getString("item"),null);
-	    		break;
-	    	default:
-<<<<<<< HEAD
-	    		throw new RuntimeException("Json Array element has no matching type");
-	    		//System.out.print("Incorrect Json Format");	//may need to throw custom exception
-=======
-	    		System.out.print("Incorrect Json Format for type");	//may need to throw custom exception
-	    		break;
->>>>>>> origin
-	    	}
-    	return tile;	
-	}
-
+     * Parses the tile.
+     *
+     * @param jsonObj the json obj
+     * @param target the target
+     * @return the tile
+     * @throws Exception
+     */
+    public static Tile parseTile(JsonObject jsonObj,int target,Player p) throws RuntimeException { 
+           
+            Item item = null;
+            Tile tile = null;
+            String type = jsonObj.getString("type");
+            String var;
+           
+            switch(type) {
+    //Create cells based on type
+            case "Tile":
+                    var = jsonObj.getString("item");       
+                    switch(var) {
+                            case "bKey":
+                                    item = new Key(Colour.BLUE);    
+                                    break;
+                            case "rKey":
+                                    item = new Key(Colour.RED);
+                                    break;
+                            case "gKey":
+                                    item = new Key(Colour.GREEN);
+                                    break;
+                            case "none":
+                                    break;
+                            case "treasure":
+                                    item = new Treasure();
+                                    break;
+                            case "exitLock":
+                                    item = new ExitLock(target);
+                                    break;
+                            case "player":
+                                    item = p;
+                                    break;
+                            default:
+                                    throw new RuntimeException("Invalid JSON input for the item");
+                                    //System.out.println("");       //may need to throw custom exception
+                                   
+                    }
+                    tile = new ItemTile(item);      //item is null if incorrect json input for item is present
+                    break;
+            case "Door":
+                    var = jsonObj.getString("item");       
+                    switch(var) {
+                            case "green":
+                                    item = new Block(Colour.GREEN);    
+                                    break;
+                            case "red":
+                                    item = new Block(Colour.RED);    
+                                    break;
+                            case "blue":
+                                    item = new Block(Colour.BLUE);
+                                    break;
+                            default:
+                                    throw new RuntimeException("Invalid JSON input for the door colour");
+                                    //System.out.println("Invalid JSON input for the door colour"); //may need to throw custom exception
+                    }
+                    tile = new ItemTile(item);
+                    break;
+            case "ExitTile":
+                    tile = new ExitTile();
+                    break;
+            case "Wall":
+                    tile = new Wall();
+                    break;
+            case "Info":
+                    tile = new InfoTile(jsonObj.getString("item"),null);
+                    break;
+            default:
+                    throw new RuntimeException("Json Array element has no matching type");
+                    //System.out.print("Incorrect Json Format");    //may need to throw custom exception
+            }
+    return tile;   
+    }
 /**
-<<<<<<< HEAD
- * Make the board for the maze from the json array
- * @param jList
- * @param target
- * @param p
- * @return
- * @throws Exception 
- */
-public static Tile[][] makeBoard(JsonArray jList,int target,Player p) throws RuntimeException{
-=======
  * Make the board for the maze from the json array.
  *
  * @param jList the j list
@@ -236,7 +191,6 @@ public static Tile[][] makeBoard(JsonArray jList,int target,Player p) throws Run
  * @return the tile[][]
  */
 public Tile[][] makeBoard(JsonArray jList,int target,Player p){
->>>>>>> origin
 	int length = jList.size();
     //initialize board
     Tile[][] board = new Tile[jList.getJsonObject(0).getJsonArray("row").size()][length];	    
