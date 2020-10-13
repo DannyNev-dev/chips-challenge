@@ -43,7 +43,7 @@ public class LevelReader {
 	 * @param levelNum
 	 * @throws Exception
 	 */
-	public LevelReader(int levelNum) throws Exception{
+	public LevelReader(int levelNum) throws IOException{
 		this.levelNum = levelNum;
 		mazeObj = loadJson();
 	}
