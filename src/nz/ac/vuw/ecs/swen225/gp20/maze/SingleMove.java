@@ -94,11 +94,7 @@ public class SingleMove implements Move {
    // default:
       //throw new RuntimeException("The direction of this move is invalid");
     }
-  }
-
-  
-  
-  
+  } 
   /*
    * with side effects
    * 

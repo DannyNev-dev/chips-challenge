@@ -43,7 +43,7 @@ public class LevelReader {
 	 * @param levelNum
 	 * @throws Exception
 	 */
-	public LevelReader(int levelNum) throws Exception{
+	public LevelReader(int levelNum) throws IOException{
 		this.levelNum = levelNum;
 		mazeObj = loadJson();
 	}
@@ -182,6 +182,7 @@ public class LevelReader {
             }
     return tile;   
     }
+
 /**
  * Make the board for the maze from the json array.
  *
@@ -191,17 +192,18 @@ public class LevelReader {
  * @return the tile[][]
  */
 public Tile[][] makeBoard(JsonArray jList,int target,Player p){
-	int length = jList.size();
-    //initialize board
-    Tile[][] board = new Tile[jList.getJsonObject(0).getJsonArray("row").size()][length];	    
-    for(int i=0; i<length; i++) {	    	
-    	JsonObject jsonObj = jList.getJsonObject(i);
-    	JsonArray internalList = jsonObj.getJsonArray("row");
-    	for(int j=0;j<internalList.size();j++) {
-    		JsonObject internalJObj = internalList.getJsonObject(j);
-    		board[i][j] = parseTile(internalJObj,target,p); //Parse each tile from the row array into the board of tiles
-    	}	    		
-    }
-	return board;
+	
+		int length = jList.size();
+	    //initialize board
+	    Tile[][] board = new Tile[jList.getJsonObject(0).getJsonArray("row").size()][length];	    
+	    for(int i=0; i<length; i++) {	    	
+	    	JsonObject jsonObj = jList.getJsonObject(i);
+	    	JsonArray internalList = jsonObj.getJsonArray("row");
+	    	for(int j=0;j<internalList.size();j++) {
+	    		JsonObject internalJObj = internalList.getJsonObject(j);
+	    		board[i][j] = parseTile(internalJObj,target,p); //Parse each tile from the row array into the board of tiles
+	    	}	    		
+	    }
+		return board;
 	}
 }
