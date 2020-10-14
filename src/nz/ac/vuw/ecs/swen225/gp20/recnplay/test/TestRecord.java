@@ -1,3 +1,4 @@
+
 package nz.ac.vuw.ecs.swen225.gp20.recnplay.test;
 
 import nz.ac.vuw.ecs.swen225.gp20.maze.SingleMove;
@@ -12,8 +13,9 @@ public class TestRecord {
 		
 		EventListener listener = EventListener.eventListenerFactory();
 		listener.onEvent(Event.eventOfLevelSetting(2));
-		listener.onEvent(Event.eventOfMove(new SingleMove(Direction.UP)));
+		listener.onEvent(Event.eventOfChapMove(new SingleMove(Direction.UP)));
 		EventListener.getRecord().saveToJson();
+		
 	}
 
 }

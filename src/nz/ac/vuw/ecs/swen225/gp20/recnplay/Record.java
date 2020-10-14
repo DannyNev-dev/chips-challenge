@@ -1,6 +1,8 @@
+
 package nz.ac.vuw.ecs.swen225.gp20.recnplay;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.Time;
@@ -13,6 +15,9 @@ import javax.json.JsonArray;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import javax.json.stream.JsonGenerationException;
+
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 
@@ -59,22 +64,34 @@ public class Record{
 	
 	
 	// this method shall be called by Application when file loading dialog gets filepath(name).
-	private RecordedGame loadGame(String filename) {
+	public RecordedGame loadGame(String filename) {
 		
 		ObjectMapper mapper = new ObjectMapper();
 		
 		try {
 			// Json file to Java object
-			
+			// load the file and deserialize it to a new RecordedGame object, return it.
 			RecordedGame rg = mapper.readValue(new File(filename), RecordedGame.class);
 			this.recordedGame = rg;
+			return this.recordedGame;
 		}
-		catch(IOException e) {    // will be add more specific exception cases
+		catch(FileNotFoundException e) {    // will be add more specific exception cases
+			e.printStackTrace();
+			System.out.println("File can not be found.");
+			return null;
+		} catch (JsonParseException e) {
+			e.printStackTrace();
+			System.out.println("File can not be parsed.");
+			return null;
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+			System.out.println("File can not be parsed.");
+			return null;
+		} catch (IOException e) {
 			e.printStackTrace();
 			return null;
 		}
-		// load the file and deserialize it to a new RecordedGame object, return it.
-		return this.recordedGame;
+
 	}
 	
 }
