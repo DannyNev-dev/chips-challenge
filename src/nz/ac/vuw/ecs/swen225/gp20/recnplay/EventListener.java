@@ -1,4 +1,3 @@
-
 package nz.ac.vuw.ecs.swen225.gp20.recnplay;
 
 import javax.json.Json;
@@ -14,11 +13,16 @@ import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.Wall;
 /**
  * Contains onEvent method which will be called by Application module
  * when a new event occurs(set level, move, pick up key, pick up chip etc.). 
- * @author Yan Lu
+ * @author YanLu
  */
 public class EventListener implements Plugin {
 
 	private static Record record;
+	/**
+	 * a static method to get current record instance
+	 * can be called for all project.
+	 * @return Record instance
+	 */
 	// This event listener shall be called by application in two kinds of state change
 	// level set: in GUIWindow.setLevelNumber()
 	//            In this case, an event being created and level being set, the event object being passed in 
@@ -44,6 +48,10 @@ public class EventListener implements Plugin {
 		EventListener.record.update(e);
 	}
 	
+	/**
+	 * constructor of EventListener.
+	 * @return EventListener instance
+	 */
 	public static EventListener eventListenerFactory() {
 		if (record == null) {
 			record = new Record();

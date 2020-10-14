@@ -1,9 +1,6 @@
-
-
 package nz.ac.vuw.ecs.swen225.gp20.recnplay;
 
 import java.util.ArrayList;
-
 
 /**
  * A class for storing key information of 
@@ -15,24 +12,44 @@ public class RecordedGame {
 	int level;
 	ArrayList<Event> actions;
 	
+	/**
+	 * constructor of RecordedGame.
+	 * @param level
+	 */
 	public RecordedGame(int level) {
 		this.level = level;
-		// init arraylist
+		// initiate list of Event object 
 		this.actions = new ArrayList<Event>();
 	}
 
+	/**
+	 * get list of happened actions.
+	 * @return list of Event
+	 */
 	public ArrayList<Event> getActions(){
 		return actions;
 	}
 	
+	/**
+	 * get level.
+	 * @return current level
+	 */
 	public int getLevel(){
 		return level;
 	}
 
+	/**
+	 * set level with given information.
+	 * @param level
+	 */
 	public void setLevel(int level) {
 		this.level = level;
 	}
 	
+	/**
+	 * add new performed action to list of event.
+	 * @param event
+	 */
 	public void addAction(Event event) {
 		if (event.getType().equals(Event.Type.SetLevel)) {
 			setLevel(event.getLevel());
