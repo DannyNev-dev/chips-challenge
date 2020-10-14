@@ -523,7 +523,7 @@ public class GUIWindow extends javax.swing.JFrame {
         }
         m.movePlayer(sMove);
         render.updateRender();
-        this.eventListener.onEvent(Event.eventOfMove(sMove));
+        this.eventListener.onEvent(Event.eventOfChapMove(sMove));
 
         boardCanvas.setVisible(false);
         render = new Render(m);
