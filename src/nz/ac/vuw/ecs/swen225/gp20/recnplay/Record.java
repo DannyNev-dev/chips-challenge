@@ -56,48 +56,18 @@ public class Record{
 	/**
 	 * this method is open for Application module to call when save file dialog gets file path(name).
 	 */
-	public void saveToJson() {				
+	public String saveToJson() {				
 		ObjectMapper mapper = new ObjectMapper();
 		// convert Java objects to JSON file
 		// call getSaveFileName to dump recordedGame into file
+		String filepath = getSaveFileName();
         try {       
-            mapper.writeValue(new File(getSaveFileName()), this.recordedGame);
+            mapper.writeValue(new File(filepath), this.recordedGame);
             String jsonString = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(this.recordedGame);
-            System.out.println(jsonString);            
+            System.out.println(jsonString); 
         } catch (IOException e) {
         	e.printStackTrace();
-        }       
+        }
+        return filepath;
 	}
-	
-	/**
-	 * this method shall be called by Application when file loading dialog gets file path(name).
-	 * @param filename
-	 * @return a recorded game with a given file name
-	 */
-	public RecordedGame loadGame(String filename) {		
-		ObjectMapper mapper = new ObjectMapper();
-		// JSon file to Java object
-		// load the file and deserialize it to a new RecordedGame object, return it.
-		try {
-			RecordedGame rg = mapper.readValue(new File(filename), RecordedGame.class);
-			this.recordedGame = rg;
-			return this.recordedGame;
-		}
-		catch(FileNotFoundException e) {    
-			e.printStackTrace();
-			System.out.println("File can not be found.");
-			return null;
-		} catch (JsonParseException e) {
-			e.printStackTrace();
-			System.out.println("File can not be parsed.");
-			return null;
-		} catch (JsonMappingException e) {
-			e.printStackTrace();
-			System.out.println("File can not be parsed.");
-			return null;
-		} catch (IOException e) {
-			e.printStackTrace();
-			return null;
-		}
-	}	
 }

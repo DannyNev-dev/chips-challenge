@@ -18,6 +18,8 @@ import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.Wall;
 public class EventListener implements Plugin {
 
 	private static Record record;
+	
+	private static Replay replay;
 	/**
 	 * a static method to get current record instance
 	 * can be called for all project.
@@ -42,6 +44,10 @@ public class EventListener implements Plugin {
 		return record;
 	}
 
+	public static Replay getReplay() {
+		return replay;
+	}
+	
 	@Override
 	public void onEvent(Event e) {
 		// All event listener instances update the same record instance
