@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Simplest {
 
     private int level;
-    private ArrayList<String> actions;
+    private ArrayList<Action> actions;
 
     private Simplest() {
     }
@@ -13,18 +13,18 @@ public class Simplest {
     public Simplest(int level) {
         this();
         this.level = level;
-        this.actions = new ArrayList<String>();
+        this.actions = new ArrayList<Action>();
     }
 
     public int getLevel() {
         return level;
     }
     
-    public ArrayList<String> getActions(){
+    public ArrayList<Action> getActions(){
     	return actions;
     }
     
-    public void updateActions(String action) {
+    public void updateActions(Action action) {
     	actions.add(action);
     }
 }

@@ -14,6 +14,7 @@ import nz.ac.vuw.ecs.swen225.gp20.recnplay.Event;
 import nz.ac.vuw.ecs.swen225.gp20.recnplay.EventListener;
 import nz.ac.vuw.ecs.swen225.gp20.recnplay.RecordedGame;
 import nz.ac.vuw.ecs.swen225.gp20.recnplay.Replay;
+import nz.ac.vuw.ecs.swen225.gp20.recnplay.test.TestMove.TestDirection;
 import nz.ac.vuw.ecs.swen225.gp20.recnplay.Event.Type;
 
 /**
@@ -50,10 +51,19 @@ public class TestRecord {
 		
 		//RecordedGame rg = null;
 		try {
-			String str = "{\"level\":\"2\", \"actions\":[\"test1\", \"test2\"]}";
+			String str = "{\"level\":\"2\", \"actions\":[]}";
 			Simplest sp = mapper.readValue(str, Simplest.class);
-			System.out.println(sp.getLevel());
-			System.out.println(sp.getActions().toString());
+			sp.updateActions(new Action(new TestMove(TestDirection.UP)));
+			sp.updateActions(new Action(new TestMove(TestDirection.DOWN)));
+//			System.out.println(sp.getLevel());
+//			System.out.println(sp.getActions().toString());
+//			
+//			System.out.println(sp);
+
+//            // pretty print
+            String sp1 = mapper.writeValueAsString(sp);
+            System.out.println(sp1);
+
 		} catch (JsonProcessingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
