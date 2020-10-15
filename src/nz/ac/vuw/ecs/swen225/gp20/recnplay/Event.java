@@ -47,8 +47,61 @@ public class Event {
 	
 	private boolean chapDies;
 	
-
+	private Event() {
+	}
+	
 	/**
+	 * constructor of Event.
+	 * @param type
+	 * @param level
+	 * @param move
+	 * @param chapDies
+	 */
+	public Event(Type type, int level, SingleMove move, boolean chapDies) {
+		this();
+		this.type = type;
+		this.level = level;
+		this.move = move;
+		this.chapDies = chapDies;
+	}  
+	
+    /**
+     * construct event when set level occurs.
+     * @param level
+     * @return event of SetLevel
+     */
+    public static Event eventOfLevelSetting(int level) {
+    	return new Event(Type.SetLevel, level, null, false);
+    }
+	
+    /**
+     * construct event when move of chap occurs.
+     * @param move
+     * @return event of ChapMove
+     */
+    public static Event eventOfChapMove(SingleMove move) {
+    	return new Event(Type.ChapMove, 0, move, false);   	
+    }
+    
+    /**
+    * construct event when a move of bug occurs.
+     * @param move
+     * @return event of BugMove
+     */
+    public static Event eventOfBugMove(SingleMove move) {
+    	return new Event(Type.BugMove, 0, move, false);   	
+    }
+    
+    /**
+     * construct event when chap dies.
+     * @param chapDies
+     * @return event of ChapDies
+     */
+    public static Event eventOfChapDies(boolean chapDies) {
+    	return new Event(Type.ChapDies, 0, null, true);   	
+    } 
+    
+    /**
 	 * get the current level.
 	 * @return current level
 	 */
@@ -97,52 +150,18 @@ public class Event {
 	}
 	
 	/**
-	 * constructor of Event.
-	 * @param type
-	 * @param level
-	 * @param move
+	 * get the current chapDies.
+	 * @return current chapDies
+	 */
+	public boolean getChapDies() {
+		return this.chapDies;
+	}
+	
+	/**
+	 * set chapDies with given information.
 	 * @param chapDies
 	 */
-	public Event(Type type, int level, SingleMove move, boolean chapDies) {
-		this.type = type;
-		this.level = level;
-		this.move = move;
+	public void setChapDies(boolean chapDies) {
 		this.chapDies = chapDies;
-	}  
-	
-    /**
-     * construct event when set level occurs.
-     * @param level
-     * @return event of SetLevel
-     */
-    public static Event eventOfLevelSetting(int level) {
-    	return new Event(Type.SetLevel, level, null, false);
-    }
-	
-    /**
-     * construct event when move of chap occurs.
-     * @param move
-     * @return event of ChapMove
-     */
-    public static Event eventOfChapMove(SingleMove move) {
-    	return new Event(Type.ChapMove, 0, move, false);   	
-    }
-    
-    /**
-    * construct event when a move of bug occurs.
-     * @param move
-     * @return event of BugMove
-     */
-    public static Event eventOfBugMove(SingleMove move) {
-    	return new Event(Type.BugMove, 0, move, false);   	
-    }
-    
-    /**
-     * construct event when chap dies.
-     * @param chapDies
-     * @return event of ChapDies
-     */
-    public static Event eventOfChapDies(boolean chapDies) {
-    	return new Event(Type.ChapDies, 0, null, true);   	
-    } 
+	}
 }

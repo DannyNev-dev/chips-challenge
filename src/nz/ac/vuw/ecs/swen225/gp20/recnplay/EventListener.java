@@ -45,6 +45,11 @@ public class EventListener implements Plugin {
 	}
 
 	public static Replay getReplay() {
+		
+		if (replay == null) {
+			String filepath = record.getSaveFileName();
+			new Replay(filepath);
+		}
 		return replay;
 	}
 	

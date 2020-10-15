@@ -3,18 +3,19 @@ package nz.ac.vuw.ecs.swen225.gp20.recnplay;
 import java.util.ArrayList;
 import java.util.List;
 
+import nz.ac.vuw.ecs.swen225.gp20.recnplay.test.TestMove;
+
 /**
  * A class for storing key information of 
  * @author YanLu
  *
  */
 public class RecordedGame {
-	
+
 	int level;
 	List<Event> actions;
 	
-	public void setActions(List<Event> actions) {
-		this.actions = actions;
+	private RecordedGame() {
 	}
 
 	/**
@@ -22,9 +23,15 @@ public class RecordedGame {
 	 * @param level
 	 */
 	public RecordedGame(int level) {
+		this();
 		this.level = level;
 		// initiate list of Event object 
 		this.actions = new ArrayList<Event>();
+	}
+	
+	
+	public void setActions(List<Event> actions) {
+		this.actions = actions;
 	}
 
 	/**

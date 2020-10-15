@@ -30,36 +30,53 @@ public class TestRecord {
 	 * @param args
 	 */
 	public static void main(String[] args) {	
-//		EventListener listener = EventListener.eventListenerFactory();
-//		// Pad mock events
-//		listener.onEvent(Event.eventOfLevelSetting(2));
-//		listener.onEvent(Event.eventOfChapMove(new SingleMove(Direction.UP)));
-//		listener.onEvent(Event.eventOfChapMove(new SingleMove(Direction.DOWN)));
-//		// Save to JSON
-//		String filepath = listener.getRecord().saveToJson();
-//		// Load the JSON
+		EventListener listener = EventListener.eventListenerFactory();
+		// Pad mock events
+		listener.onEvent(Event.eventOfLevelSetting(2));
+		listener.onEvent(Event.eventOfChapMove(new SingleMove(Direction.UP)));
+		listener.onEvent(Event.eventOfChapMove(new SingleMove(Direction.DOWN)));
+		// Save to JSON
+		String filepath = listener.getRecord().saveToJson();
+		// Load the JSON
 		
-		ObjectMapper mapper = new ObjectMapper();
-
-		mapper.setVisibility(PropertyAccessor.ALL, Visibility.NONE);
-		mapper.setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
-		mapper.setVisibility(PropertyAccessor.CREATOR, Visibility.ANY);
-
-		try {
-			String str = "{\"level\":\"2\", \"actions\":[]}";
-			Simplest sp = mapper.readValue(str, Simplest.class);
-			sp.updateActions(new Action(new TestMove(TestDirection.UP)));
-			sp.updateActions(new Action(new TestMove(TestDirection.DOWN)));
-
-			String sp1 = mapper.writeValueAsString(sp);
-            String sp2 = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(sp);
-            System.out.println(sp1);
-            System.out.println(sp2);
-
-		} catch (JsonProcessingException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		listener.getReplay().loadRecordedGame(filepath);
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+//		ObjectMapper mapper = new ObjectMapper();
+//
+//		mapper.setVisibility(PropertyAccessor.ALL, Visibility.NONE);
+//		mapper.setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
+//		mapper.setVisibility(PropertyAccessor.CREATOR, Visibility.ANY);
+//
+//		try {
+//			String str = "{\"level\":\"2\", \"actions\":[]}";
+//			Simplest sp = mapper.readValue(str, Simplest.class);
+//			sp.updateActions(new Action(new TestMove(TestDirection.UP)));
+//			sp.updateActions(new Action(new TestMove(TestDirection.DOWN)));
+//
+//			String sp1 = mapper.writeValueAsString(sp);
+//            String sp2 = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(sp);
+//            System.out.println(sp1);
+//            System.out.println(sp2);
+//
+//		} catch (JsonProcessingException e) {
+//			e.printStackTrace();
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
 	}
 }

@@ -10,6 +10,8 @@ import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
 
+import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -26,34 +28,22 @@ public class Replay {
 	//private JsonArray steps;
 	private RecordedGame recordedGame;
 	
-	public RecordedGame getRecordedGame() {
-		return recordedGame;
-	}
-
-
-	public void setRecordedGame(RecordedGame recordedGame) {
-		this.recordedGame = recordedGame;
-	}
-
 	/**
 	 * constructor of Replay.
 	 * @param gameRecord
 	 */
 	public Replay(String filepath) {
-//		try {
-//			InputStream in = new FileInputStream(gameRecord);
-//			JsonReader reader = Json.createReader(in);
-//            JsonObject gameRecordObj = reader.readObject();
-//            reader.close();
-//            level = gameRecordObj.getJsonObject("level");
-//            steps = gameRecordObj.getJsonArray("steps");			
-//		}
-//		catch(FileNotFoundException e) {
-//			e.printStackTrace();
-//		}
+
 		this.setRecordedGame(this.loadRecordedGame(filepath));
 	}
-	
+		
+	public RecordedGame getRecordedGame() {
+		return recordedGame;
+	}
+
+	public void setRecordedGame(RecordedGame recordedGame) {
+		this.recordedGame = recordedGame;
+	}
 	
 	/**
 	 * this method shall be called by Application when file loading dialog gets file path(name).
@@ -62,14 +52,19 @@ public class Replay {
 	 */
 	public RecordedGame loadRecordedGame(String filepath) {		
 		ObjectMapper mapper = new ObjectMapper();
-		//mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
-		mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
-		mapper.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true) ;
-		mapper.enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT);
+
+		mapper.setVisibility(PropertyAccessor.ALL, Visibility.NONE);
+		mapper.setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
+		mapper.setVisibility(PropertyAccessor.CREATOR, Visibility.ANY);
 		// JSon file to Java object
 		// load the file and deserialize it to a new RecordedGame object, return it.
 		try {
-			return mapper.readValue(new File(filepath), RecordedGame.class);
+			RecordedGame rg = mapper.readValue(new File(filepath), RecordedGame.class);
+			String rg1 = mapper.writeValueAsString(rg);
+			String rg2 = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(rg);
+			System.out.println(rg1);
+			System.out.println(rg2);
+			return rg;
 		}
 		catch(FileNotFoundException e) {    
 			e.printStackTrace();
