@@ -50,9 +50,10 @@ public class TestRecord {
 		
 		//RecordedGame rg = null;
 		try {
-			String str = "{\"simplest\":\"test\"}";
+			String str = "{\"level\":\"2\", \"actions\":[\"test1\", \"test2\"]}";
 			Simplest sp = mapper.readValue(str, Simplest.class);
-			System.out.println(sp.getSimplest());
+			System.out.println(sp.getLevel());
+			System.out.println(sp.getActions().toString());
 		} catch (JsonProcessingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
