@@ -1,6 +1,7 @@
 package nz.ac.vuw.ecs.swen225.gp20.recnplay.test;
 
 import java.io.File;
+import java.io.IOException;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
@@ -39,36 +40,26 @@ public class TestRecord {
 //		// Load the JSON
 		
 		ObjectMapper mapper = new ObjectMapper();
-		//mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
-//		mapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
-//		mapper.configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true) ;
-//		mapper.enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT);
+
 		mapper.setVisibility(PropertyAccessor.ALL, Visibility.NONE);
 		mapper.setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
 		mapper.setVisibility(PropertyAccessor.CREATOR, Visibility.ANY);
 
-		
-		
-		//RecordedGame rg = null;
 		try {
 			String str = "{\"level\":\"2\", \"actions\":[]}";
 			Simplest sp = mapper.readValue(str, Simplest.class);
 			sp.updateActions(new Action(new TestMove(TestDirection.UP)));
 			sp.updateActions(new Action(new TestMove(TestDirection.DOWN)));
-//			System.out.println(sp.getLevel());
-//			System.out.println(sp.getActions().toString());
-//			
-//			System.out.println(sp);
 
-//            // pretty print
-            String sp1 = mapper.writeValueAsString(sp);
+			String sp1 = mapper.writeValueAsString(sp);
+            String sp2 = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(sp);
             System.out.println(sp1);
+            System.out.println(sp2);
 
 		} catch (JsonProcessingException e) {
-			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
-		//System.out.println(rg.getActions());
 	}
 }
