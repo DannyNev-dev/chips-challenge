@@ -525,9 +525,9 @@ public class GUIWindow extends javax.swing.JFrame {
         render.updateRender();
         this.eventListener.onEvent(Event.eventOfChapMove(sMove));
 
-        boardCanvas.setVisible(false);
-        render = new Render(m);
-        boardCanvas = render.getView();
+//        boardCanvas.setVisible(false);
+//        render = new Render(m);
+//        boardCanvas = render.getView();
         gameCanvas.add(boardCanvas);
         boardCanvas.setLocation(70,35);
         validate();
