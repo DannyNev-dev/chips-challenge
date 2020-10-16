@@ -1,5 +1,8 @@
 package nz.ac.vuw.ecs.swen225.gp20.maze.items;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkState;
+import static nz.ac.vuw.ecs.swen225.gp20.maze.Maze.SpecialEvent;
 
 /**
  * Create door objects which entity can pass across if they have collected the right key.
@@ -40,6 +43,7 @@ public class Block implements Item {
 
   @Override
   public boolean isAccessible(Entity entity) {
+    checkNotNull(entity, "An entity needs to be initialized before checking where it can move");
     for (Collectable item : entity.getInventory()) {
       //Look if this collectable item is a key of the right colour
       //if (item instanceof Key && ((Key) item).getColour() == this.keyType) {
@@ -49,8 +53,6 @@ public class Block implements Item {
         //however at the moment the block has the colour not the key hence it would either need to
         //be constructed with a key or make a new one before using equals
         
-        //Drop the key
-        entity.dropCollectable(key);
         //Door could be opened
         return true;
         
@@ -59,6 +61,22 @@ public class Block implements Item {
     }
     //Correct key has not been found
     return false;
+  }
+  
+  
+  @Override 
+  public boolean hasAction() {
+    return true;
+  }
+  
+  @Override
+  public SpecialEvent applyAction(Entity entity) {
+    checkState(isAccessible(entity), 
+        "The given entity doesn't have the requirment to remove this block (open door)");
+    //Use the key to remove this block and remove it from the inventory
+    entity.dropCollectable(key);
+    return SpecialEvent.DOOR_OPENED;
+    
   }
 
 }

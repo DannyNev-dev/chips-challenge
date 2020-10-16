@@ -5,6 +5,7 @@ import nz.ac.vuw.ecs.swen225.gp20.maze.items.Item;
 
 /**
  * Tile which displays info when the player stands on it.
+ * This can't be an itemTile since the info will not disappear after the player walks on it
  * 
  * @author Emanuel Evans (ID: 300472656)
  *

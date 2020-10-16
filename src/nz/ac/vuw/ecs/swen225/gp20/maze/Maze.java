@@ -39,12 +39,15 @@ public class Maze {
   
   private GameState status = GameState.PLAYING;
   
+  //The last crucial event which happened in the game
+  private SpecialEvent lastEvent;
+  
   /**
    * Define the what are the different states a game can be in.
    * @author Emanuel Evans (ID: 300472656)
    *
    */
-  public enum GameState {
+  public static enum GameState {
     /**
      * When the player is still able to move.
      */
@@ -58,6 +61,36 @@ public class Maze {
      */
     GAME_WON
   }
+  
+  public static enum SpecialEvent {
+    /**
+     * When Chap picks up a key and puts it in his inventory.
+     */
+    KEY_PICKED_UP,
+    /**
+     * When Chap collects a treasure (chip).
+     */
+    TREASURE_PICKED_UP,
+    /**
+     * When Chap uses a key to remove a block form the make. 
+     * Removing a block is usually referred as opening a door,
+     * As it gives a better idea of what is happening. However,
+     * In the game logic the term block is used because once it is removed it can't go back. 
+     * Therefore it isn't exactly a door as it can't be closed after it was unlocked with a key.  
+     */
+    DOOR_OPENED,
+    /**
+     * Chap dies when he visited a dangerous cell.
+     * This value specified that he died because of poisoning
+     */
+    CHAP_DIED_POISONED,
+    /**
+     * Specify that the player has died due to a fire.
+     */
+    CHAP_DIED_BURNT
+    
+  }
+  
 
   /**
    * Load a maze.
@@ -102,17 +135,20 @@ public class Maze {
 
   /**
    *Merge board.
-   *@return board
+   *@return board grouping data about the maze's tiles
    */
   public Tile[][] getBoard() {
     return board.getBoard();
   }
   
-  /*
-  public Board getBoard() {
+  /**
+   * Ideally this will be the only method to get the board. TODO .
+   * @return board grouping data about the maze's tiles
+   */
+  public Board getBoardObject() {
     return board;
   }
-  */
+  
   
   
 
@@ -134,6 +170,8 @@ public class Maze {
     
     //TODO improve move functionality this is just an initial approach
     
+    lastEvent = null; //Reset any special events from the last movement
+    
     Point oldPos = player.getPosition();
     
     Point newPos = move.getDestination(oldPos);
@@ -154,13 +192,26 @@ public class Maze {
     
     if (board.getTile(newPos).containsItem()) {
       Item item = board.getTile(newPos).getItem();
+      
+      /*
       if (item.isCollectable()) {
         Collectable toCollect = (Collectable) item;
-        toCollect.pickup(player);
+        lastEvent = toCollect.pickup(player);
+      } else 
+      */
+      if (item.hasAction()) {
+        //Interacting with an item might trigger a special event to be recorded
+        //For instance a key could be picked up
+        lastEvent = item.applyAction(player);
       }
     }
     
-    if (isGameWon()) {
+    if (lastEvent != null && lastEvent.name().contains("CHAP_DIED")) {
+      //Some tile or item has kill the player
+      status = GameState.GAME_LOST;
+      
+    } else if (isGameWon()) {
+      //The player has reached the final tile
       status = GameState.GAME_WON;
       System.out.print("Well done you completed the level!!!");
       return false;
@@ -212,6 +263,15 @@ public class Maze {
   }
   
   /**
+   * Get the position of the player within the board.
+   * @return a point holding a copy of the player's coordinates
+   */
+  public Point getPlayerPosition() {
+    checkArgument(isPlayerPosValid());
+    return new Point(player.getPosition().x, player.getPosition().y);
+  }
+  
+  /**
    * Check whether the position store in the player object match the board.
    * @return whether the tile at the player coordinate actually contains a player
    * @throws RuntimeException is the player is undefined or has an invalid position
@@ -254,6 +314,16 @@ public class Maze {
   public GameState getStatus() {
     return status;
   }
+  
+  /**
+   * Check what the current state of the game is.
+   * @return a special even if it occurred in the last player move otherwise null
+   */
+  public SpecialEvent getLastSpecialEvent() {
+    return lastEvent;
+  }
+  
+  
   
   /* 
    * for when the timer is over?
