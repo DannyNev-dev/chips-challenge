@@ -23,7 +23,7 @@ public class ExitTile extends Tile {
   
   @Override
   public Item replaceItem(Item newItem) {
-    throw new RuntimeException("Items can't be added to an exit tile");
+    throw new UnsupportedOperationException("Items can't be added to an exit tile");
   }
 
   @Override

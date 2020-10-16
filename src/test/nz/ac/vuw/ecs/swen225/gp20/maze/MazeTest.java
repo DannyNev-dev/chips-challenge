@@ -1,45 +1,52 @@
 package test.nz.ac.vuw.ecs.swen225.gp20.maze;
 
+import static nz.ac.vuw.ecs.swen225.gp20.maze.Maze.GameState;
+import static nz.ac.vuw.ecs.swen225.gp20.maze.Maze.SpecialEvent;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.awt.Point;
-
-import org.junit.jupiter.api.Test;
-
+import java.io.IOException;
 import nz.ac.vuw.ecs.swen225.gp20.maze.Maze;
 import nz.ac.vuw.ecs.swen225.gp20.maze.Move;
+import nz.ac.vuw.ecs.swen225.gp20.maze.Move.Direction;
 import nz.ac.vuw.ecs.swen225.gp20.maze.SingleMove;
-import nz.ac.vuw.ecs.swen225.gp20.maze.Maze.GameState;
+import nz.ac.vuw.ecs.swen225.gp20.maze.items.Key;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Player;
 import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.ItemTile;
 import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.Tile;
+import org.junit.Assume;
+import org.junit.jupiter.api.Test;
 
 class MazeTest {
 
   @Test
   void movePlayerTest() {
-    MazeWrapper mazeWrapper = new MazeWrapper(5, new Point(1,1));
+    MazeWrapper mazeWrapper = new MazeWrapper(5, new Point(1, 1));
     
     //check player is in the initial position
-    assert(mazeWrapper.getBoard()[1][1].containsItemType(Player.class));
+    Assume.assumeTrue(mazeWrapper.getBoard()[1][1].containsItemType(Player.class));
     
     mazeWrapper.getMaze().movePlayer(new SingleMove(Move.Direction.UP));
     //Check new position
-    assert(mazeWrapper.getBoard()[0][1].containsItemType(Player.class));
+    assertTrue(mazeWrapper.getBoard()[0][1].containsItemType(Player.class));
+    
+    //Check that a special event was not recorded
+    assertTrue(mazeWrapper.getMaze().getLastSpecialEvent() == null);
+    
   }
   
   @Test
   void consecutiveMovesPlayerTest() {
-    MazeWrapper mazeWrapper = new MazeWrapper(5, new Point(1,1));
+    MazeWrapper mazeWrapper = new MazeWrapper(5, new Point(1, 1));
     
     //check player is in the initial position
-    assert(mazeWrapper.getBoard()[1][1].containsItemType(Player.class));
+    Assume.assumeTrue(mazeWrapper.getBoard()[1][1].containsItemType(Player.class));
     
     mazeWrapper.getMaze().movePlayer(new SingleMove(Move.Direction.UP));
     mazeWrapper.getMaze().movePlayer(new SingleMove(Move.Direction.RIGHT));
     mazeWrapper.getMaze().movePlayer(new SingleMove(Move.Direction.RIGHT));
     //Check new position
-    assert(mazeWrapper.getBoard()[0][3].containsItemType(Player.class));
+    assertTrue(mazeWrapper.getBoard()[0][3].containsItemType(Player.class));
     //Check that the game has not ended yet
     assertEquals(mazeWrapper.maze.getStatus(), GameState.PLAYING);
   }
@@ -48,7 +55,7 @@ class MazeTest {
   @Test
   void testMazeLevel() {
     Tile[][] board = makeSimpleBoard(4);
-    Player player = new Player(new Point(3,3));
+    Player player = new Player(new Point(3, 3));
     board[3][3].replaceItem(player);
     
     Maze maze = new Maze(player, board, 0, 1);
@@ -58,19 +65,19 @@ class MazeTest {
   
   @Test
   void invalidMoveExitingBoard() {
-    MazeWrapper mazeWrapper = new MazeWrapper(5, new Point(0,0));
+    MazeWrapper mazeWrapper = new MazeWrapper(5, new Point(0, 0));
     
     //check player is in the initial position
-    assert(mazeWrapper.getBoard()[0][0].containsItemType(Player.class));
+    Assume.assumeTrue(mazeWrapper.getBoard()[0][0].containsItemType(Player.class));
     
     mazeWrapper.getMaze().movePlayer(new SingleMove(Move.Direction.LEFT));
     //Check position didn't change
-    assert(mazeWrapper.getBoard()[0][0].containsItemType(Player.class));
+    assertTrue(mazeWrapper.getBoard()[0][0].containsItemType(Player.class));
   }
   
   @Test
   void invalidNullMove() {
-    MazeWrapper mazeWrapper = new MazeWrapper(5, new Point(4,4));
+    MazeWrapper mazeWrapper = new MazeWrapper(5, new Point(4, 4));
     
     try {
     
@@ -81,12 +88,12 @@ class MazeTest {
   }
   
   /**
-   * When creating a board the player needs to be within the maze boundaries
+   * When creating a board the player needs to be within the maze boundaries.
    */
   @Test
   void invalidPlayerOutsideBoard() {
     try {
-      new Maze(new Player(new Point(4,4)), makeSimpleBoard(4), 0, 1);
+      new Maze(new Player(new Point(4, 4)), makeSimpleBoard(4), 0, 1);
     } catch (RuntimeException e) {
       assertEquals("The player must be within the board boundaries", e.getMessage());
     }
@@ -101,10 +108,11 @@ class MazeTest {
     try {
       //Note makeSimpleBoard doesn't assign the player to any tile.
       //Hence since that operation is not made the program throws an exception
-      new Maze(new Player(new Point(3,3)), makeSimpleBoard(4), 0, 1);
+      new Maze(new Player(new Point(3, 3)), makeSimpleBoard(4), 0, 1);
       
     } catch (RuntimeException e) {
-      assertEquals("The position of the given player doesn't match the player tile in the board", e.getMessage());
+      assertEquals("The position of the given player doesn't match the player tile in the board", 
+          e.getMessage());
     }
   }
   
@@ -119,6 +127,97 @@ class MazeTest {
     }
   }
   
+  /**
+   * Player collects a chip from level 1.
+   */
+  @Test
+  void collectChipLevelOneTest() {
+    try {
+      
+      Maze maze = new Maze(1);
+      int target = maze.getChipsLeft();
+      //Move the player to a tile containing a chip
+      maze.movePlayer(new SingleMove(Direction.LEFT));
+      maze.movePlayer(new SingleMove(Direction.LEFT));
+      
+      //Check the chips left has decrease by exactly one
+      assertEquals(target - 1, maze.getChipsLeft());
+      
+      //Check that a special action was recorded
+      assertEquals(maze.getLastSpecialEvent(), SpecialEvent.TREASURE_PICKED_UP);
+      
+      
+    } catch (IOException e) {
+      assert false : "data for level one should be stored";
+    }
+  }
+  
+  /**
+   * Player collects a key from level 1.
+   */
+  @Test
+  void collectKeyLevelOneTest() {
+    try {
+      
+      Maze maze = new Maze(1);
+      assertTrue(maze.getPlayerInventory().isEmpty(), 
+          "No items should be in the inventory at the start of level one");
+      final int target = maze.getChipsLeft();
+      //Move the player to a tile containing a key
+      maze.movePlayer(new SingleMove(Direction.DOWN));
+      maze.movePlayer(new SingleMove(Direction.LEFT));
+      maze.movePlayer(new SingleMove(Direction.LEFT));
+      
+      //Check the chips left has not changed
+      assertEquals(target, maze.getChipsLeft());
+      //Check that inventory contains only one item
+      assertEquals(maze.getPlayerInventory().size(), 1);
+      //Check the collected item is a key
+      assertTrue(maze.getPlayerInventory().get(0) instanceof Key);
+      //Check that a special action was recorded
+      assertEquals(maze.getLastSpecialEvent(), SpecialEvent.KEY_PICKED_UP);
+      
+      
+    } catch (IOException e) {
+      assert false : "data for level one should be stored";
+    }
+  }
+  
+  /**
+   * Player open door.
+   */
+  @Test
+  void openDoorLevelOneTest() {
+    try {
+      
+      Maze maze = new Maze(1);
+      assertTrue(maze.getPlayerInventory().isEmpty(), 
+          "No items should be in the inventory at the start of level one");
+      final int target = maze.getChipsLeft();
+      //Move the player to a tile containing a key
+      maze.movePlayer(new SingleMove(Direction.DOWN));
+      maze.movePlayer(new SingleMove(Direction.LEFT));
+      maze.movePlayer(new SingleMove(Direction.LEFT));
+      //Check the chips left has not changed
+      assertEquals(target, maze.getChipsLeft());
+      //Check a key has been picked up
+      assertTrue(maze.getPlayerInventory().get(0) instanceof Key);
+      
+      maze.movePlayer(new SingleMove(Direction.DOWN));
+      assertTrue(maze.movePlayer(new SingleMove(Direction.LEFT)), 
+          "The player hasn't be able to successfully move through the door, "
+          + "even though they had the correct key");
+      
+      
+      //Check that the key disappeared since it can only be used once
+      assertTrue(maze.getPlayerInventory().isEmpty());
+      //Check that a special action was recorded
+      assertEquals(maze.getLastSpecialEvent(), SpecialEvent.DOOR_OPENED);
+      
+    } catch (IOException e) {
+      assert false : "data for level one should be stored";
+    }
+  }
   
   
   
@@ -136,8 +235,8 @@ class MazeTest {
    */
   private Tile[][] makeSimpleBoard(int size){
     Tile[][] board = new Tile[size][size];
-    for(int row = 0; row < size; row++) {
-      for(int col = 0; col < size; col++) {
+    for (int row = 0; row < size; row++) {
+      for (int col = 0; col < size; col++) {
         board[row][col] = new ItemTile(null);
       }
     }
@@ -145,15 +244,15 @@ class MazeTest {
   }
   
   /**
-   * Allows wider access to the board for testing purpose
+   * Allows wider access to the board for testing purpose.
    * @author Emanuel Evans (ID: 300472656)
    *
    */
-  private class MazeWrapper{
+  private class MazeWrapper {
     private Maze maze;
     private Tile[][] board;
     
-    private MazeWrapper(int size, Point playerPos){
+    private MazeWrapper(int size, Point playerPos) {
       board = makeSimpleBoard(size);
       Player p = new Player(playerPos);
       
@@ -162,7 +261,9 @@ class MazeTest {
       maze = new Maze(p, board, 0, 1);
     }
     
-    private Maze getMaze(){ return maze; }
+    private Maze getMaze(){ 
+      return maze; 
+    }
     
     private Tile[][] getBoard(){ return board; }
     

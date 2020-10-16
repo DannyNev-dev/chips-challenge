@@ -1,12 +1,13 @@
 package nz.ac.vuw.ecs.swen225.gp20.maze;
 
+import com.google.common.base.Preconditions;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.google.common.base.Preconditions;
-
+import java.util.Random;
 import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.Tile;
+
+
 
 /**
  * Indicates where should the player move to.
@@ -28,6 +29,21 @@ public class SingleMove implements Move {
     Preconditions.checkArgument(direction != null, "The direction of a move can't be undefiened");
     this.direction = direction;
     //steps = new ArrayList<Point>();
+  }
+  
+  /**
+   * Create a SingleMove with a random direction.
+   * @return a new SingleMove with a random direction
+   */
+  public static SingleMove createRandomlyMove() {
+    //Get a random number which will correspond to a direction
+    int index = new Random().nextInt(Direction.values().length);
+    
+    //Get a random direction for the move
+    Direction randomDirection = Direction.values()[index];
+    
+    //Construct the new move given the random direction
+    return new SingleMove(randomDirection);
   }
   
   
@@ -61,28 +77,24 @@ public class SingleMove implements Move {
 
   @Override
   public Point getDestination(Point old) {
-    switch(direction) {
+    switch (direction) {
       case UP:
-        return new Point(old.x-1, old.y);
+        return new Point(old.x - 1, old.y);
       
       case RIGHT:
-        return new Point(old.x, old.y+1);
+        return new Point(old.x, old.y + 1);
         
       case DOWN:
-        return new Point(old.x+1, old.y);
+        return new Point(old.x + 1, old.y);
       
       default:
         //assert(direction == Direction.LEFT);
-        return new Point(old.x, old.y-1);
+        return new Point(old.x, old.y - 1);
       
    // default:
       //throw new RuntimeException("The direction of this move is invalid");
     }
-  }
-
-  
-  
-  
+  } 
   /*
    * with side effects
    * 

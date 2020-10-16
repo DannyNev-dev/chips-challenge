@@ -11,8 +11,15 @@ import java.util.Timer;
     
 public class GameTimer {
 
-private int currentMin =1, currentSec =60, stoppedSec, stoppedMin;
+private int currentMin, currentSec;
 private boolean restarted = false;
+
+
+public GameTimer(int min, int sec){
+    this.currentMin=min;
+    this.currentSec=sec;
+    this.start();
+}
 
 private Timer timer = new Timer();
 
@@ -23,25 +30,20 @@ private Timer timer = new Timer();
     @Override
         public void run() {
             currentSec--;
-            if( currentSec == 0 && currentMin > 0){
+            if( currentSec == 0 && currentMin > 0){ //Decreases seconds only if minute is above 0.
                 currentSec = 59;
                 currentMin--;
             }else if( timeOut()){
                 timer.cancel();
                 GUIWindow.display("Game Over\nYou run out of time!");
                 System.exit(0);
-            }else if( restarted ){
-                currentSec = stoppedSec;
-                currentMin = stoppedMin;
-                restarted = false;
-                //start();
             }
+            //Check is number only contains 1 digit to add 0 for displaying purposes.
             if(currentSec < 10){
-                GUIWindow.getTimer().setText(currentMin + " : 0" + currentSec);
+                GUIWindow.getTimer().setText(currentMin + ":0" + currentSec);
             }else {
-                GUIWindow.getTimer().setText(currentMin + " : " + currentSec);
+                GUIWindow.getTimer().setText(currentMin + ":" + currentSec);
             }
-            //System.out.println( "Countdown " + currentMin + " : " + currentSec);
         }
     };
 
@@ -49,7 +51,6 @@ private Timer timer = new Timer();
      * Runs a countdown starting at 2 minutes.
      */
     public void start(){
-       // timeOut = false;
         timer.scheduleAtFixedRate(task, 1000, 1000);
     }
 
@@ -57,17 +58,7 @@ private Timer timer = new Timer();
      * Stops countdown and stored the current timer components to be able to restart it later.
      */
     public void pause(){
-        stoppedSec = currentSec;
-        stoppedMin = currentMin;
         timer.cancel();
-    }
-
-    /**
-     * Set to tell when to restart the old countdown.
-     * @return always true
-     */
-    public void setRestarted(boolean b){
-         restarted = b;
     }
 
     /**
@@ -77,16 +68,24 @@ private Timer timer = new Timer();
     private boolean timeOut(){ return currentSec == 0 && currentMin ==0 ;}
 
     /**
-     * Method will be used to display timer with images
+     * Minute shown on timer.
      * @return integer of the current minute
      */
-    public int getMinute(){
+    public int getCurrentMin(){
         return currentMin;
     }
 
     /**
+     * Seconds shown on the timer.
+     * @return integer of the current minute
+     */
+    public int getCurrentSec(){
+        return currentSec;
+    }
+
+    /**
      * Method used to trim seconds into 0-9 digits to display more
-     * easily with images
+     * easily with images.
      * @return array of digits withing second;
      */
     public char[] getDigitsOfSecs(){
