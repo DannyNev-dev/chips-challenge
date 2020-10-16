@@ -13,6 +13,7 @@ import nz.ac.vuw.ecs.swen225.gp20.maze.items.Collectable;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Item;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Player;
 import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.ExitTile;
+import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.InfoTile;
 import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.Tile;
 import nz.ac.vuw.ecs.swen225.gp20.persistence.LevelReader;
 
@@ -41,6 +42,9 @@ public class Maze {
   
   //The last crucial event which happened in the game
   private SpecialEvent lastEvent;
+  
+  //Message to display when the player gets on the info tile
+  private String info;
   
   /**
    * Define the what are the different states a game can be in.
@@ -87,7 +91,11 @@ public class Maze {
     /**
      * Specify that the player has died due to a fire.
      */
-    CHAP_DIED_BURNT
+    CHAP_DIED_BURNT,
+    /**
+     * When the player is on the info tile
+     */
+    INFO_POINT
     
   }
   
@@ -171,17 +179,22 @@ public class Maze {
     //TODO improve move functionality this is just an initial approach
     
     lastEvent = null; //Reset any special events from the last movement
+    info = null;
     
     Point oldPos = player.getPosition();
     
     Point newPos = move.getDestination(oldPos);
+    
     if (!board.isPointInsideBoard(newPos)) {
       //Trying to move outside the board;
       return false;
     }
     
+    //Tile where the player is trying to move into
+    Tile newTile = board.getTile(newPos);
+    
     //Check if player can enter the new tile
-    if (!board.getTile(newPos).isAccessible(player)) {
+    if (!newTile.isAccessible(player)) {
       return false;
     }
     
@@ -190,25 +203,22 @@ public class Maze {
     //Change player position
     player.setPosition(newPos);
     
-    if (board.getTile(newPos).containsItem()) {
-      Item item = board.getTile(newPos).getItem();
+    if (newTile.hasAction()) {
+      //An action is an interaction with an item which might trigger a special event to be recorded
+      //For instance a key could be picked up or a door opened
+      lastEvent = newTile.applyAction(player);
       
-      /*
-      if (item.isCollectable()) {
-        Collectable toCollect = (Collectable) item;
-        lastEvent = toCollect.pickup(player);
-      } else 
-      */
-      if (item.hasAction()) {
-        //Interacting with an item might trigger a special event to be recorded
-        //For instance a key could be picked up
-        lastEvent = item.applyAction(player);
-      }
     }
     
     if (lastEvent != null && lastEvent.name().contains("CHAP_DIED")) {
       //Some tile or item has kill the player
       status = GameState.GAME_LOST;
+      
+    } else if (lastEvent == SpecialEvent.INFO_POINT) {
+      assert (newTile instanceof InfoTile) : 
+        "The info point event should only occur when the player is on an info tile";
+      
+      info = ((InfoTile) newTile).getInfo();
       
     } else if (isGameWon()) {
       //The player has reached the final tile
@@ -229,7 +239,9 @@ public class Maze {
   
   
   
-  
+  //---------------------------------------------------------------//
+  //       START of methods to investigate the game status         //
+  //---------------------------------------------------------------//
   
   
   private boolean isGameWon() {
@@ -263,7 +275,48 @@ public class Maze {
   }
   
   /**
+   * Retrieve the number indicating the level that this maze is representing.
+   * @return the level of this maze
+   */
+  public int getLevel() {
+    return level;
+  }
+
+  /**
+   * Check what the current state of the game is.
+   * @return the current state of the game
+   */
+  public GameState getStatus() {
+    return status;
+  }
+  
+  /**
+   * Check what the current state of the game is.
+   * @return a special even if it occurred in the last player move otherwise null
+   */
+  public SpecialEvent getLastSpecialEvent() {
+    return lastEvent;
+  }
+  
+  /**
+   * Return an info message cased by the current move.
+   * Currently only InfoTile has the ability to generate a message after a move
+   * 
+   * @return an info message or null if the current tile has no info
+   */
+  public String getInfo() {
+    checkState(info == null ^ lastEvent == SpecialEvent.INFO_POINT,
+        "The player should have just moved to an info tile if an info message is avaliable");
+    return info;
+  }
+  
+  //---------------------------------------------------------------//
+  //       END of methods to investigate the game status           //
+  //---------------------------------------------------------------//
+  
+  /**
    * Get the position of the player within the board.
+   * This is mainly used to optimise the render process
    * @return a point holding a copy of the player's coordinates
    */
   public Point getPlayerPosition() {
@@ -299,29 +352,7 @@ public class Maze {
     return true;    
   }
   
-  /**
-   * Retrieve the number indicating the level that this maze is representing.
-   * @return the level of this maze
-   */
-  public int getLevel() {
-    return level;
-  }
-
-  /**
-   * Check what the current state of the game is.
-   * @return the current state of the game
-   */
-  public GameState getStatus() {
-    return status;
-  }
   
-  /**
-   * Check what the current state of the game is.
-   * @return a special even if it occurred in the last player move otherwise null
-   */
-  public SpecialEvent getLastSpecialEvent() {
-    return lastEvent;
-  }
   
   
   
