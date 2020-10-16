@@ -52,7 +52,7 @@ public class Record{
 	 * Calculate filename to save, if preferred folder is specified, it shall be passed from Application in initializer.
 	 */
 	public String getSaveFileName() {	
-		String fileName = new SimpleDateFormat("dd_MM_yyyy_HH-mm").format(new Date());
+		String fileName = new SimpleDateFormat("dd_MM_yyyy_HH-mm-ss").format(new Date());
 		return "Level" + recordedGame.level + "_" + fileName + ".json";
 	}
 
