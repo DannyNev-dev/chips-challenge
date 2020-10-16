@@ -17,18 +17,28 @@ import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.Tile;
  */
 public class SingleMove implements Move {
   
-  private final Direction direction;
+  private Direction direction;
   List<Point> steps;
-  
 
   /**
    * Construct a new move made of a single step.
    * @param direction where is this move going to
    */
   public SingleMove(Direction direction) {
+    this();
     Preconditions.checkArgument(direction != null, "The direction of a move can't be undefiened");
     this.direction = direction;
     //steps = new ArrayList<Point>();
+  }
+  
+  /**
+   * This constructor should not be used. 
+   * It was required by Jackson library for serialisation purposes
+   */
+  private SingleMove() {
+    /*throw new UnsupportedOperationException(
+       "The direction must be defined as an argument, this constructor can't be used");
+       */
   }
   
   /**
