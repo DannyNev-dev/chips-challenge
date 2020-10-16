@@ -44,14 +44,14 @@ public class EventListener implements Plugin {
 		return record;
 	}
 
-	public static Replay getReplay() {
-		
-		if (replay == null) {
-			String filepath = record.getSaveFileName();
-			new Replay(filepath);
-		}
-		return replay;
-	}
+//	public static Replay getReplay() {
+//		
+//		if (replay == null) {
+//			String filepath = record.getSaveFileName();
+//			new Replay(filepath);
+//		}
+//		return replay;
+//	}
 	
 	@Override
 	public void onEvent(Event e) {

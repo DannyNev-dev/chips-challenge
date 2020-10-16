@@ -24,62 +24,29 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  *
  */
 public class Replay {
-	//private JsonObject level;
-	//private JsonArray steps;
-	private RecordedGame recordedGame;
-	
-	/**
-	 * constructor of Replay.
-	 * @param gameRecord
-	 */
-	public Replay(String filepath) {
 
-		this.setRecordedGame(this.loadRecordedGame(filepath));
-	}
-		
-	public RecordedGame getRecordedGame() {
-		return recordedGame;
-	}
-
-	public void setRecordedGame(RecordedGame recordedGame) {
-		this.recordedGame = recordedGame;
-	}
-	
-	/**
-	 * this method shall be called by Application when file loading dialog gets file path(name).
-	 * @param filename
-	 * @return a recorded game with a given file name
-	 */
-	public RecordedGame loadRecordedGame(String filepath) {		
-		ObjectMapper mapper = new ObjectMapper();
-
-		mapper.setVisibility(PropertyAccessor.ALL, Visibility.NONE);
-		mapper.setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
-		mapper.setVisibility(PropertyAccessor.CREATOR, Visibility.ANY);
-		// JSon file to Java object
-		// load the file and deserialize it to a new RecordedGame object, return it.
-		try {
-			RecordedGame rg = mapper.readValue(new File(filepath), RecordedGame.class);
-			String rg1 = mapper.writeValueAsString(rg);
-			String rg2 = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(rg);
-			System.out.println(rg1);
-			System.out.println(rg2);
-			return rg;
-		}
-		catch(FileNotFoundException e) {    
-			e.printStackTrace();
-			System.out.println("File can not be found.");
-			return null;
-		} 
-		catch (JsonParseException | JsonMappingException e) {
-			e.printStackTrace();
-			System.out.println("File can not be parsed.");
-			return null;
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-			System.out.println("Unknwon error happened");
-			return null;
-		} 
-	}	
+//	private RecordedGame recordedGame;
+//	
+//	/**
+//	 * constructor of Replay.
+//	 * @param gameRecord
+//	 */
+//	public Replay(String filepath) {
+//
+//		this.setRecordedGame(this.loadRecordedGame(filepath));
+//	}
+//		
+//	public RecordedGame getRecordedGame() {
+//		return recordedGame;
+//	}
+//
+//	public void setRecordedGame(RecordedGame recordedGame) {
+//		this.recordedGame = recordedGame;
+//	}
+//	
+//	/**
+//	 * this method shall be called by Application when file loading dialog gets file path(name).
+//	 * @param filename
+//	 * @return a recorded game with a given file name
+//	 */
 }

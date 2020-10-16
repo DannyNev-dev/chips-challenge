@@ -39,7 +39,7 @@ public class TestRecord {
 		String filepath = listener.getRecord().saveToJson();
 		// Load the JSON
 		
-		listener.getReplay().loadRecordedGame(filepath);
+		listener.getRecord().loadRecordedGame(filepath);
 		
 		
 		
