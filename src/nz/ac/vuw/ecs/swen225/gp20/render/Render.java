@@ -60,7 +60,7 @@ class View {
 	private int xSize;
 	private int ySize;
 	Tile[][] board;
-	private int tileSize = 41;
+	private int tileSize = 50;
 	private final static int GAP = 2;
 	private BoardPanel BoardPanel;
 	
