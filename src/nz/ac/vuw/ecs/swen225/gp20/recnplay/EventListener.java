@@ -19,7 +19,7 @@ public class EventListener implements Plugin {
 
 	private static Record record;
 	
-	private static Replay replay;
+	//private static Replay replay;
 	/**
 	 * a static method to get current record instance
 	 * can be called for all project.
