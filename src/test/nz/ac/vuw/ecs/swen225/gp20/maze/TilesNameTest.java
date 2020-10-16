@@ -18,7 +18,7 @@ import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.Tile;
 import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.Wall;
 import org.junit.jupiter.api.Test;
 
-class TilesTest {
+class TilesNameTest {
 
   /**
    * Check that a basic tile with chip in top returns the right name.
@@ -37,19 +37,7 @@ class TilesTest {
     Tile tile = new Wall();
     assertEquals("wallTile", tile.getName());
   }
-  
-  /**
-   * Check that is invalid adding an item to a wall.
-   */
-  @Test
-  void addItemWallIvalidTest() {
-    Tile tile = new Wall();
-    try {
-      tile.replaceItem(new Key(Colour.GREEN));
-    } catch (RuntimeException e) {
-      assert (true);
-    }
-  }
+
   
   /**
    * Check name of exit lock tile.
