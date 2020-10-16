@@ -1,5 +1,6 @@
 package nz.ac.vuw.ecs.swen225.gp20.maze.tiles;
 
+import nz.ac.vuw.ecs.swen225.gp20.maze.Maze.SpecialEvent;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Entity;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Item;
 
@@ -32,6 +33,16 @@ public class InfoTile extends Tile {
   public InfoTile(String info, Item item) {
     super(item);
     this.info = info;
+  }
+  
+  @Override
+  public boolean hasAction() {
+    return true;
+  }
+  
+  @Override
+  public SpecialEvent applyAction(Entity entity) {
+    return SpecialEvent.INFO_POINT;
   }
 
   /**
