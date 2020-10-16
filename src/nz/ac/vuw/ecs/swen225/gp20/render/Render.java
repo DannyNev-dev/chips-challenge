@@ -121,7 +121,7 @@ class View {
 	 */
 	class BoardPanel extends JPanel {
 		BoardPanel() {
-			setBorder(BorderFactory.createLineBorder(Color.BLACK, GAP));
+			//setBorder(BorderFactory.createLineBorder(Color.BLACK, GAP));
 			GridLayout layout = new GridLayout(xSize - 6, ySize - 6);
 			setLayout(layout);
 
@@ -149,7 +149,7 @@ class View {
 
 		DispTile() {
 			setPreferredSize(new Dimension(tileSize, tileSize));
-			setBorder(BorderFactory.createLineBorder(Color.BLACK, GAP));
+			//setBorder(BorderFactory.createLineBorder(Color.BLACK, GAP));
 		}
 	}
 
