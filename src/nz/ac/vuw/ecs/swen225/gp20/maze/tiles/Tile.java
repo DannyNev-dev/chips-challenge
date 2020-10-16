@@ -1,6 +1,8 @@
 package nz.ac.vuw.ecs.swen225.gp20.maze.tiles;
 
-import com.google.common.base.Preconditions;
+import static com.google.common.base.Preconditions.checkNotNull;
+
+import nz.ac.vuw.ecs.swen225.gp20.maze.Maze.SpecialEvent;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Entity;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Item;
 
@@ -42,10 +44,12 @@ public abstract class Tile {
   public abstract String getName();
   
   /**
-   * get item
+   * get item.
    * @return item in this cell
    */
-  public Item getItem() { return item; }
+  public Item getItem() { 
+    return item; 
+  }
 
   /**
    * Specify whether an entity could access the given tile, this might depend by
@@ -57,6 +61,34 @@ public abstract class Tile {
    * @return whether this tile can be currently accessed
    */
   public abstract boolean isAccessible(Entity entity);
+  
+  
+  /**
+   * Check if this item in the tile is linked with an action.
+   * By default items do not have an action
+   * 
+   * @return whether this item has an associated
+   */
+  public boolean hasAction() {
+    if (item == null) {
+      return false;
+    }
+    
+    return item.hasAction();
+  }
+  
+  /**
+   * Apply the action linked with the item in this tile.
+   * This might affects who interacts with this item.
+   * 
+   * @param entity who is interacting with this item
+   * @return This method return a special event or null depending by what happens 
+   */
+  public SpecialEvent applyAction(Entity entity) {
+    checkNotNull(item, "An action can't be applied to this tile becuase it has no item");
+    
+    return item.applyAction(entity);
+  }
   
   
   /**
