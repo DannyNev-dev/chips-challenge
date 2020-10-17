@@ -51,6 +51,7 @@ public class Player implements Entity {
    * @param position where the player is currently located
    * @param chipsCollected number of chips which have been already collected
    */
+  /*
   public Player(List<Collectable> inventory, Point position, int chipsCollected) {
     checkArgument(inventory != null, "Inventory can't be null when loading a player");
     checkArgument(position != null, "The player must have a well defeined position");
@@ -60,6 +61,7 @@ public class Player implements Entity {
     this.position = position;
     this.chipsCollected = chipsCollected;
   }
+  */
 
   /**
    * Increase the number of chips which have been collected by one.
@@ -106,13 +108,8 @@ public class Player implements Entity {
 
   @Override
   public boolean isAccessible(Entity entity) {
-    //TODO if player explode??
-    return false;
-  }
-
-  @Override
-  public boolean hasColleced(Collectable item) {
-    return inventory.contains(item);
+    //Other entity can move into the player's tile to kill them
+    return true;
   }
   
   @Override
@@ -141,8 +138,4 @@ public class Player implements Entity {
     
     //if a key was dropped a door must have been opened
   }
-
-  
-  
-  //when move removes the item from the tile
 }

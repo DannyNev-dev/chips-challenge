@@ -15,20 +15,23 @@ public class ExitTile extends Tile {
   private static final String name = "exitTile";
 
   /**
-   * Create an exit tile which will never have an item.
+   * Create an exit tile. It can't be initialised with an item.
+   * This will prevent possible errors in the maze creation that might prevent 
+   * The game to be finished. For example if a poison is on the exit tile.
    */
   public ExitTile() {
     super(null);
   }
   
   @Override
-  public Item replaceItem(Item newItem) {
-    throw new UnsupportedOperationException("Items can't be added to an exit tile");
-  }
-
-  @Override
   public String getName() {
-    return name;
+    if (item == null) {
+      return name;
+    }
+    
+    //If this tile contains an item it will be name with its name followed by Tile
+    //The suffix will be the same as the tile name but needs capitalisation
+    return item.getName() + name.substring(0, 1).toUpperCase() + name.substring(1);
   }
 
   @Override
