@@ -21,17 +21,28 @@ class MazeTest {
 
   @Test
   void movePlayerTest() {
-    MazeWrapper mazeWrapper = new MazeWrapper(5, new Point(1, 1));
+    //MazeWrapper mazeWrapper = new MazeWrapper(5, new Point(1, 1));
+    Maze maze;
+    try {
+      maze = new Maze(1);
+    //Check player is in the initial position
+      Assume.assumeTrue(maze.getBoardObject().getTile(new Point(7, 7)).containsItemType(Player.class));
+      
+      maze.movePlayer(new SingleMove(Move.Direction.UP));
+      //Check new position
+      assertEquals(maze.getPlayerPosition(), new Point(6, 7));
+      
+      //Check that a special event was not recorded
+      assertTrue(maze.getLastSpecialEvent() == null);
+      
+      //Check that the player orientation is not the same as the move direction
+      //assertEquals(maze.getBoardObject().getTile(maze.getPlayerPosition()) );
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
     
-    //check player is in the initial position
-    Assume.assumeTrue(mazeWrapper.getBoard()[1][1].containsItemType(Player.class));
     
-    mazeWrapper.getMaze().movePlayer(new SingleMove(Move.Direction.UP));
-    //Check new position
-    assertTrue(mazeWrapper.getBoard()[0][1].containsItemType(Player.class));
-    
-    //Check that a special event was not recorded
-    assertTrue(mazeWrapper.getMaze().getLastSpecialEvent() == null);
     
   }
   
@@ -50,6 +61,17 @@ class MazeTest {
     //Check that the game has not ended yet
     assertEquals(mazeWrapper.maze.getStatus(), GameState.PLAYING);
   }
+  
+  /**
+   * Create a SingleMove with a random direction using the static factory method.
+   */
+  @Test
+  void randomSingleMoveTest() {
+    SingleMove randomMove = SingleMove.createRandomlyMove();
+    
+    assertTrue(randomMove.getDirection() != null);
+  }
+  
   
   
   @Test

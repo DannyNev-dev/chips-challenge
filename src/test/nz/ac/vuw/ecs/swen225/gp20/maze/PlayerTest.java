@@ -1,12 +1,14 @@
 package test.nz.ac.vuw.ecs.swen225.gp20.maze;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.awt.Point;
-import java.util.ArrayList;
-import nz.ac.vuw.ecs.swen225.gp20.maze.items.Collectable;
+import nz.ac.vuw.ecs.swen225.gp20.maze.items.Entity;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Key;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Player;
+import org.junit.Assume;
 import org.junit.jupiter.api.Test;
 
 class PlayerTest {
@@ -39,7 +41,7 @@ class PlayerTest {
   @Test
   void negativeChipsInvalidTest() {
     try {
-      new Player(new ArrayList<Collectable>(), new Point(5, 5), -8);
+      new Player(new Point(5, 5));
     } catch (IllegalArgumentException e) {
       assertEquals("Number of chips collected can't be negative", e.getMessage());
     }
@@ -51,7 +53,7 @@ class PlayerTest {
   @Test
   void nullInventoryInvalidTest() {
     try {
-      new Player(null, new Point(5, 5), 13);
+      new Player(new Point(5, 5));
     } catch (IllegalArgumentException e) {
       assertEquals("Inventory can't be null when loading a player", e.getMessage());
     }
@@ -80,6 +82,30 @@ class PlayerTest {
     }
     assertTrue(p.getChipsCollected() == 10);
 
+  }
+  
+  /**
+   * Check entities can move into the player's tile to kill them.
+   */
+  @Test
+  void playerTileAccessibleTest() {
+    Entity enemy = new Player(new Point(5, 4));
+    assertTrue(new Player(new Point(5, 5)).isAccessible(enemy));
+  }
+  
+  /**
+   * Check that the player is not allowed to drop an item which they have not collected.
+   */
+  @Test
+  void invalidDropItemTest() {
+    Player player = new Player(new Point(5, 4));
+    Assume.assumeTrue(player.getInventory().isEmpty());
+    
+    try {
+      player.dropCollectable(new Key(Key.Colour.GREEN));
+    } catch (IllegalArgumentException e) {
+      assertEquals("The given collectable is not in the player inventory", e.getMessage());
+    }
   }
 
 }
