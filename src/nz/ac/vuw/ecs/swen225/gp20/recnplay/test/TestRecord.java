@@ -14,7 +14,6 @@ import nz.ac.vuw.ecs.swen225.gp20.maze.Move.Direction;
 import nz.ac.vuw.ecs.swen225.gp20.recnplay.Event;
 import nz.ac.vuw.ecs.swen225.gp20.recnplay.EventListener;
 import nz.ac.vuw.ecs.swen225.gp20.recnplay.RecordedGame;
-import nz.ac.vuw.ecs.swen225.gp20.recnplay.Replay;
 import nz.ac.vuw.ecs.swen225.gp20.recnplay.test.TestMove.TestDirection;
 import nz.ac.vuw.ecs.swen225.gp20.recnplay.Event.Type;
 
@@ -38,22 +37,9 @@ public class TestRecord {
 		// Save to JSON
 		String filepath = listener.getRecord().saveToJson();
 		// Load the JSON
-		
-		listener.getRecord().loadRecordedGame(filepath);
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+		System.out.println("Test game saved to " + filepath);
+		RecordedGame rg = listener.getRecord().loadRecordedGame(filepath);
+		System.out.println("Recorded Game is in level: " + rg.getLevel());
 		
 		
 //		ObjectMapper mapper = new ObjectMapper();

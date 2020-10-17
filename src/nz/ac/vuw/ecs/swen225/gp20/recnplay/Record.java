@@ -9,6 +9,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.Iterator;
+
 import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonArrayBuilder;
@@ -106,4 +108,23 @@ public class Record{
 			return null;
 		} 
 	}	
+	
+	public Iterator<Event> getIterator() {
+		Iterator<Event> gameIter = recordedGame.actions.iterator();
+		return gameIter;		
+	}
+	
+	public void getEvent() {
+		int delay = 1000;
+		while(getIterator().hasNext()) {
+			getIterator().next();
+			try {
+				Thread.sleep(delay);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	
 }

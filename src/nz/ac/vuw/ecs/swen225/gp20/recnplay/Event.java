@@ -1,7 +1,5 @@
 package nz.ac.vuw.ecs.swen225.gp20.recnplay;
 
-import java.awt.Point;
-import nz.ac.vuw.ecs.swen225.gp20.maze.Move.Direction;
 import nz.ac.vuw.ecs.swen225.gp20.maze.SingleMove;
 
 /**
