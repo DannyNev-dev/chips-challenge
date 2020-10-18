@@ -21,12 +21,14 @@ public class Player implements Entity {
   //Ending of all the player names, stored to improve efficiency
   private static final String name = "chip";
   
-  //Store where the player is facing
-  private Move.Direction orientation;
+ 
   
   private List<Collectable> inventory;
   
   private Point position;
+  
+  //Store where the player is facing
+  private Move.Direction orientation;
   
   private int chipsCollected;
   
@@ -41,7 +43,7 @@ public class Player implements Entity {
     checkArgument(position != null, "The player must have a well defeined position");
     this.inventory = new ArrayList<Collectable>();
     this.chipsCollected = 0;
-    this.position = position;
+    this.position = (Point) position.clone();
   }
   
   
@@ -49,19 +51,20 @@ public class Player implements Entity {
    * Create a player from a previous game.
    * @param inventory items which have already been collected
    * @param position where the player is currently located
+   * @param orientation where the player is facing
    * @param chipsCollected number of chips which have been already collected
    */
-  /*
-  public Player(List<Collectable> inventory, Point position, int chipsCollected) {
+  public Player(List<Collectable> inventory, Point position, 
+      Move.Direction orientation,  int chipsCollected) {
     checkArgument(inventory != null, "Inventory can't be null when loading a player");
     checkArgument(position != null, "The player must have a well defeined position");
     checkArgument(chipsCollected >= 0, "Number of chips collected can't be negative");
    
     this.inventory = new ArrayList<Collectable>(inventory);
-    this.position = position;
+    this.position = (Point) position.clone();
+    this.orientation = orientation;
     this.chipsCollected = chipsCollected;
   }
-  */
 
   /**
    * Increase the number of chips which have been collected by one.
@@ -102,8 +105,7 @@ public class Player implements Entity {
   
   @Override
   public void setPosition(Point newCoordinates) {
-    //TODO not quite safe
-    position = newCoordinates;
+    position = new Point(newCoordinates.x, newCoordinates.y);
   }
 
   @Override
@@ -137,5 +139,69 @@ public class Player implements Entity {
     inventory.remove(toDrop);
     
     //if a key was dropped a door must have been opened
+  }
+  
+  
+  
+  
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + chipsCollected;
+    result = prime * result + ((inventory == null) ? 0 : inventory.hashCode());
+    result = prime * result + ((orientation == null) ? 0 : orientation.hashCode());
+    result = prime * result + ((position == null) ? 0 : position.hashCode());
+    return result;
+  }
+
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (obj == null) {
+      return false;
+    }
+    if (getClass() != obj.getClass()) {
+      return false;
+    }
+    Player other = (Player) obj;
+    if (chipsCollected != other.chipsCollected)
+      return false;
+    if (inventory == null) {
+      if (other.inventory != null) {
+        return false;
+      }
+    } else if (!inventory.equals(other.inventory)) {
+      return false;
+    }
+    if (orientation != other.orientation) {
+      return false;
+    }
+    if (position == null) {
+      if (other.position != null) {
+        return false;
+      }
+    } else if (!position.equals(other.position)) {
+      return false;
+    }
+    return true;
+  }
+
+
+  /**
+   * Override clone.
+   * Create a new player with the same characteristics.
+   */
+  public Player clone() {
+    //Deep clone inventory
+    List<Collectable> newInventory = new ArrayList<>();
+    for (Collectable item : inventory) {
+      newInventory.add(item); //.clone());
+    }
+   
+    return new Player(newInventory, position, orientation, chipsCollected);
   }
 }

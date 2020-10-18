@@ -43,6 +43,13 @@ public interface Move {
   public Point getDestination(Point old);
   
   /**
+   * Get the direction the last step is pointing to.
+   * It can be used to know where the player will be facing
+   * @return were the move is going to
+   */
+  public Direction getFinalDirection();
+  
+  /**
    * Get the coordinates of the cell the entity passed through while moving.
    * If only one step is made in a move getDestination will be sufficient.
    * This method had been included in the interface for when multiple step moves will be added.

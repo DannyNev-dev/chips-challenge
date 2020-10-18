@@ -49,12 +49,8 @@ public class SingleMove implements Move {
     return new SingleMove(randomDirection);
   }
   
-  /**
-   * Get the direction this move is pointing to.
-   * It can be used to know where the player will be facing
-   * @return were the move is going to
-   */
-  public Direction getDirection() {
+  @Override
+  public Direction getFinalDirection() {
     checkNotNull(direction, "This move has not been created properly, direction must be defined");
     return direction;
   }
