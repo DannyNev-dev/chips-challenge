@@ -65,7 +65,7 @@ class MazeTest {
   void randomSingleMoveTest() {
     Move randomMove = SingleMove.createRandomlyMove();
     
-    assertTrue(randomMove.getFinalDirection() != null);
+    assertTrue(randomMove.getLastDirection() != null);
   }
   
   @Test

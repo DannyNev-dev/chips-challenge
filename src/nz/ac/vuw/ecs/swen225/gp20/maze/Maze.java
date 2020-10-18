@@ -29,8 +29,10 @@ public class Maze {
   //Representation of the board state
   private Board board;
   
-  //Total number of chips to collect
-  private final int target;
+  /**
+   * Total number of chips to be collect in the level of this maze.
+   */
+  public final int target;
   
   private final int level;
   
@@ -196,7 +198,7 @@ public class Maze {
     
     //Add player to new tile
     board.getTile(newPos).replaceItem(player);
-    player.setOrientation(move.getFinalDirection());
+    player.setOrientation(move.getLastDirection());
     
     //Note that if the player will die in this move the movement will still be valid
     updateStatus();
