@@ -12,14 +12,6 @@ import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.Tile;
  */
 public interface Entity extends Item {
   
-  
-  /**
-   * Check whether a given item has been already collected by this entity.
-   * @param item to verify if it was collected
-   * @return whether the given item is in the inventory
-   */
-  public boolean hasColleced(Collectable item);
-  
   /**
    * Get the collection of collectable items which might affect where the tile can be accessed.
    * @return unmodifiable list of collected items

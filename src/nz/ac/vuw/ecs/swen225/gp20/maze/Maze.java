@@ -6,11 +6,9 @@ import static com.google.common.base.Preconditions.checkState;
 
 import java.awt.Point;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Collectable;
-import nz.ac.vuw.ecs.swen225.gp20.maze.items.Item;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Player;
 import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.ExitTile;
 import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.InfoTile;
@@ -27,8 +25,6 @@ public class Maze {
   
   //Reference to the main player controlled by the user
   private Player player;
-  
-  //private List<Entity> bugs = new ArrayList<>();
   
   //Representation of the board state
   private Board board;
@@ -66,6 +62,11 @@ public class Maze {
     GAME_WON
   }
   
+  /**
+   * Represent a special interaction of the player with the board.
+   * @author Emanuel Evans (ID: 300472656)
+   *
+   */
   public static enum SpecialEvent {
     /**
      * When Chap picks up a key and puts it in his inventory.
@@ -93,7 +94,7 @@ public class Maze {
      */
     CHAP_DIED_BURNT,
     /**
-     * When the player is on the info tile
+     * When the player is on the info tile.
      */
     INFO_POINT
     
@@ -108,6 +109,7 @@ public class Maze {
    * @param target Chips left to collect
    * @param level the level of the current board
    */
+  /*
   public Maze(Player player, Tile[][] boardData, int target, int level) {
     
     //TODO remove this constructor!!
@@ -118,11 +120,14 @@ public class Maze {
     checkArgument(level >= 0, "levels can't be negative");
     this.player = player;
     this.board = new Board(boardData);
+    
     //TODO clone board
+    
     this.target = target;
     this.level = level;
     assert (isPlayerPosValid());
   }
+  */
   
   /**
    * Create a new maze given a level.
@@ -130,11 +135,10 @@ public class Maze {
    * @throws IOException if no object has that level
    */
   public Maze(int level) throws IOException {
-    checkArgument(level >= 0, "levels can't be negative");
+    checkArgument(level > 0, "levels can't be negative, level 1 is the first level");
     LevelReader loader = new LevelReader(level);
     this.player = loader.loadPlayer();
     this.board = new Board(loader.loadBoard());
-    //TODO clone board
     this.target = loader.loadTarget();
     this.level = level;
     assert (isPlayerPosValid());
@@ -142,42 +146,22 @@ public class Maze {
   }
 
   /**
-   *Merge board.
-   *@return board grouping data about the maze's tiles
-   */
-  public Tile[][] getBoard() {
-    return board.getBoard();
-  }
-  
-  /**
-   * Ideally this will be the only method to get the board. TODO .
-   * @return board grouping data about the maze's tiles
-   */
-  public Board getBoardObject() {
-    return board;
-  }
-  
-  
-  
-
-  /**
    * Move the player from it's current position to a different tile in the board.
    * 
    * @param move indicates where should the player move to
    * @return whether the move was successful
    */
-  public boolean movePlayer(SingleMove move) {
+  public boolean movePlayer(Move move) {
     if (status != GameState.PLAYING) {
       //TODO remove when application checks the game status
       return false;
     }
+    //checkState(status == GameState.PLAYING, "The player can't move if the game has ended");
     
     checkArgument(move != null, "A well initialized move is required");
     checkArgument(isPlayerPosValid());
     checkState(status == GameState.PLAYING, "Moves can't be applied unless the game is active");
-    
-    //TODO improve move functionality this is just an initial approach
-    
+
     lastEvent = null; //Reset any special events from the last movement
     info = null;
     
@@ -210,30 +194,15 @@ public class Maze {
       
     }
     
-    if (lastEvent != null && lastEvent.name().contains("CHAP_DIED")) {
-      //Some tile or item has kill the player
-      status = GameState.GAME_LOST;
-      
-    } else if (lastEvent == SpecialEvent.INFO_POINT) {
-      assert (newTile instanceof InfoTile) : 
-        "The info point event should only occur when the player is on an info tile";
-      
-      info = ((InfoTile) newTile).getInfo();
-      
-    } else if (isGameWon()) {
-      //The player has reached the final tile
-      status = GameState.GAME_WON;
-      System.out.print("Well done you completed the level!!!");
-      return false;
-    }
-    
     //Add player to new tile
     board.getTile(newPos).replaceItem(player);
+    player.setOrientation(move.getFinalDirection());
     
+    //Note that if the player will die in this move the movement will still be valid
+    updateStatus();
     
-    
+    //Check that there the player position matches and that there is exactly one player on the board
     assert (isPlayerPosValid());
-    
     return true;
   }
   
@@ -242,15 +211,6 @@ public class Maze {
   //---------------------------------------------------------------//
   //       START of methods to investigate the game status         //
   //---------------------------------------------------------------//
-  
-  
-  private boolean isGameWon() {
-    //Get the coordinates of the tile where the player should be located
-    Point playerPos = player.getPosition();
-    
-    //Check if it is on the exit tile
-    return board.getTile(playerPos) instanceof ExitTile;
-  }
   
   /**
    * Get the number of chips which the player still have to collect to complete the level.
@@ -276,6 +236,7 @@ public class Maze {
   
   /**
    * Retrieve the number indicating the level that this maze is representing.
+   * Note that once the maze has been created the level will not change.
    * @return the level of this maze
    */
   public int getLevel() {
@@ -284,18 +245,11 @@ public class Maze {
 
   /**
    * Check what the current state of the game is.
+   * It differentiate from when the game has been won, lost or if it's still on.
    * @return the current state of the game
    */
   public GameState getStatus() {
     return status;
-  }
-  
-  /**
-   * Check what the current state of the game is.
-   * @return a special even if it occurred in the last player move otherwise null
-   */
-  public SpecialEvent getLastSpecialEvent() {
-    return lastEvent;
   }
   
   /**
@@ -310,8 +264,21 @@ public class Maze {
     return info;
   }
   
+  /**
+   * Check if the player has interacted with the board in a special way during the last move.
+   * @return a special event if it occurred in the last player move otherwise null
+   */
+  public SpecialEvent getLastSpecialEvent() {
+    return lastEvent;
+  }
+  
   //---------------------------------------------------------------//
   //       END of methods to investigate the game status           //
+  //---------------------------------------------------------------//
+  
+  
+  //---------------------------------------------------------------//
+  //     START of methods to obtain data to render the maze        //
   //---------------------------------------------------------------//
   
   /**
@@ -325,16 +292,74 @@ public class Maze {
   }
   
   /**
+   * Get a copy of the player in this maze.
+   */
+  public Player getPlayer() {
+    checkArgument(isPlayerPosValid());
+    return player.clone();
+  }
+  
+  /**
+   * Return a copy of the board data.
+   *@return board grouping data about the maze's tiles
+   */
+  public Tile[][] getBoard() {
+    return board.getBoard();
+  }
+  
+  /**
+   * Return a clone of the board.
+   * Ideally this will be the only method to get the board. TODO .
+   * @return board grouping data about the maze's tiles
+   */
+  public Board getBoardObject() {
+    return board.clone();
+  }
+  
+  //---------------------------------------------------------------//
+  //       END of methods to obtain data to render the maze        //
+  //---------------------------------------------------------------//
+  
+  
+  /**
+   * Update the status of the game based on the special events which occurred during the last move.
+   */
+  private void updateStatus() {
+    if (lastEvent != null && lastEvent.name().contains("CHAP_DIED")) {
+      //Some tile or item has kill the player
+      status = GameState.GAME_LOST;
+      
+    } else if (lastEvent == SpecialEvent.INFO_POINT) {
+      Tile playerTile = board.getTile(player.getPosition());
+      
+      assert (playerTile instanceof InfoTile) : 
+        "The info point event should only occur when the player is on an info tile";
+      
+      info = ((InfoTile) playerTile).getInfo();
+      
+    } else if (isGameWon()) {
+      //The player has reached the final tile
+      status = GameState.GAME_WON;
+      System.out.print("Well done you completed the level!!!");
+    }
+  }
+  
+  private boolean isGameWon() {
+    //Get the coordinates of the tile where the player should be located
+    Point playerPos = player.getPosition();
+    
+    //Check if it is on the exit tile
+    return board.getTile(playerPos) instanceof ExitTile;
+  }
+  
+  /**
    * Check whether the position store in the player object match the board.
    * @return whether the tile at the player coordinate actually contains a player
    * @throws RuntimeException is the player is undefined or has an invalid position
    */
   private boolean isPlayerPosValid() {
-    /*
-    if (player == null) {
-      throw new RuntimeException("There must be a player on the board");
-    }
-    */
+    checkNotNull(player, "There must be a player on the board to validate its position");
+   
     //Get the coordinates of the tile where the player should be located
     Point playerPos = player.getPosition();
     
@@ -349,50 +374,14 @@ public class Maze {
           "The position of the given player doesn't match the player tile in the board");
     }
     
-    return true;    
+    return isThereOnlyOnePlayer();    
   }
   
-  
-  
-  
-  
-  /* 
-   * for when the timer is over?
-  public void setStatus(GameState status) {
-    this.status = status;
-  }
-  */
-
-  /*
-   * Manual Test.
-   * 
-   * @param args initial arguments
+  /**
+   * Check that exactly one player is on the board.
+   * @return True if there is exactly one player, false otherwise
    */
-  /*
-  public static void main(String... args) {
-    //Preconditions.checkState(test, "test");
-    System.out.println("The sky is " + Key.Colour.BLUE);
-    
-    //assert(false);
+  private boolean isThereOnlyOnePlayer() {
+    return board.countItems(Player.class) == 1;
   }
-  
-  */
-  /*
-   * Get a copy of the tile where the player is located.
-   * @return the tile where the player is standing
-   */
-  /*
-  public Tile getPlayerTile() {
-    Preconditions.checkNotNull(player, "There must be a player on the board to get its position");
-    //Get the coordinates of the tile where the player should be located
-    Point p = player.getPosition();
-    //Validate the player position against the board, hence check that tile contains a player
-    Preconditions.checkArgument(board[p.x][p.y].containsItemType(Player.class));
-    
-    return board[p.x][p.y];
-    
-    
-  }
-  */
-
 }

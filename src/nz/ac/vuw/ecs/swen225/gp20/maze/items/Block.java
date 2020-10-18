@@ -44,23 +44,10 @@ public class Block implements Item {
   @Override
   public boolean isAccessible(Entity entity) {
     checkNotNull(entity, "An entity needs to be initialized before checking where it can move");
-    for (Collectable item : entity.getInventory()) {
-      //Look if this collectable item is a key of the right colour
-      //if (item instanceof Key && ((Key) item).getColour() == this.keyType) {
-        
-      if (key.equals(item)) {
-        //Equals method would checks whether the item is a key and if so if the colour is the same
-        //however at the moment the block has the colour not the key hence it would either need to
-        //be constructed with a key or make a new one before using equals
-        
-        //Door could be opened
-        return true;
-        
-        
-      }
-    }
-    //Correct key has not been found
-    return false;
+    //Look if this collectable item is a key of the right colour
+    //Note contains uses equals method, two keys of the same colour are equals
+    return entity.getInventory().contains(key);
+    
   }
   
   

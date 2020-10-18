@@ -34,6 +34,7 @@ public class ItemTile extends Tile {
    * @return the item which have just been removed from this tile
    * @throws RuntimeException if contains a Collectable item which doesn't implement the interface
    */
+  /*
   public Collectable pickupItem() throws RuntimeException {
     Preconditions.checkState(item != null && item.isCollectable(), 
         "There is no item to pick up in this tile");
@@ -46,7 +47,8 @@ public class ItemTile extends Tile {
     throw new RuntimeException("This tile has a not collectable item "
         + "which however it says that it can be picked up");
   }
-
+  */
+  
   @Override
   public String getName() {
     if (item == null) {
@@ -64,6 +66,11 @@ public class ItemTile extends Tile {
     }
     
     return item.isAccessible(entity);
+  }
+
+  @Override
+  public Tile clone() {
+    return new ItemTile(item);
   }
 
 }

@@ -42,14 +42,6 @@ public abstract class Tile {
    * @return the sequence of characters identifying this tile
    */
   public abstract String getName();
-  
-  /**
-   * get item.
-   * @return item in this cell
-   */
-  public Item getItem() { 
-    return item; 
-  }
 
   /**
    * Specify whether an entity could access the given tile, this might depend by
@@ -105,7 +97,7 @@ public abstract class Tile {
    * @param type class which will be checked if item is instance of it
    * @return whether the tile contains an Item
    */
-  public boolean containsItemType(Class type) {
+  public boolean containsItemType(Class<? extends Item> type) {
     if (containsItem()) {
       return type.isInstance(item);
     }
@@ -124,9 +116,9 @@ public abstract class Tile {
     item = newItem;
     return previous;
   }
-  /*
-  //@Override
-  //public abstract Tile clone();
+  
+  @Override
+  public abstract Tile clone();
   
   @Override
   public boolean equals(Object obj) {
@@ -157,7 +149,7 @@ public abstract class Tile {
     result = prime * result + ((item == null) ? 0 : item.hashCode());
     return result;
   }
-  */
+  
  
   
   /*

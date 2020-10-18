@@ -1,14 +1,13 @@
 package test.nz.ac.vuw.ecs.swen225.gp20.maze;
 
 import static nz.ac.vuw.ecs.swen225.gp20.maze.items.Harmful.DangerType;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.awt.Point;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Block;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.ExitLock;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Harmful;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Key;
-import nz.ac.vuw.ecs.swen225.gp20.maze.items.Key.Colour;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Player;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Treasure;
 import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.ExitTile;
@@ -18,8 +17,24 @@ import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.Tile;
 import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.Wall;
 import org.junit.jupiter.api.Test;
 
+/**
+ * Check that the name of the tile are formed properly.
+ * This test are particularly useful for checking how the filename of the images should be
+ * @author Emanuel Evans (ID: 300472656)
+ *
+ */
 class TilesNameTest {
-
+  
+  /**
+   * Check name of an empty tile.
+   * This is represented as an ItemTile without any item
+   */
+  @Test
+  void emptyTileNameTest() {
+    Tile tile = new ItemTile(null);
+    assertEquals("freeTile", tile.getName());
+  }
+  
   /**
    * Check that a basic tile with chip in top returns the right name.
    */
@@ -49,7 +64,7 @@ class TilesNameTest {
   }
   
   /**
-   * Check name of exit tile.
+   * Check name of exit tile with player.
    */
   @Test
   void exitTileNameTest() {

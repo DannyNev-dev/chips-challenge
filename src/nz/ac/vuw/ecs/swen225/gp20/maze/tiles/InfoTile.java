@@ -69,6 +69,11 @@ public class InfoTile extends Tile {
     return true;
   }
 
+  @Override
+  public Tile clone() {
+    return new InfoTile(info, item);
+  }
+
   
   
   
