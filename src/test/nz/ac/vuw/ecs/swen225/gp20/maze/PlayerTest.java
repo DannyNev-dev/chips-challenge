@@ -107,5 +107,24 @@ class PlayerTest {
       assertEquals("The given collectable is not in the player inventory", e.getMessage());
     }
   }
+  
+  
+  /**
+   * Check that a player is cloned correctly.
+   * Hence changes to the clone will not affect the original
+   */
+  @Test
+  void clonePlayerTest() {
+    Player player = new Player(new Point(5, 4));
+    Player clone = player.clone();
+    
+    Assume.assumeTrue(player.equals(clone));
+    
+    clone.collectChip();
+    
+    assertFalse(player.getChipsCollected() == clone.getChipsCollected());
+    assertFalse(player.equals(clone));
+    
+  }
 
 }

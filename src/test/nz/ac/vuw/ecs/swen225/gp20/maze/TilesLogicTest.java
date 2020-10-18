@@ -128,12 +128,39 @@ public class TilesLogicTest {
     assertTrue(key1.isCollectable());
   }
   
+  @Test
   void differentColourKeysNotEqualsTest() {
     Key key1 = new Key(Key.Colour.GREEN);
     Key key2 = new Key(Key.Colour.RED);
     
     assertFalse(key1.equals(key2));
     assertFalse(key1.hashCode() == key2.hashCode());
+  }
+  
+  @Test
+  void sameItemEqualsTilesTest() {
+    Tile t1 = new ItemTile(new Key(Key.Colour.BLUE));
+    Tile t2 = new ItemTile(new Key(Key.Colour.BLUE));
+    
+    assertTrue(t1.equals(t2));    
+  }
+  
+  @Test
+  void exitTileCloneTest() {
+    Tile t1 = new ExitTile();
+    Tile t2 = t1.clone();
+    
+    assertTrue(t1.equals(t1));
+    assertTrue(t1.hashCode() == t2.hashCode());
+  }
+  
+  @Test
+  void equalPlayerTest() {
+    Player p1 = new Player(new Point(2, 8));
+    Player p2 = new Player(new Point(2, 8));
+    
+    assertTrue(p1.equals(p2));
+    assertTrue(p1.hashCode() == p2.hashCode());
   }
 
 }
