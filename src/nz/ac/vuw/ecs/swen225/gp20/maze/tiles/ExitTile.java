@@ -1,7 +1,10 @@
 package nz.ac.vuw.ecs.swen225.gp20.maze.tiles;
 
+import static com.google.common.base.Preconditions.checkArgument;
+
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Entity;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Item;
+import nz.ac.vuw.ecs.swen225.gp20.maze.items.Player;
 
 /**
  * Exit of the maze, ending tile.
@@ -23,6 +26,23 @@ public class ExitTile extends Tile {
     super(null);
   }
   
+  /**
+   * Copy constructor to allow the tile to be cloned.
+   */
+  private ExitTile(Item item) {
+    super(item);
+    checkArgument(item == null || item instanceof Player, 
+        "At the current state only players are supported to be on the exit tile");
+   
+  }
+  
+  @Override
+  public Item replaceItem(Item newItem) throws RuntimeException {
+    checkArgument(item == null || item instanceof Player, 
+        "At the current state only players are supported to be on the exit tile");
+    return super.replaceItem(newItem);
+  }
+  
   @Override
   public String getName() {
     if (item == null) {
@@ -37,6 +57,11 @@ public class ExitTile extends Tile {
   @Override
   public boolean isAccessible(Entity entity) {
     return true;
+  }
+
+  @Override
+  public Tile clone() {
+    return new ExitTile(item);
   }
 
 }

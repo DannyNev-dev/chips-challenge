@@ -109,6 +109,7 @@ public class Maze {
    * @param target Chips left to collect
    * @param level the level of the current board
    */
+  /*
   public Maze(Player player, Tile[][] boardData, int target, int level) {
     
     //TODO remove this constructor!!
@@ -126,6 +127,7 @@ public class Maze {
     this.level = level;
     assert (isPlayerPosValid());
   }
+  */
   
   /**
    * Create a new maze given a level.
@@ -133,7 +135,7 @@ public class Maze {
    * @throws IOException if no object has that level
    */
   public Maze(int level) throws IOException {
-    checkArgument(level >= 0, "levels can't be negative");
+    checkArgument(level > 0, "levels can't be negative, level 1 is the first level");
     LevelReader loader = new LevelReader(level);
     this.player = loader.loadPlayer();
     this.board = new Board(loader.loadBoard());
@@ -149,7 +151,7 @@ public class Maze {
    * @param move indicates where should the player move to
    * @return whether the move was successful
    */
-  public boolean movePlayer(SingleMove move) {
+  public boolean movePlayer(Move move) {
     if (status != GameState.PLAYING) {
       //TODO remove when application checks the game status
       return false;
@@ -194,11 +196,12 @@ public class Maze {
     
     //Add player to new tile
     board.getTile(newPos).replaceItem(player);
-    player.setOrientation(move.getDirection());
+    player.setOrientation(move.getFinalDirection());
     
     //Note that if the player will die in this move the movement will still be valid
     updateStatus();
     
+    //Check that there the player position matches and that there is exactly one player on the board
     assert (isPlayerPosValid());
     return true;
   }
@@ -289,7 +292,15 @@ public class Maze {
   }
   
   /**
-   *Merge board.
+   * Get a copy of the player in this maze.
+   */
+  public Player getPlayer() {
+    checkArgument(isPlayerPosValid());
+    return player.clone();
+  }
+  
+  /**
+   * Return a copy of the board data.
    *@return board grouping data about the maze's tiles
    */
   public Tile[][] getBoard() {
@@ -297,11 +308,12 @@ public class Maze {
   }
   
   /**
+   * Return a clone of the board.
    * Ideally this will be the only method to get the board. TODO .
    * @return board grouping data about the maze's tiles
    */
   public Board getBoardObject() {
-    return board;
+    return board.clone();
   }
   
   //---------------------------------------------------------------//
@@ -362,6 +374,14 @@ public class Maze {
           "The position of the given player doesn't match the player tile in the board");
     }
     
-    return true;    
+    return isThereOnlyOnePlayer();    
+  }
+  
+  /**
+   * Check that exactly one player is on the board.
+   * @return True if there is exactly one player, false otherwise
+   */
+  private boolean isThereOnlyOnePlayer() {
+    return board.countItems(Player.class) == 1;
   }
 }
