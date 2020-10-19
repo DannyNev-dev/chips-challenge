@@ -47,5 +47,10 @@ public interface Entity extends Item {
   public default void dropCollectable(Collectable toDrop) throws IllegalArgumentException {
     throw new UnsupportedOperationException("This entity cannot drop an item");
   }
+  
+  @Override
+  public default boolean hasAction() {
+    return true;
+  }
 
 }

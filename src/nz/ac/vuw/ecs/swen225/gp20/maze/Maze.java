@@ -91,6 +91,10 @@ public class Maze {
      */
     DOOR_OPENED,
     /**
+     * When another entity kills the player.
+     */
+    CHAP_DIED_MURDERED,
+    /**
      * Chap dies when he visited a dangerous cell.
      * This value specified that he died because of poisoning
      */

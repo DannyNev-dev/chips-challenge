@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import nz.ac.vuw.ecs.swen225.gp20.maze.Move;
+import nz.ac.vuw.ecs.swen225.gp20.maze.Maze.SpecialEvent;
 
 
 /**
@@ -134,6 +135,12 @@ public class Player implements Entity {
     inventory.remove(toDrop);
     
     //if a key was dropped a door must have been opened
+  }
+  
+  @Override
+  public SpecialEvent applyAction(Entity entity) {
+    //If any entity will try to move into the player tiles, the player will die
+    return SpecialEvent.CHAP_DIED_MURDERED;
   }
   
   @Override
