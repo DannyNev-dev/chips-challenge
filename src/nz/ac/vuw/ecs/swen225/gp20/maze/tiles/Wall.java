@@ -36,4 +36,9 @@ public class Wall extends Tile {
     return false;
   }
 
+  @Override
+  public Tile clone() {
+    return new Wall();
+  }
+
 }

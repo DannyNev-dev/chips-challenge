@@ -1,24 +1,27 @@
 package nz.ac.vuw.ecs.swen225.gp20.maze;
 
-import com.google.common.base.Preconditions;
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.awt.Point;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
-import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.Tile;
-
-
 
 /**
- * Indicates where should the player move to.
+ * Create move objects made of a single step.
+ * It primarily indicates the direction in which the player would like to move.
+ * Given a set of coordinates it can get the destination.
  * 
  * @author Emanuel Evans (ID: 300472656)
  *
  */
 public class SingleMove implements Move {
   
-  private Direction direction;
-  List<Point> steps;
+  /**
+   * The direction of the last step, it this case of the only step.
+   * It couldn't simply be called direction because json required it
+   * to be the same as the getter (defined in the Move interface) 
+   */
+  private Direction lastDirection;
 
   /**
    * Construct a new move made of a single step.
@@ -26,20 +29,15 @@ public class SingleMove implements Move {
    */
   public SingleMove(Direction direction) {
     this();
-    Preconditions.checkArgument(direction != null, "The direction of a move can't be undefiened");
-    this.direction = direction;
-    //steps = new ArrayList<Point>();
+    checkArgument(direction != null, "The direction of a move can't be undefiened");
+    this.lastDirection = direction;
   }
   
   /**
-   * This constructor should not be used. 
+   * This constructor has only been included for compatibility purposes. 
    * It was required by Jackson library for serialisation purposes
    */
-  private SingleMove() {
-    /*throw new UnsupportedOperationException(
-       "The direction must be defined as an argument, this constructor can't be used");
-       */
-  }
+  private SingleMove() {}
   
   /**
    * Create a SingleMove with a random direction.
@@ -56,38 +54,19 @@ public class SingleMove implements Move {
     return new SingleMove(randomDirection);
   }
   
-  
- 
-  /**
-   * Get the direction this move is pointing to.
-   * @return were the move is going to
-   */
-  public Direction getDirection() {
-    return direction;
-  }
-
-
-
   @Override
-  public List<Point> getSteps() {
-    return steps;
-  }
-  
-  private void setSteps(List<Point> steps) {
-    this.steps = steps;
-  }
-  
-
-  @Override
-  public Tile[][] apply(Tile[][] board) {
-    // TODO Auto-generated method stub
-    //throw new  NotImplementedException();
-    return null;
+  public Direction getLastDirection() {
+    checkNotNull(lastDirection, "This move has not been created properly, direction must be defined");
+    return lastDirection;
   }
 
   @Override
   public Point getDestination(Point old) {
-    switch (direction) {
+    
+    checkArgument(old != null, "The starting point given must be well defined");
+    checkNotNull(lastDirection, "This move has not been created properly, direction must be defined");
+    
+    switch (lastDirection) {
       case UP:
         return new Point(old.x - 1, old.y);
       
@@ -98,52 +77,9 @@ public class SingleMove implements Move {
         return new Point(old.x + 1, old.y);
       
       default:
-        //assert(direction == Direction.LEFT);
+        assert (lastDirection == Direction.LEFT) : 
+          "Only four direction were allowed for a move when this method was implemented";
         return new Point(old.x, old.y - 1);
-      
-   // default:
-      //throw new RuntimeException("The direction of this move is invalid");
     }
   } 
-  /*
-   * with side effects
-   * 
-   *
-  /*
-   * @Override
-  public Point getDestination(Point old) {
-    //Store new position for the steps
-    //X row Y col
-    Point destination = null;
-    switch(direction) {
-      case UP:
-        destination = new Point(old.x-1, old.y);
-        break;
-      case RIGHT:
-        destination = new Point(old.x, old.y+1);
-        break;
-      case DOWN:
-        destination = new Point(old.x+1, old.y);
-        break;
-      case LEFT:
-        break;
-        destination = new Point(old.x, old.y-1);
-      
-   // default:
-      //throw new RuntimeException("The direction of this move is invalid");
-    }
-    assert(direction != null);
-    
-    List<Point> steps = new ArrayList<Point>();
-    steps.add(old);
-    steps.add(destination);
-    setSteps(steps);
-    
-    return destination;
-  }
-   */
-  
-  
-
-  
 }
