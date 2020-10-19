@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.awt.Point;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Block;
+import nz.ac.vuw.ecs.swen225.gp20.maze.items.Bucket;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.ExitLock;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Harmful;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Key;
@@ -139,6 +140,15 @@ class TilesNameTest {
   void poisonNameTest() {
     Tile tile = new ItemTile(new Harmful(DangerType.POISON));
     assertEquals("poisonTile", tile.getName());
+  }
+  
+  /**
+   * Test the creation of a water bucket.
+   */
+  @Test
+  void waterBucketNameTest() {
+    Tile tile = new ItemTile(new Bucket());
+    assertEquals("waterBucketTile", tile.getName());
   }
 
 }
