@@ -76,7 +76,7 @@ public class Record{
         return filepath;
 	}
 	
-	public RecordedGame loadRecordedGame(String filepath) {		
+	private RecordedGame loadRecordedGame(String filepath) {		
 		ObjectMapper mapper = new ObjectMapper();
 
 		mapper.setVisibility(PropertyAccessor.ALL, Visibility.NONE);
@@ -106,25 +106,14 @@ public class Record{
 			e.printStackTrace();
 			System.out.println("Unknwon error happened");
 			return null;
-		} 
-	}	
-	
-	public Iterator<Event> getIterator() {
-		Iterator<Event> gameIter = recordedGame.actions.iterator();
-		return gameIter;		
-	}
-	
-	public void getEvent() {
-		int delay = 1000;
-		while(getIterator().hasNext()) {
-			getIterator().next();
-			try {
-				Thread.sleep(delay);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
 		}
 	}
+
+	public EventIterator getIteratorByFile(String filepath, int speed) {
+		return new EventIterator(loadRecordedGame(filepath), speed);	
+	}
 	
-	
+	public EventIterator getIteratorByFile(String filepath) {
+		return new EventIterator(loadRecordedGame(filepath));	
+	}
 }
