@@ -47,7 +47,7 @@ public interface Move {
    * It can be used to know where the player will be facing
    * @return were the move is going to
    */
-  public Direction getFinalDirection();
+  public Direction getLastDirection();
   
   /**
    * Get the coordinates of the cell the entity passed through while moving.
@@ -56,7 +56,7 @@ public interface Move {
    * In that case knowing the steps taken will be required for displaying the path taken.
    * @return the ordered list of coordinates for each visited tile
    */
-  public default List<Point> getSteps() {
+  public default List<Point> stepsTaken() {
     throw new UnsupportedOperationException("This feature has not yet been implemented");
   }
   

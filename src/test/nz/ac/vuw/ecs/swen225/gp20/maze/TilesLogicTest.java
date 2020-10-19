@@ -8,6 +8,7 @@ import java.awt.Point;
 
 import nz.ac.vuw.ecs.swen225.gp20.maze.Maze.SpecialEvent;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Block;
+import nz.ac.vuw.ecs.swen225.gp20.maze.items.Bucket;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.ExitLock;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Harmful;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Harmful.DangerType;
@@ -115,6 +116,39 @@ public class TilesLogicTest {
     assertTrue(tile.isAccessible(player));
     assertTrue(tile.hasAction());
     assertEquals(tile.applyAction(player), SpecialEvent.CHAP_DIED_POISONED);
+    
+  }
+  
+  /**
+   * Test that the fire can be extinguished with the bucket.
+   */
+  @Test
+  void extinguishFireTest() {
+    Player player = new Player(new Point(5, 2));
+    Player twin = player.clone();
+    Assume.assumeTrue(player.equals(twin));
+    
+    Tile fire = new ItemTile(new Harmful(DangerType.FIRE));
+    Tile bucket = new ItemTile(new Bucket());
+    
+    //Check that even if the player doesn't have the bucket 
+    //it could still move into the fire, of course it would then cause the player to die
+    assertTrue(fire.isAccessible(player));
+    
+    Assume.assumeTrue(new Bucket().equals(new Bucket()));
+    //Pick up the bucket
+    bucket.applyAction(player);
+    Assume.assumeTrue(player.getInventory().contains(new Bucket()));
+    //The players should now be different
+    Assume.assumeFalse(player.equals(twin));
+    
+    assertEquals(SpecialEvent.CHAP_DIED_BURNT, fire.applyAction(twin));
+    
+    assertEquals(SpecialEvent.FIRE_EXTINGUISHED, fire.applyAction(player));
+    
+    //Check that the bucket didn't affect whether the player can access the fire tile
+    assertTrue(fire.isAccessible(player));
+    
     
   }
   

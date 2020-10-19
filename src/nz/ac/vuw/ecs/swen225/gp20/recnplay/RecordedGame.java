@@ -12,7 +12,7 @@ import nz.ac.vuw.ecs.swen225.gp20.recnplay.test.TestMove;
  */
 public class RecordedGame {
 
-	int level;
+	int level = -1;
 	List<Event> actions;
 	
 	private RecordedGame() {
@@ -65,10 +65,11 @@ public class RecordedGame {
 	public void addAction(Event event) {
 		if (event.getType().equals(Event.Type.SetLevel)) {
 			setLevel(event.getLevel());
+		}else {
+			if (getLevel() < 0) {
+				throw new IllegalArgumentException("Level shall be set prior to other events");
+			}
 		}
-		else {
-			event.setLevel(this.level);
-			this.actions.add(event);
-		}	
+		this.actions.add(event);
 	}
 }

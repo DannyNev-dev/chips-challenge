@@ -9,6 +9,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.Iterator;
+
 import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonArrayBuilder;
@@ -74,7 +76,7 @@ public class Record{
         return filepath;
 	}
 	
-	public RecordedGame loadRecordedGame(String filepath) {		
+	private RecordedGame loadRecordedGame(String filepath) {		
 		ObjectMapper mapper = new ObjectMapper();
 
 		mapper.setVisibility(PropertyAccessor.ALL, Visibility.NONE);
@@ -104,6 +106,14 @@ public class Record{
 			e.printStackTrace();
 			System.out.println("Unknwon error happened");
 			return null;
-		} 
-	}	
+		}
+	}
+
+	public EventIterator getIteratorByFile(String filepath, int speed) {
+		return new EventIterator(loadRecordedGame(filepath), speed);	
+	}
+	
+	public EventIterator getIteratorByFile(String filepath) {
+		return new EventIterator(loadRecordedGame(filepath));	
+	}
 }

@@ -1,15 +1,5 @@
 package nz.ac.vuw.ecs.swen225.gp20.recnplay;
 
-import javax.json.Json;
-import javax.json.JsonObject;
-import nz.ac.vuw.ecs.swen225.gp20.maze.Maze;
-import nz.ac.vuw.ecs.swen225.gp20.maze.items.Key;
-import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.ExitTile;
-import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.InfoTile;
-import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.ItemTile;
-import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.Tile;
-import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.Wall;
-
 /**
  * Contains onEvent method which will be called by Application module
  * when a new event occurs(set level, move, pick up key, pick up chip etc.). 

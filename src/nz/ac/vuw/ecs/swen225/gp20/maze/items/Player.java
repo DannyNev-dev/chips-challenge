@@ -20,9 +20,7 @@ public class Player implements Entity {
   
   //Ending of all the player names, stored to improve efficiency
   private static final String name = "chip";
-  
- 
-  
+
   private List<Collectable> inventory;
   
   private Point position;
@@ -31,9 +29,6 @@ public class Player implements Entity {
   private Move.Direction orientation;
   
   private int chipsCollected;
-  
-  
-  
   
   /**
    * Create a new player.
@@ -54,7 +49,7 @@ public class Player implements Entity {
    * @param orientation where the player is facing
    * @param chipsCollected number of chips which have been already collected
    */
-  public Player(List<Collectable> inventory, Point position, 
+  private Player(List<Collectable> inventory, Point position, 
       Move.Direction orientation,  int chipsCollected) {
     checkArgument(inventory != null, "Inventory can't be null when loading a player");
     checkArgument(position != null, "The player must have a well defeined position");
@@ -141,9 +136,6 @@ public class Player implements Entity {
     //if a key was dropped a door must have been opened
   }
   
-  
-  
-  
   @Override
   public int hashCode() {
     final int prime = 31;
@@ -168,8 +160,9 @@ public class Player implements Entity {
       return false;
     }
     Player other = (Player) obj;
-    if (chipsCollected != other.chipsCollected)
+    if (chipsCollected != other.chipsCollected) {
       return false;
+    }
     if (inventory == null) {
       if (other.inventory != null) {
         return false;

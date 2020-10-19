@@ -2,6 +2,7 @@ package nz.ac.vuw.ecs.swen225.gp20.recnplay.test;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Iterator;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
@@ -14,9 +15,9 @@ import nz.ac.vuw.ecs.swen225.gp20.maze.Move.Direction;
 import nz.ac.vuw.ecs.swen225.gp20.recnplay.Event;
 import nz.ac.vuw.ecs.swen225.gp20.recnplay.EventListener;
 import nz.ac.vuw.ecs.swen225.gp20.recnplay.RecordedGame;
-import nz.ac.vuw.ecs.swen225.gp20.recnplay.Replay;
 import nz.ac.vuw.ecs.swen225.gp20.recnplay.test.TestMove.TestDirection;
 import nz.ac.vuw.ecs.swen225.gp20.recnplay.Event.Type;
+import nz.ac.vuw.ecs.swen225.gp20.recnplay.EventIterator;
 
 /**
  * test save function.
@@ -36,25 +37,15 @@ public class TestRecord {
 		listener.onEvent(Event.eventOfChapMove(new SingleMove(Direction.UP)));
 		listener.onEvent(Event.eventOfChapMove(new SingleMove(Direction.DOWN)));
 		// Save to JSON
-		String filepath = listener.getRecord().saveToJson();
+		String filepath = EventListener.getRecord().saveToJson();
 		// Load the JSON
-		
-		listener.getRecord().loadRecordedGame(filepath);
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+		System.out.println("Test game saved to " + filepath);
+		EventIterator it = EventListener.getRecord().getIteratorByFile(filepath);
+		System.out.println("Starting event iteration with latency: " + it.getLatency());
+		while(it.hasNext()) {
+			Event e = it.next();
+			System.out.println("Iterator emits event: " + e.getType());
+		}
 		
 //		ObjectMapper mapper = new ObjectMapper();
 //

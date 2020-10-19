@@ -16,7 +16,12 @@ import java.util.Random;
  */
 public class SingleMove implements Move {
   
-  private Direction direction;
+  /**
+   * The direction of the last step, it this case of the only step.
+   * It couldn't simply be called direction because json required it
+   * to be the same as the getter (defined in the Move interface) 
+   */
+  private Direction lastDirection;
 
   /**
    * Construct a new move made of a single step.
@@ -25,7 +30,7 @@ public class SingleMove implements Move {
   public SingleMove(Direction direction) {
     this();
     checkArgument(direction != null, "The direction of a move can't be undefiened");
-    this.direction = direction;
+    this.lastDirection = direction;
   }
   
   /**
@@ -50,18 +55,18 @@ public class SingleMove implements Move {
   }
   
   @Override
-  public Direction getFinalDirection() {
-    checkNotNull(direction, "This move has not been created properly, direction must be defined");
-    return direction;
+  public Direction getLastDirection() {
+    checkNotNull(lastDirection, "This move has not been created properly, direction must be defined");
+    return lastDirection;
   }
 
   @Override
   public Point getDestination(Point old) {
     
     checkArgument(old != null, "The starting point given must be well defined");
-    checkNotNull(direction, "This move has not been created properly, direction must be defined");
+    checkNotNull(lastDirection, "This move has not been created properly, direction must be defined");
     
-    switch (direction) {
+    switch (lastDirection) {
       case UP:
         return new Point(old.x - 1, old.y);
       
@@ -72,7 +77,7 @@ public class SingleMove implements Move {
         return new Point(old.x + 1, old.y);
       
       default:
-        assert (direction == Direction.LEFT) : 
+        assert (lastDirection == Direction.LEFT) : 
           "Only four direction were allowed for a move when this method was implemented";
         return new Point(old.x, old.y - 1);
     }

@@ -29,8 +29,10 @@ public class Maze {
   //Representation of the board state
   private Board board;
   
-  //Total number of chips to collect
-  private final int target;
+  /**
+   * Total number of chips to be collect in the level of this maze.
+   */
+  public final int target;
   
   private final int level;
   
@@ -73,6 +75,10 @@ public class Maze {
      */
     KEY_PICKED_UP,
     /**
+     * When Chap picks up a water bucket and puts it in his inventory.
+     */
+    BUCKET_PICKED_UP,
+    /**
      * When Chap collects a treasure (chip).
      */
     TREASURE_PICKED_UP,
@@ -93,6 +99,10 @@ public class Maze {
      * Specify that the player has died due to a fire.
      */
     CHAP_DIED_BURNT,
+    /**
+     * Chap extinguish a fire.
+     */
+    FIRE_EXTINGUISHED,
     /**
      * When the player is on the info tile.
      */
@@ -196,7 +206,7 @@ public class Maze {
     
     //Add player to new tile
     board.getTile(newPos).replaceItem(player);
-    player.setOrientation(move.getFinalDirection());
+    player.setOrientation(move.getLastDirection());
     
     //Note that if the player will die in this move the movement will still be valid
     updateStatus();
