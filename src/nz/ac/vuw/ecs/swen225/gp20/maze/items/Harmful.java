@@ -55,6 +55,9 @@ public class Harmful implements Item {
     if (entity instanceof Player) {
       switch (type) {
         case FIRE: 
+          if (entity.getInventory().contains(new Bucket())) {
+            return SpecialEvent.FIRE_EXTINGUISHED;
+          }
           return SpecialEvent.CHAP_DIED_BURNT;
         case POISON:
           return SpecialEvent.CHAP_DIED_POISONED;

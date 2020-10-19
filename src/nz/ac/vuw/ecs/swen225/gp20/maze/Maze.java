@@ -75,6 +75,10 @@ public class Maze {
      */
     KEY_PICKED_UP,
     /**
+     * When Chap picks up a water bucket and puts it in his inventory.
+     */
+    BUCKET_PICKED_UP,
+    /**
      * When Chap collects a treasure (chip).
      */
     TREASURE_PICKED_UP,
@@ -95,6 +99,10 @@ public class Maze {
      * Specify that the player has died due to a fire.
      */
     CHAP_DIED_BURNT,
+    /**
+     * Chap extinguish a fire.
+     */
+    FIRE_EXTINGUISHED,
     /**
      * When the player is on the info tile.
      */
