@@ -5,14 +5,12 @@
  */
 package nz.ac.vuw.ecs.swen225.gp20.application;
 
-import com.google.gson.JsonArray;
 import nz.ac.vuw.ecs.swen225.gp20.maze.Maze;
 import nz.ac.vuw.ecs.swen225.gp20.maze.Move;
 import nz.ac.vuw.ecs.swen225.gp20.maze.SingleMove;
 import nz.ac.vuw.ecs.swen225.gp20.recnplay.Event;
 import nz.ac.vuw.ecs.swen225.gp20.recnplay.EventIterator;
 import nz.ac.vuw.ecs.swen225.gp20.recnplay.EventListener;
-import nz.ac.vuw.ecs.swen225.gp20.recnplay.RecordedGame;
 import nz.ac.vuw.ecs.swen225.gp20.render.Render;
 
 import javax.swing.*;
@@ -697,26 +695,10 @@ public class GUIWindow extends javax.swing.JFrame {
      * @param evt
      */
     private void replayButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_replayButtonActionPerformed
-            // FIXME: Pause the app timer, do not countdown time when user is choosing recorded game in JSON file
-            // FIXME: Set app to replay mode
-                // FIXME: Call RecordnReplay module to load replay iterator and the iterator has no latency by default
-                // FIXME: When the iterator is retrieved, load the first event to get the level first
-                //        If the first event is not SetLevel event (level is not positive int), raise exception
-                //        Load the map corresponding to level number, at the time being, below buttons shall be visible to user
-                //        "Next", "Adjust Speed", "Auto Replay"
-                //        However, the default mode shall be step-by-step prior to any pressoing on above buttons
-                //        * On action of "Next": call iterator to read next event, call the replay module method to turn this event back to movement
-                //        * On action of "Adjust Speed": suggested default latency is 1(s) and scope is 0.5 to 3 and unit is 0.5
-                //                                       When latency is selected from GUI, call the iterator method and it will change latency internally
-                //        * On "Auto Replay": Just loop the iterator and call correpsonding method to turn event to Movement and execute the movement as usual
-                //        A kind reminder: when app is in "replay" mode, the EventListenser.OnEvent() shall never be called
-
-                //        Special notes: The replay is just one-directional, it has "Next" but there is no "Back" to simplify the logic
-                //        Use Case Impacts: If user click to replay, there is no graceful way designed so far to get back to previous on-going game.
-            //store variables locally to be able to re construct a new timer from where the old one was paused.
             pausedAtMin = gameCountdown.getCurrentMin();
             pausedAtSec = gameCountdown.getCurrentSec();
             gameCountdown.pause();
+            JsonFileFilter fileFilter = new JsonFileFilter();
 
 		timer.setText("-:- -"); // Timer is not applicable during replay mode
 
@@ -730,6 +712,7 @@ public class GUIWindow extends javax.swing.JFrame {
 		int returnVal = fileChooser.showOpenDialog(this);
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			File file = fileChooser.getSelectedFile();
+            mode = modes.Replay.name();
 			System.out.println("Selected game record: " + file.getAbsolutePath());
 			this.eventIterator = EventListener.getRecord().getIteratorByFile(file.getAbsolutePath());
 			this.replaySetLevel();
@@ -737,25 +720,12 @@ public class GUIWindow extends javax.swing.JFrame {
 			System.out.println("File access cancelled by user.");
 			// Resume the app timer, return to current game
 			mode = modes.Run.name(); // Game is back to running mode
-			gameCountdown = new GameTimer(pausedAtMin, pausedAtSec); // resume timer
+			gameCountdown = new GameTimer(pausedAtMin, pausedAtSec, this); // resume timer
 		}
 	}// GEN-LAST:event_replayButtonActionPerformed
 
-    private void speedChooserAncestorAdded(javax.swing.event.AncestorEvent evt) {
-    }//GEN-LAST:event_speedChooserAncestorAdded
-    
+    private void speedChooserAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-LAST:event_speedChooserAncestorAdded
 
-                //update game state
-                mode = modes.Replay.name();
-                System.out.println("Selected game record: " + file.getAbsolutePath());
-                this.eventIterator = EventListener.getRecord().getIteratorByFile(file.getAbsolutePath());
-                this.replaySetLevel();
-            } else {
-                System.out.println("File access cancelled by user.");
-                // FIXME: Resume the app timer, return to current game
-                mode = modes.Run.name(); // Game is back to running mode
-                gameCountdown = new GameTimer(pausedAtMin, pausedAtSec, this); // resume timer
-            }
         }//GEN-LAST:event_replayButtonActionPerformed
 
       /**.
