@@ -58,18 +58,6 @@ class PlayerTest {
       assertEquals("Inventory can't be null when loading a player", e.getMessage());
     }
   }
-  
-  /**
-   * Invalid Player creation with negative number of chips.
-   */
-  @Test
-  void nullPositionInvalidTest() {
-    try {
-      new Player(null);
-    } catch (IllegalArgumentException e) {
-      assertEquals("The player must have a well defeined position", e.getMessage());
-    }
-  }
 
   /**
    * Increase the number of chips.

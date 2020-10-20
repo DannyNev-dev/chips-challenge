@@ -3,6 +3,7 @@ package nz.ac.vuw.ecs.swen225.gp20.maze.items;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import nz.ac.vuw.ecs.swen225.gp20.maze.Maze.SpecialEvent;
+import nz.ac.vuw.ecs.swen225.gp20.maze.items.Remedy.Type;
 
 /**
  * An item that if the player moves into it will die.
@@ -11,6 +12,11 @@ import nz.ac.vuw.ecs.swen225.gp20.maze.Maze.SpecialEvent;
  */
 public class Harmful implements Item {
   
+  /**
+   * Types of harmful items.
+   * @author Emanuel Evans (ID: 300472656)
+   *
+   */
   public static enum DangerType {
     /**
      * A fire which will burn the player.
@@ -55,7 +61,7 @@ public class Harmful implements Item {
     if (entity instanceof Player) {
       switch (type) {
         case FIRE: 
-          if (entity.getInventory().contains(new Bucket())) {
+          if (entity.getInventory().contains(new Remedy(Type.BUCKET))) {
             return SpecialEvent.FIRE_EXTINGUISHED;
           }
           return SpecialEvent.CHAP_DIED_BURNT;
