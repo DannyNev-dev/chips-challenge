@@ -14,13 +14,14 @@ import javax.json.JsonReader;
 
 import nz.ac.vuw.ecs.swen225.gp20.maze.Maze;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Block;
-import nz.ac.vuw.ecs.swen225.gp20.maze.items.Bucket;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.ExitLock;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Harmful;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Item;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Key;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Key.Colour;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Player;
+import nz.ac.vuw.ecs.swen225.gp20.maze.items.Remedy;
+import nz.ac.vuw.ecs.swen225.gp20.maze.items.Remedy.Type;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Treasure;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Harmful.DangerType;
 import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.ExitTile;
@@ -45,8 +46,10 @@ public class LevelReader {
 	/** The maze obj in json form. */
 	JsonObject mazeObj;
 	
+	/** List of the bugs added to the level**/
 	public ArrayList<BugEntity> bugs = new ArrayList<BugEntity>();
 	
+	/** Reference to the games maze class**/
 	public Maze maze;	//maybe protected
 
 	/**
@@ -164,10 +167,9 @@ public class LevelReader {
 				item = new Harmful(DangerType.FIRE);
 				break;
 			case "waterbucket":
-				item = new Bucket();
+				item = new Remedy(Type.BUCKET);
 				break;
 			default:
-				System.out.println(var);
 				throw new RuntimeException("Invalid JSON input for the item");
 			}
 			tile = new ItemTile(item); // item is null if incorrect json input for item is present

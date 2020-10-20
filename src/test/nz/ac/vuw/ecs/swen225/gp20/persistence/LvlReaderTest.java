@@ -28,7 +28,7 @@ public class LvlReaderTest {
 		}
 		/**
 		 * Test 1.5.
-		 * Test that we are able to create a maze from the level
+		 * Test that we are able to create a maze from the level 2
 		 * @throws IOException 
 		 */
 		@Test
