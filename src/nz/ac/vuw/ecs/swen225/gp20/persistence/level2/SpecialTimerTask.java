@@ -1,11 +1,10 @@
-package nz.ac.vuw.ecs.swen225.gp20.persistence;
+package nz.ac.vuw.ecs.swen225.gp20.persistence.level2;
 
 import java.util.TimerTask;
 
 import nz.ac.vuw.ecs.swen225.gp20.maze.Board;
 import nz.ac.vuw.ecs.swen225.gp20.maze.Maze;
 import nz.ac.vuw.ecs.swen225.gp20.maze.SingleMove;
-import nz.ac.vuw.ecs.swen225.gp20.persistence.level2.BugEntity;
 
 /**
  * The Class SpecialTimerTask.
