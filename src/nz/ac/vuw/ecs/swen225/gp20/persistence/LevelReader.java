@@ -102,17 +102,20 @@ public class LevelReader {
 		Player p = new Player(new Point(x, y));
 		return p;
 	}
-	//The maze variable needs to be set before the board is created, create issue
+	//The maze variable needs to be set after the board is created, create issue
 	public void setMaze(Maze m) {
 		this.maze = m;
+		//after the board is made we want to begin the bugs movements
+		for(BugEntity e: bugs) {
+			e.executeBugMove(maze);
+		}
 	}
 	/**
 	 * Load target.
 	 *
-	 * @return the int
+	 * @return int target is the number of chips (treasures) that need to be collected
 	 */
 	public int loadTarget() {
-		// target is the number of chips (treasures) that need to be collected
 		return mazeObj.getInt("target");
 	}
 
@@ -121,7 +124,7 @@ public class LevelReader {
 	 *
 	 * @param jsonObj the json obj
 	 * @param target  the target
-	 * @param p the p
+	 * @param p the player
 	 * @return Tile the tile created from the json object
 	 * @throws RuntimeException exception thrown when the json format for items/tiles is incorrect
 	 */
@@ -231,10 +234,6 @@ public class LevelReader {
 																	// of tiles
 			}
 		}
-		//after the board is made we want to begin the bugs movements
-		/*for(BugEntity e: bugs) {
-			e.executeBugMove(maze);
-		}*/
 		return board;
 	}
 }

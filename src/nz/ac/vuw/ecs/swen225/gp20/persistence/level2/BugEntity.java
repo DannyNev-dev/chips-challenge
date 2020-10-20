@@ -49,12 +49,12 @@ public class BugEntity implements Entity, Collectable {
    * @param m the maze
    */
   public void executeBugMove(Maze m) {
-	//initial delay to wait for board to be returned to maze
 	//loop with delay to move bug
 	Board b = m.getBoardObject();
 	SingleMove sm = randomAdjacentPos(b);
 	m.moveEntity(sm,this); //returns false if game is paused
 	//call static application method to notify record and replay
+	//GUIWindow.notifyRecorder(sm,name); //name to identify this as bug move
   }
   
   /**
@@ -86,7 +86,7 @@ public class BugEntity implements Entity, Collectable {
   }
   
   /**
-   * Checks for colleced.
+   * Checks for collected.
    *
    * @param item the item
    * @return true, if successful
@@ -139,8 +139,8 @@ public class BugEntity implements Entity, Collectable {
   /**
    * Apply action.
    *
-   * @param entity the entity
-   * @return the special event
+   * @param entity entity thats triggering the action
+   * @return the special event to kill chap
    */
   @Override
   public SpecialEvent applyAction(Entity entity) {
@@ -155,17 +155,16 @@ public class BugEntity implements Entity, Collectable {
    * Pickup.
    *
    * @param player the player
-   * @return true, if successful
+   * @return false as you cannot pickup the bug
    */
   public boolean pickup(Player player) {
-    // TODO Auto-generated method stub
     return false;
   }
 
 /**
  * Checks for action.
  *
- * @return true, if successful
+ * @return true, as it has an action
  */
 @Override
 public boolean hasAction() {
