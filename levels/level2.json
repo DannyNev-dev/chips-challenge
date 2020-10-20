@@ -1,0 +1,1398 @@
+{		
+	"player":{"x":14,"y":8},	
+	"target":6,	
+	"board":[
+		{"row":[
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"		
+			},		
+			{
+				"type": "Tile",
+				"item": "none"				
+			},
+			{
+				"type": "Tile",
+				"item": "none"		
+			},
+			{
+				"type": "Tile",
+				"item": "none"				
+			},
+			{
+				"type": "Tile",
+				"item": "none"	
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"					
+			},
+			{
+				"type": "Tile",
+				"item": "none"				
+			},
+			{
+				"type": "Tile",
+				"item": "none"				
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"		
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			}
+		]},
+		{"row":[
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"		
+			},		
+			{
+				"type": "Tile",
+				"item": "none"				
+			},
+			{
+				"type": "Tile",
+				"item": "none"		
+			},
+			{
+				"type": "Tile",
+				"item": "none"				
+			},
+			{
+				"type": "Tile",
+				"item": "none"	
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"					
+			},
+			{
+				"type": "Tile",
+				"item": "none"				
+			},
+			{
+				"type": "Tile",
+				"item": "none"				
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"		
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			}
+		]},
+		{"row":[
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"		
+			},		
+			{
+				"type": "Tile",
+				"item": "none"				
+			},
+			{
+				"type": "Tile",
+				"item": "none"		
+			},
+			{
+				"type": "Tile",
+				"item": "none"				
+			},
+			{
+				"type": "Tile",
+				"item": "none"	
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"					
+			},
+			{
+				"type": "Tile",
+				"item": "none"				
+			},
+			{
+				"type": "Tile",
+				"item": "none"				
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"		
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			}
+		]},
+		{"row":[
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Wall"			
+			},
+			{
+				"type": "Wall"		
+			},		
+			{
+				"type": "Wall"				
+			},
+			{
+				"type": "Wall"		
+			},
+			{
+				"type": "Wall"				
+			},
+			{
+				"type": "Wall"	
+			},
+			{
+				"type": "Wall"			
+			},
+			{
+				"type": "Wall"					
+			},
+			{
+				"type": "Wall"				
+			},
+			{
+				"type": "Wall"				
+			},
+			{
+				"type": "Wall"			
+			},
+			{
+				"type": "Wall"			
+			},
+			{
+				"type": "Wall"			
+			},
+			{
+				"type": "Wall"			
+			},
+			{
+				"type": "Wall"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			}
+		]},
+		{"row":[
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Wall"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"		
+			},		
+			{
+				"type": "Tile",
+				"item": "none"				
+			},
+			{
+				"type": "Tile",
+				"item": "treasure"		
+			},
+			{
+				"type": "Tile",
+				"item": "none"				
+			},
+			{
+				"type": "Tile",
+				"item": "none"	
+			},
+			{
+				"type": "Wall"			
+			},
+			{
+				"type": "Bug",
+				"item": {"x":11,"y":5}
+			},
+			{
+				"type": "Tile",
+				"item": "none"				
+			},
+			{
+				"type": "Tile",
+				"item": "none"				
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "treasure"			
+			},
+			{
+				"type": "Wall"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			}
+		]},
+		{"row":[
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Wall"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"		
+			},		
+			{
+				"type": "Tile",
+				"item": "none"				
+			},
+			{
+				"type": "Tile",
+				"item": "none"		
+			},
+			{
+				"type": "Tile",
+				"item": "none"				
+			},
+			{
+				"type": "Tile",
+				"item": "none"	
+			},
+			{
+				"type": "Wall"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"
+			},
+			{
+				"type": "Tile",
+				"item": "none"				
+			},
+			{
+				"type": "Tile",
+				"item": "none"				
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"	
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Wall"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			}
+		]},
+		{"row":[
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Wall"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"		
+			},		
+			{
+				"type": "Tile",
+				"item": "none"				
+			},
+			{
+				"type": "Tile",
+				"item": "none"		
+			},
+			{
+				"type": "Wall"				
+			},
+			{
+				"type": "Tile",
+				"item": "none"	
+			},
+			{
+				"type": "Wall"			
+			},
+			{
+				"type": "Wall"					
+			},
+			{
+				"type": "Wall"				
+			},
+			{
+				"type": "Wall"				
+			},
+			{
+				"type": "Wall"			
+			},
+			{
+				"type": "Wall"			
+			},
+			{
+				"type": "Door",
+				"item": "green"			
+			},
+			{
+				"type": "Wall"			
+			},
+			{
+				"type": "Wall"			
+			},
+			{
+				"type": "Wall"	
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			}
+		]},
+		{"row":[
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Wall"			
+			},
+			{
+				"type": "Wall"
+			},		
+			{
+				"type": "Tile",
+				"item": "none"				
+			},
+			{
+				"type": "Tile",
+				"item": "none"		
+			},
+			{
+				"type": "Wall"				
+			},
+			{
+				"type": "Tile",
+				"item": "none"	
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "fire"					
+			},
+			{
+				"type": "Tile",
+				"item": "none"				
+			},
+			{
+				"type": "Tile",
+				"item": "none"				
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "treasure"			
+			},
+			{
+				"type": "Wall"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			}
+		]},
+		{"row":[
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Wall"			
+			},
+			{
+				"type": "ExitTile"		
+			},		
+			{
+				"type": "Tile",
+				"item": "exitLock"
+			},
+			{
+				"type": "Wall"	
+			},
+			{
+				"type": "Wall"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"				
+			},
+			{
+				"type": "Tile",
+				"item": "none"				
+			},
+			{
+				"type": "Tile",
+				"item": "fire"
+			},
+			{
+				"type": "Tile",
+				"item": "none"		
+			},
+			{
+				"type": "Tile",
+				"item": "waterbucket"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "player"			
+			},
+			{
+				"type": "Info",
+				"item": "Collect the bucket of water to put out the flame! Watch out for the bugs !"			
+			},
+			{
+				"type": "Tile",
+				"item": "gKey"			
+			},
+			{
+				"type": "Wall"
+			},
+				{
+				"type": "Tile",
+				"item": "none"			
+			},
+				{
+				"type": "Tile",
+				"item": "none"			
+			},
+				{
+				"type": "Tile",
+				"item": "none"			
+			}
+		]},
+		{"row":[
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Wall"			
+			},
+			{
+				"type": "Wall"
+			},		
+			{
+				"type": "Wall"			
+			},
+			{
+				"type": "Wall"
+			},
+			{
+				"type": "Bug",
+				"item": {"x":8,"y":10}
+			},
+			{
+				"type": "Tile",
+				"item": "none"	
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "fire"					
+			},
+			{
+				"type": "Tile",
+				"item": "none"				
+			},
+			{
+				"type": "Tile",
+				"item": "none"				
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "treasure"			
+			},
+			{
+				"type": "Wall"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			}
+		]},
+		{"row":[
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Wall"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"		
+			},		
+			{
+				"type": "Tile",
+				"item": "none"				
+			},
+			{
+				"type": "Wall"		
+			},
+			{
+				"type": "Tile",
+				"item": "none"
+			},
+			{
+				"type": "Tile",
+				"item": "none"	
+			},
+			{
+				"type": "Wall"			
+			},
+			{
+				"type": "Wall"					
+			},
+			{
+				"type": "Wall"				
+			},
+			{
+				"type": "Wall"				
+			},
+			{
+				"type": "Wall"			
+			},
+			{
+				"type": "Wall"			
+			},
+			{
+				"type": "Door",
+				"item": "red"			
+			},
+			{
+				"type": "Wall"			
+			},
+			{
+				"type": "Wall"			
+			},
+			{
+				"type": "Wall"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			}
+		]},
+		{"row":[
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Wall"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"		
+			},		
+			{
+				"type": "Tile",
+				"item": "none"				
+			},
+			{
+				"type": "Tile",
+				"item": "none"		
+			},
+			{
+				"type": "Tile",
+				"item": "none"				
+			},
+			{
+				"type": "Tile",
+				"item": "none"	
+			},
+			{
+				"type": "Wall"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"
+			},
+			{
+				"type": "Tile",
+				"item": "none"				
+			},
+			{
+				"type": "Tile",
+				"item": "none"				
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Wall"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			}
+		]},
+		{"row":[
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Wall"			
+			},
+			{
+				"type": "Tile",
+				"item": "rKey"		
+			},		
+			{
+				"type": "Tile",
+				"item": "none"				
+			},
+			{
+				"type": "Tile",
+				"item": "treasure"		
+			},
+			{
+				"type": "Tile",
+				"item": "none"				
+			},
+			{
+				"type": "Tile",
+				"item": "none"	
+			},
+			{
+				"type": "Wall"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"
+			},
+			{
+				"type": "Tile",
+				"item": "treasure"				
+			},
+			{
+				"type": "Tile",
+				"item": "none"				
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Wall"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			}
+		]},
+		{"row":[
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Wall"			
+			},
+			{
+				"type": "Wall"		
+			},		
+			{
+				"type": "Wall"				
+			},
+			{
+				"type": "Wall"		
+			},
+			{
+				"type": "Wall"				
+			},
+			{
+				"type": "Wall"	
+			},
+			{
+				"type": "Wall"			
+			},
+			{
+				"type": "Wall"					
+			},
+			{
+				"type": "Wall"				
+			},
+			{
+				"type": "Wall"				
+			},
+			{
+				"type": "Wall"			
+			},
+			{
+				"type": "Wall"			
+			},
+			{
+				"type": "Wall"			
+			},
+			{
+				"type": "Wall"			
+			},
+			{
+				"type": "Wall"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			}
+		]},
+		{"row":[
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"		
+			},		
+			{
+				"type": "Tile",
+				"item": "none"				
+			},
+			{
+				"type": "Tile",
+				"item": "none"		
+			},
+			{
+				"type": "Tile",
+				"item": "none"				
+			},
+			{
+				"type": "Tile",
+				"item": "none"	
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"					
+			},
+			{
+				"type": "Tile",
+				"item": "none"				
+			},
+			{
+				"type": "Tile",
+				"item": "none"				
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"		
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			}
+		]},
+		{"row":[
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"		
+			},		
+			{
+				"type": "Tile",
+				"item": "none"				
+			},
+			{
+				"type": "Tile",
+				"item": "none"		
+			},
+			{
+				"type": "Tile",
+				"item": "none"				
+			},
+			{
+				"type": "Tile",
+				"item": "none"	
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"					
+			},
+			{
+				"type": "Tile",
+				"item": "none"				
+			},
+			{
+				"type": "Tile",
+				"item": "none"				
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"		
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			}
+		]},
+		{"row":[
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"		
+			},		
+			{
+				"type": "Tile",
+				"item": "none"				
+			},
+			{
+				"type": "Tile",
+				"item": "none"		
+			},
+			{
+				"type": "Tile",
+				"item": "none"				
+			},
+			{
+				"type": "Tile",
+				"item": "none"	
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"					
+			},
+			{
+				"type": "Tile",
+				"item": "none"				
+			},
+			{
+				"type": "Tile",
+				"item": "none"				
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"		
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			},
+			{
+				"type": "Tile",
+				"item": "none"			
+			}
+		]}
+	]	
+}
