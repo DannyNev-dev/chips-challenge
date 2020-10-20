@@ -20,7 +20,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-import javafx.animation.Animation;
 import nz.ac.vuw.ecs.swen225.gp20.maze.Board;
 import nz.ac.vuw.ecs.swen225.gp20.maze.Maze;
 import nz.ac.vuw.ecs.swen225.gp20.maze.Maze.SpecialEvent;
@@ -111,7 +110,6 @@ class View {
 	void refresh(Maze maze) {
 
 		Point p = maze.getPlayerPosition();
-
 		String moveDirection = findDirection(p);
 		board = maze.getBoard();
 		// BoardPanel.removeAll();
@@ -121,95 +119,63 @@ class View {
 		// ANIMATION
 		int delay = 100; // milliseconds
 		ActionListener taskPerformer = new ActionListener() {
-			int count = 0;
-			int dispPlayerX = -1;
-			int dispPlayerY = -1;
-
-			int dispLastPlayerX = -1;
-			int dispLastPlayerY = -1;
+			int count = 1;
 
 			public void actionPerformed(ActionEvent evt) {
-				if (count == 4) {
+				if (count == 5) {
 					return;
 				}
-
-				// dispList = new DispTile[xSize][ySize];
-				if (count == 0) {
-					System.out.println(count);
-					int x = p.x - 4;
-					for (int i = 0; i < xSize; i++) {
-						int y = p.y - 4;
-						for (int j = 0; j < ySize; j++) {
-							if (lastP.x == x && lastP.y == y) {
-
-								dispLastPlayerX = i;
-								dispLastPlayerY = j;
-								System.out.println("LAST: " + dispLastPlayerX + " " + dispLastPlayerY);
-								dispList[i][j].setIcon(
-										new ImageIcon("src/nz/ac/vuw/ecs/swen225/gp20/render/TileFile/chipRight1.png"));
-							} else if (p.x == x && p.y == y) {
-								int newPosOldToken = x;
-								switch (moveDirection) {
-								case "Left":
-									newPosOldToken = 0;
-								case "Right":
-									newPosOldToken = 1;
-								case "Up":
-									newPosOldToken = 2;
-								case "Down":
-									newPosOldToken = 3;
-								}
-								dispList[i][j].setIcon(
-										new ImageIcon("src/nz/ac/vuw/ecs/swen225/gp20/render/TileFile/" +oldToken.get(newPosOldToken) + ".png"));
-								dispPlayerX = i;
-								dispPlayerY = j;
-								System.out.println("Current ");
-								System.out.println("oldPosTile ");
-								oldToken.clear();
-								oldToken.add(0, board[x][y-1].getName());
-								oldToken.add(1, board[x][y+1].getName());
-								oldToken.add(2, board[x-1][y].getName());
-								oldToken.add(3, board[x+1][y].getName());
-								System.out.println(oldToken);
-								System.out.println(board[x][y].getName());
-
-							}else {
-								if (dispList[i][j] != null) {
-
-									dispList[i][j]
-											.setIcon(new ImageIcon("src/nz/ac/vuw/ecs/swen225/gp20/render/TileFile/"
-													+ board[x][y].getName() + ".png"));
-
-								}
+				int x = p.x - 4;
+				for (int i = 0; i < xSize; i++) {
+					int y = p.y - 4;
+					for (int j = 0; j < ySize; j++) {
+						if (lastP.x == x && lastP.y == y) {
+							playMoveAnimation(count, i, j, x, y, p, moveDirection, true);
+						} else if (p.x == x && p.y == y) {
+							int newPosOldToken = x;
+							switch (moveDirection) {
+							case "Left":
+								System.out.println("Changing to left");
+								newPosOldToken = 0;
+								break;
+							case "Right":
+								System.out.println("Changing to Right");
+								newPosOldToken = 1;
+								break;
+							case "Up":
+								System.out.println("Changing to Up");
+								newPosOldToken = 2;
+								break;
+							case "Down":
+								System.out.println("Changing to Down");
+								newPosOldToken = 3;
+								break;
 							}
-							y++;
+							System.out.println(oldToken);
+							if (count < 3) {
+								dispList[i][j].setIcon(new ImageIcon("src/nz/ac/vuw/ecs/swen225/gp20/render/TileFile/"
+										+ oldToken.get(newPosOldToken) + ".png"));
+							}
+							if (count == 4) {
+								oldToken.clear();
+								oldToken.add(0, board[x][y - 1].getName());
+								oldToken.add(1, board[x][y + 1].getName());
+								oldToken.add(2, board[x - 1][y].getName());
+								oldToken.add(3, board[x + 1][y].getName());
+							}
+							playMoveAnimation(count, i, j, x, y, p, moveDirection, false);
+
+						} else {
+							if (dispList[i][j] != null) {
+
+								dispList[i][j].setIcon(new ImageIcon("src/nz/ac/vuw/ecs/swen225/gp20/render/TileFile/"
+										+ board[x][y].getName() + ".png"));
+
+							}
 						}
-						x++;
+						y++;
 					}
-				}
-				if (count == 1) {
-					System.out.println(count);
-					// updates current sport
-					dispList[dispPlayerX][dispPlayerY]
-							.setIcon(new ImageIcon("src/nz/ac/vuw/ecs/swen225/gp20/render/TileFile/chipRight3.png"));
-					// updates previous spot
-					dispList[dispLastPlayerX][dispLastPlayerY]
-							.setIcon(new ImageIcon("src/nz/ac/vuw/ecs/swen225/gp20/render/TileFile/chipRight2.png"));
-				} else if (count == 2) {
-					System.out.println(count);
-					// updates current sport
-					dispList[dispPlayerX][dispPlayerY]
-							.setIcon(new ImageIcon("src/nz/ac/vuw/ecs/swen225/gp20/render/TileFile/chipRight4.png"));
-					// updates previous spot
-					dispList[dispLastPlayerX][dispLastPlayerY]
-							.setIcon(new ImageIcon("src/nz/ac/vuw/ecs/swen225/gp20/render/TileFile/freeTile.png"));
-
-				} else if (count == 3) {
-					System.out.println(count);
-					// updates current sport
-					dispList[dispPlayerX][dispPlayerY]
-							.setIcon(new ImageIcon("src/nz/ac/vuw/ecs/swen225/gp20/render/TileFile/chipTile.png"));
-
+					x++;
 				}
 
 				count++;
@@ -218,105 +184,36 @@ class View {
 		};
 		new Timer(delay, taskPerformer).start();
 
-//LETS FIX THE ANIMATION
-//		// ANIMATION
-//		int delay = 1; // milliseconds
-//		ActionListener taskPerformer = new ActionListener() {
-//			int count = 0;
-//
-//			public void actionPerformed(ActionEvent evt) {
-//				if (count == 4) {
-//					return;
-//				}
-//				System.out.println(count);
-//				// dispList = new DispTile[xSize][ySize];
-//				int x = p.x-4;
-//				for (int i = 0; i < xSize; i++) {
-//					int y = p.y-4;
-//					for (int j = 0; j < ySize; j++) {
-//						if ((p.x == x && p.y == y) && lastPosition != p) {
-//							System.out.println("test");
-//							try {
-//								final Image[] frames = {
-//										ImageIO.read(new File("src/nz/ac/vuw/ecs/swen225/gp20/render/TileFile/chipRight"
-//												+ 1 + ".png")),
-//										ImageIO.read(new File("src/nz/ac/vuw/ecs/swen225/gp20/render/TileFile/chipRight"
-//												+ 2 + ".png")),
-//										ImageIO.read(new File("src/nz/ac/vuw/ecs/swen225/gp20/render/TileFile/chipRight"
-//												+ 3 + ".png")),
-//										ImageIO.read(new File("src/nz/ac/vuw/ecs/swen225/gp20/render/TileFile/chipRight"
-//												+ 4 + ".png")) };
-//
-//								dispList[i][j].setIcon(new ImageIcon(frames[count]));
-//								//BoardPanel.add(dispList[i][j]);
-//								
-//							} catch (IOException e) {
-//								// TODO Auto-generated catch block
-//								e.printStackTrace();
-//							}
-//
-//						} else {
-//							try {
-//								Image[] frames = {
-//										ImageIO.read(new File("src/nz/ac/vuw/ecs/swen225/gp20/render/TileFile/"
-//												+ board[x][y].getName() + ".png")),
-//										ImageIO.read(new File("src/nz/ac/vuw/ecs/swen225/gp20/render/TileFile/"
-//												+ board[x][y].getName() + ".png")),
-//										ImageIO.read(new File("src/nz/ac/vuw/ecs/swen225/gp20/render/TileFile/"
-//												+ board[x][y].getName() + ".png")),
-//										ImageIO.read(new File("src/nz/ac/vuw/ecs/swen225/gp20/render/TileFile/"
-//												+ board[x][y].getName() + ".png")) };
-//								if (dispList[i][j] != null) {
-//									System.out.println("spam");
-//
-//									
-//									dispList[i][j].setIcon(new ImageIcon(frames[count]));
-//									//BoardPanel.add(dispList[i][j]);
-//									
-//								}
-//							} catch (IOException e) {
-//								// TODO Auto-generated catch block
-//								e.printStackTrace();
-//							}
-//						}
-//						/*
-//						 * 
-//						 * if(p.x == i && p.y == j) {
-//						 * System.out.println("src/nz/ac/vuw/ecs/swen225/gp20/render/TileFile/chipRight"
-//						 * + count + ".png"); DispTile t = new DispTile(); dispList[i][j] = t; ImageIcon
-//						 * ic = new ImageIcon(
-//						 * "src/nz/ac/vuw/ecs/swen225/gp20/render/TileFile/chipRight" + count + ".png");
-//						 * t.setIcon(ic); } else { DispTile t = new DispTile(); dispList[i][j] = t;
-//						 * 
-//						 * ImageIcon ic = new ImageIcon(
-//						 * "src/nz/ac/vuw/ecs/swen225/gp20/render/TileFile/" + board[i][j].getName() +
-//						 * ".png"); t.setIcon(ic); //add(t); }
-//						 */
-//						y++;
-//					}
-//					x++;
-//				}
-//				count++;
-//
-//			}
-//		};
-//		new Timer(delay, taskPerformer).start();
-
-		/*
-		 * Old stuff this.maze = maze; board = maze.getBoard(); Point p =
-		 * maze.getPlayerPosition(); for (int i = p.x - 4; i <= p.x + 4; i++) {
-		 * 
-		 * for (int j = p.y - 4; j <= p.y + 4; j++) { if (dispList[i][j] != null) {
-		 * dispList[i][j].setIcon(new ImageIcon(
-		 * "src/nz/ac/vuw/ecs/swen225/gp20/render/TileFile/" + board[i][j].getName() +
-		 * ".png")); } } }
-		 */
-		// add your elements
-		// BoardPanel.revalidate();
 		oldBoard = new Board(maze.getBoard());
 		lastPosition = maze.getPlayerPosition();
 		BoardPanel.repaint();
 
+	}
+
+	public void playMoveAnimation(int count, int i, int j, int x, int y, Point p, String moveDirection, boolean last) {
+		if (last) {
+			if (count < 3) {
+				System.out.println("LAST: chipTile" + moveDirection + count + ".png");
+				dispList[i][j].setIcon(new ImageIcon(
+						"src/nz/ac/vuw/ecs/swen225/gp20/render/TileFile/chipTile" + moveDirection + count + ".png"));
+			} else if (count >= 3) {
+				System.out.println("LAST: " + board[x][y].getName() + ".png");
+				dispList[i][j].setIcon(new ImageIcon(
+						"src/nz/ac/vuw/ecs/swen225/gp20/render/TileFile/" + board[x][y].getName() + ".png"));
+			}
+		}
+		if (!last) {
+			if (count < 4 && count > 1) {
+				System.out.println("CURRENT : " + board[x][y].getName() + moveDirection + count + ".png");
+				dispList[i][j].setIcon(new ImageIcon("src/nz/ac/vuw/ecs/swen225/gp20/render/TileFile/"
+						+ board[x][y].getName() + moveDirection + (count + 1) + ".png"));
+			} else if (count == 4) {
+				System.out.println("AM I BEING CALLED: " + count);
+				dispList[i][j].setIcon(new ImageIcon(
+						"src/nz/ac/vuw/ecs/swen225/gp20/render/TileFile/" + board[x][y].getName() + ".png"));
+			}
+
+		}
 	}
 
 	public String findDirection(Point p) {
@@ -374,11 +271,11 @@ class View {
 			for (int i = 0; i < xSize; i++) {
 				int y = p.y - 4;
 				for (int j = 0; j < ySize; j++) {
-					if(x == p.x && y == p.y) {
-						oldToken.add(0, board[x][y-1].getName());
-						oldToken.add(1, board[x][y+1].getName());
-						oldToken.add(2, board[x-1][y].getName());
-						oldToken.add(3, board[x+1][y].getName());
+					if (x == p.x && y == p.y) {
+						oldToken.add(0, board[x][y - 1].getName());
+						oldToken.add(1, board[x][y + 1].getName());
+						oldToken.add(2, board[x - 1][y].getName());
+						oldToken.add(3, board[x + 1][y].getName());
 						System.out.println(oldToken);
 					}
 
@@ -395,156 +292,6 @@ class View {
 			}
 
 			lastPosition = maze.getPlayerPosition();
-			
-			/*
-			 * for (int i = p.x - 4; i <= p.x + 4; i++) { for (int j = p.y - 4; j <= p.y +
-			 * 4; j++) { add(dispList[i][j]);
-			 * 
-			 * 
-			 * 
-			 * } }
-			 */
-
-//			// GridLayout layout = new GridLayout(xSize - 6, ySize - 6);
-//			GridLayout layout = new GridLayout(9, 9);
-//			setLayout(layout);
-//			Point p = maze.getPlayerPosition();
-//			/*
-//			 * TODO Add in if statement to get player position correct
-//			 *
-//			 *
-//			 */
-//			System.out.println(lastPosition);
-//			if (lastPosition == null) {
-//				for (int i = p.x - 4; i <= p.x + 4; i++) {
-//
-//					for (int j = p.y - 4; j <= p.y + 4; j++) {
-//						if (p.x == i && p.y == j) {
-//							try {
-//								final Image[] frames = {
-//										ImageIO.read(new File("src/nz/ac/vuw/ecs/swen225/gp20/render/TileFile/chipRight"
-//												+ 1 + ".png")),
-//										ImageIO.read(new File("src/nz/ac/vuw/ecs/swen225/gp20/render/TileFile/chipRight"
-//												+ 2 + ".png")),
-//										ImageIO.read(new File("src/nz/ac/vuw/ecs/swen225/gp20/render/TileFile/chipRight"
-//												+ 3 + ".png")),
-//										ImageIO.read(new File("src/nz/ac/vuw/ecs/swen225/gp20/render/TileFile/chipRight"
-//												+ 4 + ".png")) };
-//
-//								DispTile t = new DispTile();
-//								dispList[i][j] = t;
-//
-//								ImageIcon ic = new ImageIcon(frames[0]);
-//								t.setIcon(ic);
-//								add(t);
-//							} catch (IOException e) {
-//								// TODO Auto-generated catch block
-//								e.printStackTrace();
-//							}
-//
-//						} else {
-//							try {
-//								final Image[] frames = {
-//										ImageIO.read(new File("src/nz/ac/vuw/ecs/swen225/gp20/render/TileFile/"
-//												+ board[i][j].getName() + ".png")),
-//										ImageIO.read(new File("src/nz/ac/vuw/ecs/swen225/gp20/render/TileFile/"
-//												+ board[i][j].getName() + ".png")),
-//										ImageIO.read(new File("src/nz/ac/vuw/ecs/swen225/gp20/render/TileFile/"
-//												+ board[i][j].getName() + ".png")),
-//										ImageIO.read(new File("src/nz/ac/vuw/ecs/swen225/gp20/render/TileFile/"
-//												+ board[i][j].getName() + ".png")) };
-//
-//								DispTile t = new DispTile();
-//								dispList[i][j] = t;
-//
-//								ImageIcon ic = new ImageIcon(frames[0]);
-//								t.setIcon(ic);
-//								add(t);
-//							} catch (IOException e) {
-//								// TODO Auto-generated catch block
-//								e.printStackTrace();
-//							}
-//						}
-//					}
-//				}
-//			} else {
-//
-//				// ANIMATION
-//				int delay = 50; // milliseconds
-//				ActionListener taskPerformer = new ActionListener() {
-//					int count = 0;
-//
-//					public void actionPerformed(ActionEvent evt) {
-//						if (count == 4) {
-//							return;
-//						}
-//						System.out.println(count);
-//						// dispList = new DispTile[xSize][ySize];
-//
-//						for (int i = p.x - 4; i <= p.x + 4; i++) {
-//
-//							for (int j = p.y - 4; j <= p.y + 4; j++) {
-//								if (p.x == i && p.y == j) {
-//									try {
-//										final Image[] frames = {
-//												ImageIO.read(new File(
-//														"src/nz/ac/vuw/ecs/swen225/gp20/render/TileFile/chipRight" + 1
-//																+ ".png")),
-//												ImageIO.read(new File(
-//														"src/nz/ac/vuw/ecs/swen225/gp20/render/TileFile/chipRight" + 2
-//																+ ".png")),
-//												ImageIO.read(new File(
-//														"src/nz/ac/vuw/ecs/swen225/gp20/render/TileFile/chipRight" + 3
-//																+ ".png")),
-//												ImageIO.read(new File(
-//														"src/nz/ac/vuw/ecs/swen225/gp20/render/TileFile/chipRight" + 4
-//																+ ".png")) };
-//
-//										dispList[i][j].setIcon(new ImageIcon(frames[count]));
-//									} catch (IOException e) {
-//										// TODO Auto-generated catch block
-//										e.printStackTrace();
-//									}
-//
-//								} else {
-//									try {
-//										Image[] frames = {
-//												ImageIO.read(new File("src/nz/ac/vuw/ecs/swen225/gp20/render/TileFile/"
-//														+ board[i][j].getName() + ".png")),
-//												ImageIO.read(new File("src/nz/ac/vuw/ecs/swen225/gp20/render/TileFile/"
-//														+ board[i][j].getName() + ".png")),
-//												ImageIO.read(new File("src/nz/ac/vuw/ecs/swen225/gp20/render/TileFile/"
-//														+ board[i][j].getName() + ".png")),
-//												ImageIO.read(new File("src/nz/ac/vuw/ecs/swen225/gp20/render/TileFile/"
-//														+ board[i][j].getName() + ".png")) };
-//
-//										dispList[i][j].setIcon(new ImageIcon(frames[count]));
-//									} catch (IOException e) {
-//										// TODO Auto-generated catch block
-//										e.printStackTrace();
-//									}
-//								}
-//								/*
-//								 * 
-//								 * if(p.x == i && p.y == j) {
-//								 * System.out.println("src/nz/ac/vuw/ecs/swen225/gp20/render/TileFile/chipRight"
-//								 * + count + ".png"); DispTile t = new DispTile(); dispList[i][j] = t; ImageIcon
-//								 * ic = new ImageIcon(
-//								 * "src/nz/ac/vuw/ecs/swen225/gp20/render/TileFile/chipRight" + count + ".png");
-//								 * t.setIcon(ic); } else { DispTile t = new DispTile(); dispList[i][j] = t;
-//								 * 
-//								 * ImageIcon ic = new ImageIcon(
-//								 * "src/nz/ac/vuw/ecs/swen225/gp20/render/TileFile/" + board[i][j].getName() +
-//								 * ".png"); t.setIcon(ic); //add(t); }
-//								 */
-//							}
-//						}
-//						count++;
-//
-//					}
-//				};
-//				new Timer(delay, taskPerformer).start();
-//			}
 		}
 	}
 
