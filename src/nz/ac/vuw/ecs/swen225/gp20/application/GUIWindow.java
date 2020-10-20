@@ -564,13 +564,13 @@ public class GUIWindow extends javax.swing.JFrame {
             boolean isValidMove = m.movePlayer(mv);
             render.updateRender();
             setChipsLeft();
-
             boardCanvas.setVisible(true);
             gameCanvas.add(boardCanvas);
             boardCanvas.setLocation(70, 35);
             validate();
             repaint();
             setVisible(true);
+            popUpInfo(m.getInfo());
             if (m.getStatus() == Maze.GameState.GAME_WON) {
                 formWindowWon();
             }else if(m.getStatus() == Maze.GameState.GAME_LOST){
@@ -679,9 +679,12 @@ public class GUIWindow extends javax.swing.JFrame {
             +" ~ To win the game make sure you collect all the chips on \n"
             +"  the board within 2 minutes and go to the blue tile.\n"
             +" ~ Open doors by collecting keys of the same color.\n"
-            +" ~ On level 2 do not let the bug reach Chap!\n"
+            +" ~ On level 2 do not let the bug reach Chap and be careful\n"
+                + "with the special tiles! Some items withing the board\n"
+            + "will help you with those ;)"
             +" ~ If you want to see all your moves play Replay mode.\n"
             + "Use the \">\" button to replay forwards step by step (Default).\n"
+                + "or set AutoReplay and adjust to your desired speed.\n"
             +"You can also save the game and resume later by going to \"File\" and\n"
             +"click on \"Save\"");
         if( mode.equals(modes.Run.name())) {
@@ -821,6 +824,16 @@ public class GUIWindow extends javax.swing.JFrame {
           numberImg[i].setImage(numberImg[i].getImage().getScaledInstance(90, 100, Image.SCALE_DEFAULT));
 
         }
+      }
+
+    /**
+     * If the player is on top of the info tile application shows a pop up message.
+     * @param information hint to help player.
+     */
+    private void popUpInfo( String information){
+          if( information!=null){
+              display(information);
+          }
       }
 
         /**
