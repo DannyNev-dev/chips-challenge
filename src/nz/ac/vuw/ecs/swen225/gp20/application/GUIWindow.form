@@ -98,7 +98,7 @@
     <Container class="javax.swing.JPanel" name="gameCanvas">
       <Properties>
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-          <Color blue="12" green="d0" red="0" type="rgb"/>
+          <Color blue="0" green="0" red="0" type="rgb"/>
         </Property>
       </Properties>
 
@@ -119,7 +119,7 @@
                           <Group type="102" alignment="1" attributes="0">
                               <EmptySpace min="-2" pref="70" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                  <Component id="forwards" max="32767" attributes="0"/>
+                                  <Component id="replayForwards" max="32767" attributes="0"/>
                                   <Component id="autoReplay" pref="437" max="32767" attributes="0"/>
                               </Group>
                           </Group>
@@ -158,7 +158,7 @@
                       <Group type="102" attributes="0">
                           <Component id="inventoryText1" min="-2" pref="40" max="-2" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Component id="forwards" min="-2" pref="56" max="-2" attributes="0"/>
+                          <Component id="replayForwards" min="-2" pref="56" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
                           <Component id="autoReplay" min="-2" pref="53" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
@@ -260,7 +260,7 @@
                   <Font name="Arial Narrow" size="48" style="1"/>
                 </Property>
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="99" green="99" red="0" type="rgb"/>
+                  <Color blue="0" green="0" red="99" type="rgb"/>
                 </Property>
                 <Property name="horizontalAlignment" type="int" value="0"/>
                 <Property name="text" type="java.lang.String" value="L E V E L"/>
@@ -293,7 +293,7 @@
                   <Font name="Arial Narrow" size="48" style="1"/>
                 </Property>
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="99" green="99" red="0" type="rgb"/>
+                  <Color blue="0" green="0" red="99" type="rgb"/>
                 </Property>
                 <Property name="horizontalAlignment" type="int" value="0"/>
                 <Property name="text" type="java.lang.String" value="T I M E"/>
@@ -355,7 +355,7 @@
                   <Font name="Arial Narrow" size="48" style="1"/>
                 </Property>
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="99" green="99" red="0" type="rgb"/>
+                  <Color blue="0" green="0" red="99" type="rgb"/>
                 </Property>
                 <Property name="horizontalAlignment" type="int" value="0"/>
                 <Property name="text" type="java.lang.String" value="C H I P S"/>
@@ -378,7 +378,7 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="autoReplayActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JButton" name="forwards">
+        <Component class="javax.swing.JButton" name="replayForwards">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ff" green="33" red="33" type="rgb"/>
@@ -389,7 +389,7 @@
             <Property name="text" type="java.lang.String" value="&gt;"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="forwardsActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="replayForwardsActionPerformed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JSlider" name="speedChooser">
@@ -413,7 +413,7 @@
               <Color blue="ff" green="33" red="33" type="rgb"/>
             </Property>
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="ff" green="ff" red="ff" type="rgb"/>
+              <Color blue="0" green="0" red="99" type="rgb"/>
             </Property>
             <Property name="horizontalAlignment" type="int" value="0"/>
             <Property name="text" type="java.lang.String" value="C H A N G E   S P E E D"/>
@@ -501,7 +501,7 @@
                   <Font name="Lucida Grande" size="18" style="1"/>
                 </Property>
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="99" green="99" red="0" type="rgb"/>
+                  <Color blue="0" green="0" red="99" type="rgb"/>
                 </Property>
                 <Property name="horizontalAlignment" type="int" value="0"/>
                 <Property name="text" type="java.lang.String" value="I N V E N T O R Y"/>
@@ -588,7 +588,7 @@
               <Font name="Lucida Grande" size="18" style="1"/>
             </Property>
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="ff" green="ff" red="ff" type="rgb"/>
+              <Color blue="0" green="0" red="99" type="rgb"/>
             </Property>
             <Property name="horizontalAlignment" type="int" value="0"/>
             <Property name="text" type="java.lang.String" value="Replay Mode Controls"/>

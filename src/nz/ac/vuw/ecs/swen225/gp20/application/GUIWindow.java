@@ -34,6 +34,14 @@ public class GUIWindow extends javax.swing.JFrame {
     initComponents();
     this.eventListener = EventListener.eventListenerFactory();
     this.setFocusable(true);
+      inventoryLabels[0] = item0;
+      inventoryLabels[1] = item1;
+      inventoryLabels[2] = item2;
+      inventoryLabels[3] = item3;
+      inventoryLabels[4] = item4;
+      inventoryLabels[5] = item4;
+      inventoryLabels[6] = item6;
+      inventoryLabels[7] = item7;
   }
 
   /**
@@ -55,7 +63,7 @@ public class GUIWindow extends javax.swing.JFrame {
         chipsLeft = new javax.swing.JLabel();
         chipsleftText2 = new javax.swing.JLabel();
         autoReplay = new javax.swing.JButton();
-        forwards = new javax.swing.JButton();
+        replayForwards = new javax.swing.JButton();
         speedChooser = new javax.swing.JSlider();
         changeSpeedText = new javax.swing.JLabel();
         inventoryPanel = new javax.swing.JPanel();
@@ -92,7 +100,7 @@ public class GUIWindow extends javax.swing.JFrame {
             }
         });
 
-        gameCanvas.setBackground(new java.awt.Color(0, 208, 18));
+        gameCanvas.setBackground(new java.awt.Color(0, 0, 0));
 
         boardCanvas.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         boardCanvas.setMaximumSize(new java.awt.Dimension(45000, 45000));
@@ -114,7 +122,7 @@ public class GUIWindow extends javax.swing.JFrame {
 
         levelText.setBackground(new java.awt.Color(0, 0, 0));
         levelText.setFont(new java.awt.Font("Arial Narrow", 1, 48)); // NOI18N
-        levelText.setForeground(new java.awt.Color(0, 153, 153));
+        levelText.setForeground(new java.awt.Color(153, 0, 0));
         levelText.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         levelText.setText("L E V E L");
 
@@ -127,7 +135,7 @@ public class GUIWindow extends javax.swing.JFrame {
         levelNumber.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
         timerText.setFont(new java.awt.Font("Arial Narrow", 1, 48)); // NOI18N
-        timerText.setForeground(new java.awt.Color(0, 153, 153));
+        timerText.setForeground(new java.awt.Color(153, 0, 0));
         timerText.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         timerText.setText("T I M E");
         timerText.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -147,7 +155,7 @@ public class GUIWindow extends javax.swing.JFrame {
         chipsLeft.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
         chipsleftText2.setFont(new java.awt.Font("Arial Narrow", 1, 48)); // NOI18N
-        chipsleftText2.setForeground(new java.awt.Color(0, 153, 153));
+        chipsleftText2.setForeground(new java.awt.Color(153, 0, 0));
         chipsleftText2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         chipsleftText2.setText("C H I P S");
         chipsleftText2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -195,10 +203,10 @@ public class GUIWindow extends javax.swing.JFrame {
             }
         });
 
-        forwards.setBackground(new java.awt.Color(51, 51, 255));
-        forwards.setForeground(new java.awt.Color(255, 255, 255));
-        forwards.setText(">");
-        forwards.addActionListener(new java.awt.event.ActionListener() {
+        replayForwards.setBackground(new java.awt.Color(51, 51, 255));
+        replayForwards.setForeground(new java.awt.Color(255, 255, 255));
+        replayForwards.setText(">");
+        replayForwards.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 replayForwardsActionPerformed(evt);
             }
@@ -219,7 +227,7 @@ public class GUIWindow extends javax.swing.JFrame {
         });
 
         changeSpeedText.setBackground(new java.awt.Color(51, 51, 255));
-        changeSpeedText.setForeground(new java.awt.Color(255, 255, 255));
+        changeSpeedText.setForeground(new java.awt.Color(153, 0, 0));
         changeSpeedText.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         changeSpeedText.setText("C H A N G E   S P E E D");
         changeSpeedText.setAutoscrolls(true);
@@ -228,7 +236,7 @@ public class GUIWindow extends javax.swing.JFrame {
         inventoryPanel.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         inventoryText.setFont(new java.awt.Font("Lucida Grande", 1, 18)); // NOI18N
-        inventoryText.setForeground(new java.awt.Color(0, 153, 153));
+        inventoryText.setForeground(new java.awt.Color(153, 0, 0));
         inventoryText.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         inventoryText.setText("I N V E N T O R Y");
         inventoryText.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -300,7 +308,7 @@ public class GUIWindow extends javax.swing.JFrame {
         );
 
         inventoryText1.setFont(new java.awt.Font("Lucida Grande", 1, 18)); // NOI18N
-        inventoryText1.setForeground(new java.awt.Color(255, 255, 255));
+        inventoryText1.setForeground(new java.awt.Color(153, 0, 0));
         inventoryText1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         inventoryText1.setText("Replay Mode Controls");
         inventoryText1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -321,7 +329,7 @@ public class GUIWindow extends javax.swing.JFrame {
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, gameCanvasLayout.createSequentialGroup()
                             .addGap(70, 70, 70)
                             .addGroup(gameCanvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(forwards, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(replayForwards, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(autoReplay, javax.swing.GroupLayout.DEFAULT_SIZE, 437, Short.MAX_VALUE))))
                     .addGroup(gameCanvasLayout.createSequentialGroup()
                         .addGap(206, 206, 206)
@@ -349,7 +357,7 @@ public class GUIWindow extends javax.swing.JFrame {
                     .addGroup(gameCanvasLayout.createSequentialGroup()
                         .addComponent(inventoryText1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(forwards, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(replayForwards, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(7, 7, 7)
                         .addComponent(autoReplay, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -508,7 +516,7 @@ public class GUIWindow extends javax.swing.JFrame {
         int numSelected;
         JRadioButton one = new JRadioButton("1");
         JRadioButton two = new JRadioButton("2");
-        forwards.setEnabled(false);
+        replayForwards.setEnabled(false);
         autoReplay.setEnabled(false);
         mode = modes.Run.name();
         //Group the radio buttons.
@@ -571,6 +579,7 @@ public class GUIWindow extends javax.swing.JFrame {
             repaint();
             setVisible(true);
             popUpInfo(m.getInfo());
+            displayInventory();
             if (m.getStatus() == Maze.GameState.GAME_WON) {
                 formWindowWon();
             }else if(m.getStatus() == Maze.GameState.GAME_LOST){
@@ -610,7 +619,7 @@ public class GUIWindow extends javax.swing.JFrame {
        * Shared method which will be called by both keyReleaseSetMove and forwardsActionPerformed.
        * @param mv SingleMove object, created by keystroke or converted from saved JSon file
        */
-		private void forwardMovement(SingleMove mv) {
+		private void forwardsActionPerformed(SingleMove mv) {
 			m.movePlayer(mv);
 			render.updateRender();
 			setChipsLeft();
@@ -635,7 +644,7 @@ public class GUIWindow extends javax.swing.JFrame {
        */
       private void autoReplayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_autoReplayActionPerformed
         // TODO add your handling code here:
-          forwards.setEnabled(false);
+          replayForwards.setEnabled(false);
       }//GEN-LAST:event_autoReplayActionPerformed
 
       /**
@@ -697,7 +706,7 @@ public class GUIWindow extends javax.swing.JFrame {
      * Uploads JsonFile and parsers level.
      * @param evt
      */
-    private void replayButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_replayButtonActionPerformed
+    private void replayButtonActionPerformed(java.awt.event.ActionEvent evt) {                                             
             pausedAtMin = gameCountdown.getCurrentMin();
             pausedAtSec = gameCountdown.getCurrentSec();
             gameCountdown.pause();
@@ -706,7 +715,7 @@ public class GUIWindow extends javax.swing.JFrame {
 		timer.setText("-:- -"); // Timer is not applicable during replay mode
 
 		// Allow user to use buttons for Replay mode
-		forwards.setEnabled(true);
+		replayForwards.setEnabled(true);
 		autoReplay.setEnabled(true);
 
 		fileChooser.setDialogTitle("Open Json File to Replay a match");
@@ -727,9 +736,9 @@ public class GUIWindow extends javax.swing.JFrame {
 		}
 	}// GEN-LAST:event_replayButtonActionPerformed
 
-    private void speedChooserAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-LAST:event_speedChooserAncestorAdded
+    private void speedChooserAncestorAdded(javax.swing.event.AncestorEvent evt) {                                          
 
-        }//GEN-LAST:event_replayButtonActionPerformed
+        }                                            
 
       /**.
        * @param args the command line arguments
@@ -774,7 +783,6 @@ public class GUIWindow extends javax.swing.JFrame {
     private static javax.swing.JLabel chipsLeft;
     private javax.swing.JLabel chipsleftText2;
     private javax.swing.JMenu fileMenu;
-    private javax.swing.JButton forwards;
     private javax.swing.JPanel gameCanvas;
     private javax.swing.JMenu gameMenu;
     private javax.swing.JPanel inventoryPanel;
@@ -793,6 +801,7 @@ public class GUIWindow extends javax.swing.JFrame {
     private javax.swing.JLabel levelNumber;
     private javax.swing.JLabel levelText;
     private javax.swing.JMenuItem replayButton;
+    private javax.swing.JButton replayForwards;
     private javax.swing.JMenuItem rulesLegend;
     private javax.swing.JMenuItem saveButton;
     private javax.swing.JSlider speedChooser;
@@ -813,18 +822,37 @@ public class GUIWindow extends javax.swing.JFrame {
       private int pausedAtMin;
       private int pausedAtSec;
       private EventIterator eventIterator;
+      private ImageIcon[] inventoryItems = new ImageIcon[8];
+      private JLabel[] inventoryLabels = new JLabel[8];
 
       /**
        * initialize the number images  by linking each face to its image and storing them.
        */
       public void numberOnPanel() {
         for (int i = 0; i < numberImg.length; i++) {
-          numberImg[i] = new ImageIcon("/nz/ac/vuw/ecs/swen225/gp20/application/data/numbers/" + i + ".png");
+          numberImg[i] = new ImageIcon("src/nz/ac/vuw/ecs/swen225/gp20/application/data/numbers/" + i + ".png");
           //set the size
           numberImg[i].setImage(numberImg[i].getImage().getScaledInstance(90, 100, Image.SCALE_DEFAULT));
 
         }
       }
+
+    public void displayInventory(){
+
+        for (int i = 0; i < inventoryItems.length; i++) {
+
+            if(i<m.getPlayerInventory().size()) {
+                inventoryItems[i] = new ImageIcon("src/nz/ac/vuw/ecs/swen225/gp20/render/TileFile/" + m.getPlayerInventory().get(i).getName() + "Tile.png");
+                //set the size
+                inventoryItems[i].setImage(inventoryItems[i].getImage().getScaledInstance(66, 62, Image.SCALE_DEFAULT));
+                inventoryLabels[i].setIcon(inventoryItems[i]);
+               // inventoryLabels[i].setToolTipText(m.getPlayerInventory().get(i).getName());
+            } else {
+                inventoryLabels[i].setIcon(null);
+            }
+        }
+
+    }
 
     /**
      * If the player is on top of the info tile application shows a pop up message.
@@ -893,38 +921,6 @@ public class GUIWindow extends javax.swing.JFrame {
      * @return board of current game.
      */
     public Render getRender() { return render;}
-
-    /**
-       *Mode or status to tell the gui what actions should be performed.
-       * @return game mode ( loading, saving, running, replaying).
-       */
-      public String getMode() {
-        return mode;
-      }
-
-      /**
-       * Set current game mode.
-       * @param mode index of the mode within the modes enum
-       */
-      public void setMode( int mode){
-        if( mode > modes.values().length || mode < 0){
-          throw new IndexOutOfBoundsException(" Index must be within 0-3");
-        }
-        this.mode = modes.values()[mode].name();
-      }
-
-      /**
-       * Set current game mode.
-       * @param mode Name of the mode within the modes enum.
-       */
-      public void setMode( String mode){
-        for( int i = 0; i < modes.values().length; i++) {
-          if(!mode.equals(modes.values()[i])){
-            throw new NullPointerException("Mode not found. Check for spelling errors");
-          }
-          this.mode = modes.valueOf(mode).name();
-        }
-      }
 
       /**.
        *
