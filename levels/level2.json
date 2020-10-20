@@ -548,9 +548,6 @@
 				"type": "Wall"			
 			},
 			{
-				"type": "Wall"			
-			},
-			{
 				"type": "Door",
 				"item": "green"			
 			},
@@ -866,9 +863,6 @@
 			},
 			{
 				"type": "Wall"				
-			},
-			{
-				"type": "Wall"			
 			},
 			{
 				"type": "Wall"			
