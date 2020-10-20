@@ -15,8 +15,11 @@ import nz.ac.vuw.ecs.swen225.gp20.render.Render;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 
 /**
@@ -94,10 +97,7 @@ public class GUIWindow extends javax.swing.JFrame {
                 formWindowClosing(evt);
             }
             public void windowOpened(java.awt.event.WindowEvent evt) {
-                evtOpen = evt;
-                if(level!=-1){
-                    newGame(level);
-                }formWindowOpened(evt);
+                formWindowOpened(evt);
             }
         });
         addKeyListener(new java.awt.event.KeyAdapter() {
@@ -229,6 +229,11 @@ public class GUIWindow extends javax.swing.JFrame {
             public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
             }
             public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
+            }
+        });
+        speedChooser.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                speedChooserStateChanged(evt);
             }
         });
 
@@ -662,6 +667,39 @@ public class GUIWindow extends javax.swing.JFrame {
       private void autoReplayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_autoReplayActionPerformed
         // TODO add your handling code here:
           replayForwards.setEnabled(false);
+          EventIterator it = this.eventIterator;
+			GUIWindow forwordable = this;
+
+			ActionListener taskPerformer = new ActionListener() {
+				public void actionPerformed(ActionEvent evt) {
+					if (!it.hasNext()) {
+						((Timer)evt.getSource()).stop();
+						System.out.println("Auto-Replay stopped iteration");
+						return;
+					}
+					Event ev = it.next();
+					SingleMove mv = null;
+					System.out.println("Auto-Replay event: " + ev.getType());
+					mv = ev.getMove();
+					if (mv != null) {
+						System.out.println("Auto-Replay movement: " + mv.getLastDirection());
+						forwordable.handleMovement(mv);
+						mv = null;
+					} else {
+						System.err.println("Auto-Replay expects a movement but event emitted is: " + ev.getType());
+					}
+					int latency = (int) it.getLatency();
+					System.out.println("Auto-Replay latency updated to: " + latency);
+					//FayLu: Theoretically the speed might be adjusted during the auto-replay
+					((Timer)evt.getSource()).setDelay(latency);
+				}
+			};
+			// When auto-replay is triggered the real-time speed value is used
+			it.setSpeed(this.replaySpeed);
+			int latency = (int) it.getLatency();
+			System.out.println("Auto-Replay latency initialized to: " + latency);
+			new Timer(latency, taskPerformer).start();
+
       }//GEN-LAST:event_autoReplayActionPerformed
 
       /**
@@ -727,6 +765,17 @@ public class GUIWindow extends javax.swing.JFrame {
             }
     }//GEN-LAST:event_formKeyPressed
 
+    private void speedChooserStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_speedChooserStateChanged
+        // TODO add your handling code here:
+        	this.replaySpeed = speedChooser.getValue();
+        if (this.eventIterator != null) {
+        	// FayLu: User might adjust speed during auto-replay.
+        	// If the slider changes, update new speed seed value to iterator and it will be used in auto-replay.
+        	this.eventIterator.setSpeed(this.replaySpeed);
+        }
+
+    }//GEN-LAST:event_speedChooserStateChanged
+
     /**
      * Activated when user clicks on Replay.
      * Uploads JsonFile and parsers level.
@@ -752,7 +801,7 @@ public class GUIWindow extends javax.swing.JFrame {
 			File file = fileChooser.getSelectedFile();
             mode = modes.Replay.name();
 			System.out.println("Selected game record: " + file.getAbsolutePath());
-			eventIterator = EventListener.getRecord().getIteratorByFile(file.getAbsolutePath());
+			this.eventIterator = EventListener.getRecord().getIteratorByFile(file.getAbsolutePath(), this.replaySpeed);
 			replaySetLevel();
 		} else {
 			System.out.println("File access cancelled by user.");
@@ -852,6 +901,7 @@ public class GUIWindow extends javax.swing.JFrame {
       private ImageIcon[] inventoryItems = new ImageIcon[8];
       private JLabel[] inventoryLabels = new JLabel[8];
       private java.awt.event.WindowEvent evtOpen;
+      private int replaySpeed;
 
       /**
        * initialize the number images  by linking each face to its image and storing them.

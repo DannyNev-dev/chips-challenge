@@ -1,22 +1,35 @@
 package nz.ac.vuw.ecs.swen225.gp20.recnplay;
 
 import java.util.Iterator;
+import java.sql.Timestamp;
 
 public class EventIterator implements Iterator<Event>{
 	
-	private static int MAXSPEED = 10;
-	private static int MINSPEED = 1;
-	private static int DEFAULT_SPEED = 5;
+	private static int MAX_SPEED = 10;
+	private static int MIN_SPEED = 1;
+	private static int DEFAULT_SPEED = 1;
+
 	
 	private RecordedGame rg;
 
-	private double delayUnit = 200;
+	private int minDelay = 200;
 	private int speed;
+	
+	public void setSpeed(int speed) {
+		this.speed = speed;
+	}
+
 	private Iterator<Event> it;
 	
-	public long getLatency() {
-		return (long)((MAXSPEED-speed)/0.005 + delayUnit);
+	/**
+	 * Return latency for Swing Timer using.
+	 */
+	public int getLatency() {
+		// Highest speed: delay = minDelay = 200 (ms)
+		// Lowest speed: 3800 + minDelay = 4000 (ms)
+		return (int) ((MAX_SPEED - speed) / 0.00237 + minDelay);
 	}
+
 
 	@Override
 	public boolean hasNext() {
@@ -25,14 +38,10 @@ public class EventIterator implements Iterator<Event>{
 
 	@Override
 	public Event next() {
-		long latency = getLatency();
-		try {
-			Thread.sleep(latency);
-			return it.next();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-			return null;
-		}		
+		Event ev = it.next();
+		System.out.println(
+				"EventIterator: " + new Timestamp(System.currentTimeMillis()) + " emit event: " + ev.getType());
+		return ev;	
 	}
 
 	public EventIterator(RecordedGame rg, int speed) {
@@ -40,7 +49,6 @@ public class EventIterator implements Iterator<Event>{
 		this.rg = rg;
 		this.speed = speed;
 		this.it = rg.actions.iterator();
-		System.out.println("EventIterator created with latency: " + getLatency());
 	}
 	
 	public RecordedGame getRg() {

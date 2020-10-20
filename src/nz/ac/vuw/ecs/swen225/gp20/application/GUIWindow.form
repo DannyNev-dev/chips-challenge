@@ -391,6 +391,7 @@
           </Properties>
           <Events>
             <EventHandler event="ancestorAdded" listener="javax.swing.event.AncestorListener" parameters="javax.swing.event.AncestorEvent" handler="speedChooserAncestorAdded"/>
+            <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="speedChooserStateChanged"/>
           </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="changeSpeedText">
