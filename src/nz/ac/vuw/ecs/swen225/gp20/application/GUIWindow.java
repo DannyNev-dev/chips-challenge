@@ -5,16 +5,13 @@
  */
 package nz.ac.vuw.ecs.swen225.gp20.application;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import nz.ac.vuw.ecs.swen225.gp20.maze.Maze;
 import nz.ac.vuw.ecs.swen225.gp20.maze.Move;
 import nz.ac.vuw.ecs.swen225.gp20.maze.SingleMove;
 import nz.ac.vuw.ecs.swen225.gp20.recnplay.Event;
+import nz.ac.vuw.ecs.swen225.gp20.recnplay.EventIterator;
 import nz.ac.vuw.ecs.swen225.gp20.recnplay.EventListener;
 import nz.ac.vuw.ecs.swen225.gp20.recnplay.RecordedGame;
-import nz.ac.vuw.ecs.swen225.gp20.recnplay.Replay;
 import nz.ac.vuw.ecs.swen225.gp20.render.Render;
 
 import javax.swing.*;
@@ -213,6 +210,15 @@ public class GUIWindow extends javax.swing.JFrame {
         speedChooser.setPaintLabels(true);
         speedChooser.setPaintTicks(true);
         speedChooser.setValue(5);
+        speedChooser.addAncestorListener(new javax.swing.event.AncestorListener() {
+            public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
+                speedChooserAncestorAdded(evt);
+            }
+            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
+            }
+            public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
+            }
+        });
 
         changeSpeedText.setBackground(new java.awt.Color(51, 51, 255));
         changeSpeedText.setForeground(new java.awt.Color(255, 255, 255));
@@ -316,15 +322,16 @@ public class GUIWindow extends javax.swing.JFrame {
                             .addComponent(inventoryText1, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, gameCanvasLayout.createSequentialGroup()
                             .addGap(70, 70, 70)
-                            .addGroup(gameCanvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(speedChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 437, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGroup(gameCanvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(forwards, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(autoReplay, javax.swing.GroupLayout.DEFAULT_SIZE, 437, Short.MAX_VALUE)))))
+                            .addGroup(gameCanvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(forwards, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(autoReplay, javax.swing.GroupLayout.DEFAULT_SIZE, 437, Short.MAX_VALUE))))
                     .addGroup(gameCanvasLayout.createSequentialGroup()
                         .addGap(206, 206, 206)
-                        .addComponent(changeSpeedText, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 160, Short.MAX_VALUE)
+                        .addComponent(changeSpeedText, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(gameCanvasLayout.createSequentialGroup()
+                        .addGap(89, 89, 89)
+                        .addComponent(speedChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 437, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 141, Short.MAX_VALUE)
                 .addGroup(gameCanvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(levelAndTimer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(inventoryPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -527,54 +534,72 @@ public class GUIWindow extends javax.swing.JFrame {
        * @param evt arrow key released.
        */
       private void keyReleasedSetMove(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_keyReleasedSetMove
+    	  	//@TODO
+			SingleMove sMove = null;
+			if (!mode.equals("Replay")) {
+				requestFocus();
 
-          if( !mode.equals("Replay"))  {
-              requestFocus();
-          }
-          SingleMove sMove;
-          if (evt.getKeyCode() == KeyEvent.VK_LEFT) {
-              sMove = new SingleMove(Move.Direction.LEFT);
-          } else if (evt.getKeyCode() == KeyEvent.VK_DOWN) {
-              sMove = new SingleMove(Move.Direction.DOWN);
-          } else if (evt.getKeyCode() == KeyEvent.VK_RIGHT) {
-              sMove = new SingleMove(Move.Direction.RIGHT);
-          } else if (evt.getKeyCode() == KeyEvent.VK_UP) {
-              sMove = new SingleMove(Move.Direction.UP);
-          } else {
-              return;
-          }
-          m.movePlayer(sMove);
-          render.updateRender();
-          setChipsLeft();
-          this.eventListener.onEvent(Event.eventOfChapMove(sMove));
-
-          boardCanvas.setVisible(true);
-          //        render = new Render(m);
-          //        boardCanvas = render.getView();
-          gameCanvas.add(boardCanvas);
-          boardCanvas.setLocation(70, 35);
-          validate();
-          repaint();
-          setVisible(true);
-          if (m.getStatus().name().equals("GAME_WON")) {
-              this.formWindowWon();
-          }
-          transferFocus();
-      //}
-
+				if (evt.getKeyCode() == KeyEvent.VK_LEFT) {
+					sMove = new SingleMove(Move.Direction.LEFT);
+				} else if (evt.getKeyCode() == KeyEvent.VK_DOWN) {
+					sMove = new SingleMove(Move.Direction.DOWN);
+				} else if (evt.getKeyCode() == KeyEvent.VK_RIGHT) {
+					sMove = new SingleMove(Move.Direction.RIGHT);
+				} else if (evt.getKeyCode() == KeyEvent.VK_UP) {
+					sMove = new SingleMove(Move.Direction.UP);
+				} else {
+					return;
+				}
+				this.eventListener.onEvent(Event.eventOfChapMove(sMove));
+			}
+			this.forwardMovement(sMove);
       }//GEN-LAST:event_keyReleasedSetMove
 
+		private void forwardMovement(SingleMove mv) {
+			m.movePlayer(mv);
+			render.updateRender();
+			setChipsLeft();
+
+			boardCanvas.setVisible(true);
+			// render = new Render(m);
+			// boardCanvas = render.getView();
+			gameCanvas.add(boardCanvas);
+			boardCanvas.setLocation(70, 35);
+			validate();
+			repaint();
+			setVisible(true);
+			if (m.getStatus().name().equals("GAME_WON")) {
+				this.formWindowWon();
+			}
+			transferFocus();
+		}
+		
+		private void forwardMovementAsyc(GUIWindow forwardable, SingleMove mv) {
+			SwingUtilities.invokeLater(new Runnable() {
+	            public void run() {
+	              forwardable.forwardMovement(mv);
+	            }
+	          });
+		}
       /**
        * Processes users input when the button for autoReplay is pressed.
        * @param evt autoReplay button clicked.
        */
       private void autoReplayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_autoReplayActionPerformed
-        // TODO add your handling code here:
-          forwards.setEnabled(false);
-        while(i < actions.size()){
-            parseActionObject((JsonObject) actions.get(i));
-            i++;
-        }
+    	  
+    	  SingleMove mv = null;
+    	  while(this.eventIterator.hasNext() && mv == null) {
+    		  Event ev = this.eventIterator.next();
+    		  System.out.println("Auto-Replay event: " + ev.getType());
+    		  mv = ev.getMove();
+    		  if (mv != null) {
+        		  System.out.println("Auto-Replay movement: " + mv.getLastDirection());
+        		  this.forwardMovement(mv);
+        		  mv = null;
+        	  }else {
+        		  System.err.println("Auto-Replay expects a movement but event emitted is: " + ev.getType());
+        	  }
+    	  }
       }//GEN-LAST:event_autoReplayActionPerformed
 
       /**
@@ -582,10 +607,18 @@ public class GUIWindow extends javax.swing.JFrame {
        * @param evt '>' button clicked.
        */
       private void forwardsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_forwardsActionPerformed
-        // TODO add your handling code here:
-         parseActionObject((JsonObject) actions.get(i));
-         System.out.println((actions.get(i).getAsString()));
-         i++; // increases index to move onto next action
+
+    	  SingleMove mv = null;
+    	  if (this.eventIterator.hasNext() && mv == null) {
+    		  mv = this.eventIterator.next().getMove();
+    	  }
+    	  if (mv != null) {
+    		  System.out.println("Replay movement: " + mv.getLastDirection());
+    		  this.forwardMovement(mv);
+    	  }else {
+    		  System.out.println("Replay finished the event iteration");
+    	  }
+    	  
       }//GEN-LAST:event_forwardsActionPerformed
 
       /**
@@ -593,7 +626,7 @@ public class GUIWindow extends javax.swing.JFrame {
        * @param evt save button on game menu is clicked.
        */
       private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {
-    //GEN-FIRST:event_saveButtonActionPerformed
+//GEN-FIRST:event_saveButtonActionPerformed
         EventListener.getRecord().saveToJson();
       }//GEN-LAST:event_saveButtonActionPerformed
 
@@ -602,7 +635,7 @@ public class GUIWindow extends javax.swing.JFrame {
        * @param evt rules and instructions button clicked on the game menu.
        */
       private void rulesLegendActionPerformed(java.awt.event.ActionEvent evt) {
-    //GEN-FIRST:event_rulesLegendActionPerformed
+//GEN-FIRST:event_rulesLegendActionPerformed
         pausedAtMin = gameCountdown.getCurrentMin();
         pausedAtSec = gameCountdown.getCurrentSec();
         gameCountdown.pause();
@@ -625,96 +658,64 @@ public class GUIWindow extends javax.swing.JFrame {
      * Uploads JsonFile and parsers level.
      * @param evt
      */
-    private void replayButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_replayButtonActionPerformed
-            // FIXME: Pause the app timer, do not countdown time when user is choosing recorded game in JSON file
-            // FIXME: Set app to replay mode
-                // FIXME: Call RecordnReplay module to load replay iterator and the iterator has no latency by default
-                // FIXME: When the iterator is retrieved, load the first event to get the level first
-                //        If the first event is not SetLevel event (level is not positive int), raise exception
-                //        Load the map corresponding to level number, at the time being, below buttons shall be visible to user
-                //        "Next", "Adjust Speed", "Auto Replay"
-                //        However, the default mode shall be step-by-step prior to any pressoing on above buttons
-                //        * On action of "Next": call iterator to read next event, call the replay module method to turn this event back to movement
-                //        * On action of "Adjust Speed": suggested default latency is 1(s) and scope is 0.5 to 3 and unit is 0.5
-                //                                       When latency is selected from GUI, call the iterator method and it will change latency internally
-                //        * On "Auto Replay": Just loop the iterator and call correpsonding method to turn event to Movement and execute the movement as usual
-                //        A kind reminder: when app is in "replay" mode, the EventListenser.OnEvent() shall never be called
+	private void replayButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_replayButtonActionPerformed
 
-                //        Special notes: The replay is just one-directional, it has "Next" but there is no "Back" to simplify the logic
-                //        Use Case Impacts: If user click to replay, there is no graceful way designed so far to get back to previous on-going game.
-            //store variables locally to be able to re construct a new timer from where the old one was paused.
-            pausedAtMin = gameCountdown.getCurrentMin();
-            pausedAtSec = gameCountdown.getCurrentSec();
-            gameCountdown.pause();
+		pausedAtMin = gameCountdown.getCurrentMin();
+		pausedAtSec = gameCountdown.getCurrentSec();
+		gameCountdown.pause();
 
-            JsonFileFilter fileFilter = new JsonFileFilter();
+		JsonFileFilter fileFilter = new JsonFileFilter();
 
-            timer.setText("-:- -"); // Timer is not applicable during replay mode
+		timer.setText("-:- -"); // Timer is not applicable during replay mode
 
-            // Allow user to use buttons for Replay mode
-            forwards.setEnabled(true);
-            autoReplay.setEnabled(true);
+		// Allow user to use buttons for Replay mode
+		forwards.setEnabled(true);
+		autoReplay.setEnabled(true);
 
-            fileChooser.setDialogTitle("Open Json File to Replay a match");
-            fileChooser.setFileFilter(fileFilter);
+		fileChooser.setDialogTitle("Open Json File to Replay a match");
+		fileChooser.setFileFilter(fileFilter);
 
-            int returnVal = fileChooser.showOpenDialog(this);
-            if (returnVal == JFileChooser.APPROVE_OPTION) {
-                File file = fileChooser.getSelectedFile();
-                System.out.println("Selected game record: " + file.getAbsolutePath());
+		int returnVal = fileChooser.showOpenDialog(this);
+		if (returnVal == JFileChooser.APPROVE_OPTION) {
+			File file = fileChooser.getSelectedFile();
+			System.out.println("Selected game record: " + file.getAbsolutePath());
+			this.eventIterator = EventListener.getRecord().getIteratorByFile(file.getAbsolutePath());
+			this.replaySetLevel();
+		} else {
+			System.out.println("File access cancelled by user.");
+			// FIXME: Resume the app timer, return to current game
+			mode = modes.Run.name(); // Game is back to running mode
+			gameCountdown = new GameTimer(pausedAtMin, pausedAtSec); // resume timer
+		}
+	}// GEN-LAST:event_replayButtonActionPerformed
 
-                //update game state
-                mode = modes.Replay.name();
-                replay = new Replay(file);
+    private void speedChooserAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_speedChooserAncestorAdded
+        // TODO add your handling code here:
+        this.replaySpeed = speedChooser.getValue();
+    }//GEN-LAST:event_speedChooserAncestorAdded
+    
+    public int getSpeed() {
+    	return replaySpeed;
+    }
 
-                try(FileReader reader = new FileReader(file)) {
-                    Object obj = JsonParser.parseReader(reader);
-                    JsonObject jsonObject = (JsonObject) obj;
-
-                    int replayLevel = jsonObject.get("level").getAsInt();
-                    //Check level is within boundaries
-                    if( replayLevel < 0 || replayLevel > 2){
-                        throw new Exception("Level number not valid");
-                    }else{
-                        //level is correct, load level
-                        setLevelNumber(replayLevel); // Not sure about this??
-                        recordedGame = new RecordedGame(replayLevel);
-                    }
-                    actions = (JsonArray) jsonObject.get("actions");
-                    System.out.println(actions.toString());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            } else {
-                System.out.println("File access cancelled by user.");
-                // FIXME: Resume the app timer, return to current game
-                mode = modes.Run.name(); //Game is back to running mode
-                gameCountdown = new GameTimer(pausedAtMin, pausedAtSec); //resume timer
-            }
-        }//GEN-LAST:event_replayButtonActionPerformed
-
-    /**
-     * Parses the actions array from JsonFile to replay game.
-     * Method is called when user clicks on auto-replay and iterates through the array
-     * automatically.
-     * @param actions list from selected Json file.
-     */
-    private void parseActionObject(JsonObject actions){
-
-            //Get action object within list
-            JsonObject actionObject = (JsonObject) actions.get("actions");
-
-           // construct event
-            Event.Type a = Event.Type.valueOf(actionObject.get("type").toString());
-            int replayLevel = actionObject.get("level").getAsInt();
-            SingleMove singleMove = new SingleMove(Move.Direction.valueOf(actionObject.
-                    get("direction").toString()));
-            boolean chapDies =actionObject.get("chapDies").getAsBoolean();
-            Event event = new Event( a, replayLevel, singleMove, chapDies);
-            recordedGame.addAction(event);
-            System.out.println(event.toString());
-        }
-
+    private void replaySetLevel() {
+    	if (this.eventIterator == null) {
+    		System.err.println("Please select the saved game to replay from File menu");
+    		return;
+    	}
+    	Event evt = this.eventIterator.next();
+    	System.out.println("Replay saved game in level: " + evt.getLevel());
+    	this.setLevelNumber(evt.getLevel());
+    	//@TODO
+    	boardCanvas.setVisible(false);
+        render = new Render(m);
+        boardCanvas = render.getView();
+        gameCanvas.add(boardCanvas);
+        boardCanvas.setLocation(70, 35);
+        validate();
+        repaint();
+        setVisible(true);
+    }
       /**.
        * @param args the command line arguments
        */
@@ -751,38 +752,38 @@ public class GUIWindow extends javax.swing.JFrame {
         });
       }
 
-        // Variables declaration - do not modify//GEN-BEGIN:variables
-        private javax.swing.JButton autoReplay;
-        private javax.swing.JPanel boardCanvas;
-        private javax.swing.JLabel changeSpeedText;
-        private static javax.swing.JLabel chipsLeft;
-        private javax.swing.JLabel chipsleftText2;
-        private javax.swing.JMenu fileMenu;
-        private javax.swing.JButton forwards;
-        private javax.swing.JPanel gameCanvas;
-        private javax.swing.JMenu gameMenu;
-        private javax.swing.JPanel inventoryPanel;
-        private javax.swing.JLabel inventoryText;
-        private javax.swing.JLabel inventoryText1;
-        private javax.swing.JLabel item0;
-        private javax.swing.JLabel item1;
-        private javax.swing.JLabel item2;
-        private javax.swing.JLabel item3;
-        private javax.swing.JLabel item4;
-        private javax.swing.JLabel item5;
-        private javax.swing.JLabel item6;
-        private javax.swing.JLabel item7;
-        private javax.swing.JMenuBar jMenuBar1;
-        private javax.swing.JPanel levelAndTimer;
-        private javax.swing.JLabel levelNumber;
-        private javax.swing.JLabel levelText;
-        private javax.swing.JMenuItem replayButton;
-        private javax.swing.JMenuItem rulesLegend;
-        private javax.swing.JMenuItem saveButton;
-        private javax.swing.JSlider speedChooser;
-        private static javax.swing.JLabel timer;
-        private javax.swing.JLabel timerText;
-        // End of variables declaration//GEN-END:variables
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton autoReplay;
+    private javax.swing.JPanel boardCanvas;
+    private javax.swing.JLabel changeSpeedText;
+    private static javax.swing.JLabel chipsLeft;
+    private javax.swing.JLabel chipsleftText2;
+    private javax.swing.JMenu fileMenu;
+    private javax.swing.JButton forwards;
+    private javax.swing.JPanel gameCanvas;
+    private javax.swing.JMenu gameMenu;
+    private javax.swing.JPanel inventoryPanel;
+    private javax.swing.JLabel inventoryText;
+    private javax.swing.JLabel inventoryText1;
+    private javax.swing.JLabel item0;
+    private javax.swing.JLabel item1;
+    private javax.swing.JLabel item2;
+    private javax.swing.JLabel item3;
+    private javax.swing.JLabel item4;
+    private javax.swing.JLabel item5;
+    private javax.swing.JLabel item6;
+    private javax.swing.JLabel item7;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JPanel levelAndTimer;
+    private javax.swing.JLabel levelNumber;
+    private javax.swing.JLabel levelText;
+    private javax.swing.JMenuItem replayButton;
+    private javax.swing.JMenuItem rulesLegend;
+    private javax.swing.JMenuItem saveButton;
+    private javax.swing.JSlider speedChooser;
+    private static javax.swing.JLabel timer;
+    private javax.swing.JLabel timerText;
+    // End of variables declaration//GEN-END:variables
       // Game variables
         private final JFileChooser fileChooser = new JFileChooser();
       private static ImageIcon[] numberImg = new ImageIcon[10];
@@ -796,10 +797,8 @@ public class GUIWindow extends javax.swing.JFrame {
       private EventListener eventListener;
       private int pausedAtMin;
       private int pausedAtSec;
-      private Replay replay;
-      private  RecordedGame recordedGame;
-      private JsonArray actions;
-      private int i = 0;
+      private EventIterator eventIterator;
+      private int replaySpeed;
 
       /**
        * initialize the number images  by linking each face to its image and storing them.
@@ -838,7 +837,9 @@ public class GUIWindow extends javax.swing.JFrame {
       private void setLevelNumber(int level) {
         this.level = level;
         levelNumber.setText("0" + level);
-        this.eventListener.onEvent(Event.eventOfLevelSetting(level));
+        if( !mode.equals("Replay"))  {
+        	this.eventListener.onEvent(Event.eventOfLevelSetting(level));
+        }
         try {
           m =  new Maze(level);
         } catch (IOException e) {
@@ -892,5 +893,7 @@ public class GUIWindow extends javax.swing.JFrame {
       public static void display(String data) {
         int result = JOptionPane.showConfirmDialog(null, data, "Alert", JOptionPane.PLAIN_MESSAGE);
       }
+      
+      
 
     }
