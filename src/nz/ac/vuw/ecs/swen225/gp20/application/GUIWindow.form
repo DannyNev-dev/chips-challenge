@@ -118,12 +118,9 @@
                           </Group>
                           <Group type="102" alignment="1" attributes="0">
                               <EmptySpace min="-2" pref="70" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="speedChooser" alignment="0" min="-2" pref="437" max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                      <Component id="forwards" max="32767" attributes="0"/>
-                                      <Component id="autoReplay" pref="437" max="32767" attributes="0"/>
-                                  </Group>
+                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                  <Component id="forwards" max="32767" attributes="0"/>
+                                  <Component id="autoReplay" pref="437" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
@@ -131,8 +128,12 @@
                           <EmptySpace min="-2" pref="206" max="-2" attributes="0"/>
                           <Component id="changeSpeedText" min="-2" pref="148" max="-2" attributes="0"/>
                       </Group>
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace min="-2" pref="89" max="-2" attributes="0"/>
+                          <Component id="speedChooser" min="-2" pref="437" max="-2" attributes="0"/>
+                      </Group>
                   </Group>
-                  <EmptySpace pref="160" max="32767" attributes="0"/>
+                  <EmptySpace pref="141" max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="levelAndTimer" min="-2" max="-2" attributes="0"/>
                       <Component id="inventoryPanel" min="-2" max="-2" attributes="0"/>
@@ -402,6 +403,9 @@
               <Connection code="5" type="code"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="ancestorAdded" listener="javax.swing.event.AncestorListener" parameters="javax.swing.event.AncestorEvent" handler="speedChooserAncestorAdded"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="changeSpeedText">
           <Properties>

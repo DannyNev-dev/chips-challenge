@@ -11,6 +11,11 @@ import nz.ac.vuw.ecs.swen225.gp20.maze.Maze.SpecialEvent;
  */
 public class Harmful implements Item {
   
+  /**
+   * Types of harmful items
+   * @author Emanuel Evans (ID: 300472656)
+   *
+   */
   public static enum DangerType {
     /**
      * A fire which will burn the player.

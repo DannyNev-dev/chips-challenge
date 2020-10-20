@@ -18,7 +18,13 @@ public class Board implements Cloneable {
   private Tile[][] boardData;
   
   //Initial size of the board, which can't be changed
+  /**
+   * How many columns does the board have.
+   */
   public final int width;
+  /**
+   * How many rows does the board have.
+   */
   public final int height;
   
   

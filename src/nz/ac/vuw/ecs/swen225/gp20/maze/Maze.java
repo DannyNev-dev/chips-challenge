@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Collectable;
+import nz.ac.vuw.ecs.swen225.gp20.maze.items.Entity;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Player;
 import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.ExitTile;
 import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.InfoTile;
@@ -91,6 +92,10 @@ public class Maze {
      */
     DOOR_OPENED,
     /**
+     * When another entity kills the player.
+     */
+    CHAP_DIED_MURDERED,
+    /**
      * Chap dies when he visited a dangerous cell.
      * This value specified that he died because of poisoning
      */
@@ -162,20 +167,41 @@ public class Maze {
    * @return whether the move was successful
    */
   public boolean movePlayer(Move move) {
+    checkArgument(isPlayerPosValid());
+    boolean successful = false;
+    
+    if (moveEntity(move, player)) {
+      
+      player.setOrientation(move.getLastDirection());
+      successful = true;
+    }
+    
+    //Check that there the player position matches and that there is exactly one player on the board
+    assert (isPlayerPosValid());
+    return successful;
+  }
+  
+  /**
+   * Move an Entity of the board.
+   * 
+   * @param move indicates where should the player move to
+   * @param movingEntity who needs to be moved
+   * @return whether the move was successful
+   */
+  public boolean moveEntity(Move move, Entity movingEntity) {
     if (status != GameState.PLAYING) {
       //TODO remove when application checks the game status
       return false;
     }
-    //checkState(status == GameState.PLAYING, "The player can't move if the game has ended");
     
     checkArgument(move != null, "A well initialized move is required");
-    checkArgument(isPlayerPosValid());
+    checkArgument(isEntityPosValid(movingEntity));
     checkState(status == GameState.PLAYING, "Moves can't be applied unless the game is active");
 
     lastEvent = null; //Reset any special events from the last movement
     info = null;
     
-    Point oldPos = player.getPosition();
+    Point oldPos = movingEntity.getPosition();
     
     Point newPos = move.getDestination(oldPos);
     
@@ -184,35 +210,32 @@ public class Maze {
       return false;
     }
     
-    //Tile where the player is trying to move into
+    //Tile where the entity is trying to move into
     Tile newTile = board.getTile(newPos);
     
-    //Check if player can enter the new tile
-    if (!newTile.isAccessible(player)) {
+    //Check if entity can enter the new tile
+    if (!newTile.isAccessible(movingEntity)) {
       return false;
     }
     
-    //Remove player from old tile
+    //Remove entity from old tile
     board.getTile(oldPos).replaceItem(null);
-    //Change player position
-    player.setPosition(newPos);
+    //Change entity position
+    movingEntity.setPosition(newPos);
     
     if (newTile.hasAction()) {
       //An action is an interaction with an item which might trigger a special event to be recorded
       //For instance a key could be picked up or a door opened
-      lastEvent = newTile.applyAction(player);
+      lastEvent = newTile.applyAction(movingEntity);
       
     }
     
-    //Add player to new tile
-    board.getTile(newPos).replaceItem(player);
-    player.setOrientation(move.getLastDirection());
+    //Add entity to new tile
+    board.getTile(newPos).replaceItem(movingEntity);
     
-    //Note that if the player will die in this move the movement will still be valid
+    //Note that if the entity will die in this move the movement will still be valid
     updateStatus();
     
-    //Check that there the player position matches and that there is exactly one player on the board
-    assert (isPlayerPosValid());
     return true;
   }
   
@@ -303,6 +326,7 @@ public class Maze {
   
   /**
    * Get a copy of the player in this maze.
+   * @return a clone of the player in this maze
    */
   public Player getPlayer() {
     checkArgument(isPlayerPosValid());
@@ -369,22 +393,35 @@ public class Maze {
    */
   private boolean isPlayerPosValid() {
     checkNotNull(player, "There must be a player on the board to validate its position");
-   
-    //Get the coordinates of the tile where the player should be located
-    Point playerPos = player.getPosition();
     
-    if (!board.isPointInsideBoard(playerPos)) {
-      //Player position is outside the board;
-      throw new RuntimeException("The player must be within the board boundaries");
+    return isEntityPosValid(player) && isThereOnlyOnePlayer();    
+  }
+  
+  /**
+   * Check whether the given entity position is valid.
+   * It looks if it is within the board and if the coordinates match the state of the board
+   * @param entity to check its position
+   * @return whether the given entity's position is valid
+   */
+  private boolean isEntityPosValid(Entity entity) {
+    checkNotNull(entity, "The give entity must be well defined to validate its position");
+    
+    //Get the coordinates of the tile where the entity should be located
+    Point entityPos = entity.getPosition();
+    
+    if (!board.isPointInsideBoard(entityPos)) {
+      //Entity position is outside the board;
+      throw new RuntimeException(entity.getName() + " must be within the board boundaries");
     }
     
-    //Validate the player position against the board, hence check that tile contains a player
-    if (!board.getTile(playerPos).containsItemType(Player.class)) {
+    //Validate the entity position against the board hence check that tile contains the given entity
+    if (!board.getTile(entityPos).contains(entity)) {
       throw new RuntimeException(
-          "The position of the given player doesn't match the player tile in the board");
+          "The position stated in the given entity (" + entity.getName() 
+          + ") doesn't match its actual position in the board");
     }
     
-    return isThereOnlyOnePlayer();    
+    return true;
   }
   
   /**

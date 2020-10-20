@@ -85,11 +85,11 @@ public abstract class Tile {
   
   /**
    * Check whether this tile has an item.
-   * @return whether the tile contains an Item
+   * @param itemToCheck whose presence in this tile is to be tested
+   * @return true if this tile contains the specified element
    */
-  public boolean containsItem() {
-    return item != null;
-    
+  public boolean contains(Item itemToCheck) {
+    return item.equals(itemToCheck);
   }
   
   /**
@@ -98,7 +98,7 @@ public abstract class Tile {
    * @return whether the tile contains an Item
    */
   public boolean containsItemType(Class<? extends Item> type) {
-    if (containsItem()) {
+    if (item != null) {
       return type.isInstance(item);
     }
     return false;
