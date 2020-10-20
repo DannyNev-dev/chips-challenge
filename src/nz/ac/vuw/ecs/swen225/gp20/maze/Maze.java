@@ -156,6 +156,7 @@ public class Maze {
     this.board = new Board(loader.loadBoard());
     this.target = loader.loadTarget();
     this.level = level;
+    loader.setMaze(this);
     assert (isPlayerPosValid());
     
   }
