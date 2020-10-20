@@ -16,7 +16,7 @@ import nz.ac.vuw.ecs.swen225.gp20.maze.items.Item;
  * @author Emanuel Evans (ID: 300472656)
  *
  */
-public abstract class Tile {
+public abstract class Tile implements Cloneable {
   
   /**
    * An item which might be collectable by the player from this tile.

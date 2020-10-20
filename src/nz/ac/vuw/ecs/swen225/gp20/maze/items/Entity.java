@@ -10,7 +10,7 @@ import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.Tile;
  * @author Emanuel Evans (ID: 300472656)
  *
  */
-public interface Entity extends Item {
+public interface Entity extends Item, Cloneable {
   
   /**
    * Get the collection of collectable items which might affect where the tile can be accessed.
