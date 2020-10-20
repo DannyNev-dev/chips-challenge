@@ -27,6 +27,16 @@ public class LvlReaderTest {
 			assertEquals(lR.loadBoard().getClass(),Tile[][].class);	
 		}
 		/**
+		 * Test 1.5.
+		 * Test that we are able to create a maze from the level
+		 * @throws IOException 
+		 */
+		@Test
+		void test1point5() throws IOException {
+			LevelReader lR = new LevelReader(2);
+			assertEquals(lR.loadBoard().getClass(),Tile[][].class);	
+		}
+		/**
 		 * Test 2.
 		 * Test that we are able to create player
 		 * @throws IOException 

@@ -371,8 +371,8 @@
 				"type": "Wall"			
 			},
 			{
-				"type": "Tile",
-				"item": "bug"
+				"type": "Bug",
+				"item": {"x":11,"y":5}
 			},
 			{
 				"type": "Tile",
@@ -390,10 +390,10 @@
 				"type": "Tile",
 				"item": "none"			
 			},
-			},
 			{
 				"type": "Tile",
 				"item": "none"			
+			},
 			{
 				"type": "Tile",
 				"item": "treasure"			
@@ -473,10 +473,10 @@
 				"type": "Tile",
 				"item": "none"			
 			},
-			},
 			{
 				"type": "Tile",
-				"item": "none"			
+				"item": "none"	
+			},
 			{
 				"type": "Tile",
 				"item": "none"			
@@ -593,7 +593,7 @@
 				"type": "Wall"			
 			},
 			{
-				"type": "wall"
+				"type": "Wall"
 			},		
 			{
 				"type": "Tile",
@@ -756,7 +756,7 @@
 				"type": "Wall"			
 			},
 			{
-				"type": "wall"
+				"type": "Wall"
 			},		
 			{
 				"type": "Wall"			
@@ -765,8 +765,8 @@
 				"type": "Wall"
 			},
 			{
-				"type": "Tile",
-				"item": "bug"
+				"type": "Bug",
+				"item": {"x":8,"y":10}
 			},
 			{
 				"type": "Tile",
@@ -958,10 +958,10 @@
 				"type": "Tile",
 				"item": "none"			
 			},
-			},
 			{
 				"type": "Tile",
 				"item": "none"			
+			},
 			{
 				"type": "Tile",
 				"item": "none"			
@@ -1041,10 +1041,10 @@
 				"type": "Tile",
 				"item": "none"			
 			},
-			},
 			{
 				"type": "Tile",
 				"item": "none"			
+			},
 			{
 				"type": "Tile",
 				"item": "none"			
