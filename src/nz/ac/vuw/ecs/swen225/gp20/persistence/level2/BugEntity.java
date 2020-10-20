@@ -4,15 +4,17 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.awt.Point;
 import java.util.List;
-
+import java.util.Timer;
 
 import nz.ac.vuw.ecs.swen225.gp20.maze.Board;
 import nz.ac.vuw.ecs.swen225.gp20.maze.Maze;
 import nz.ac.vuw.ecs.swen225.gp20.maze.SingleMove;
+import nz.ac.vuw.ecs.swen225.gp20.maze.Maze.GameState;
 import nz.ac.vuw.ecs.swen225.gp20.maze.Maze.SpecialEvent;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Collectable;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Entity;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Player;
+import nz.ac.vuw.ecs.swen225.gp20.persistence.SpecialTimerTask;
 
 /**
  * Create a bug entity.
@@ -50,11 +52,11 @@ public class BugEntity implements Entity, Collectable {
    */
   public void executeBugMove(Maze m) {
 	//loop with delay to move bug
-	Board b = m.getBoardObject();
-	SingleMove sm = randomAdjacentPos(b);
-	m.moveEntity(sm,this); //returns false if game is paused
-	//call static application method to notify record and replay
-	//GUIWindow.notifyRecorder(sm,name); //name to identify this as bug move
+	while(m.getStatus().equals(GameState.PLAYING)) {
+		Timer t = new Timer();
+		SpecialTimerTask specialTask = new SpecialTimerTask(this,m);
+		t.scheduleAtFixedRate(specialTask, 100, 5000);
+	}
   }
   
   /**
@@ -84,21 +86,11 @@ public class BugEntity implements Entity, Collectable {
   public String getName() {
     return name;
   }
-  
-  /**
-   * Checks for collected.
-   *
-   * @param item the item
-   * @return true, if successful
-   */
-  public boolean hasColleced(Collectable item) {
-    throw new RuntimeException("Unsupported method, bugs have no inventory");
-  }
 
   /**
-   * Gets the inventory.
+   * Gets the inventory if i had one.
    *
-   * @return the inventory
+   * @return the inventory that doesn't exist..
    */
   @Override
   public List<Collectable> getInventory() {
@@ -106,9 +98,9 @@ public class BugEntity implements Entity, Collectable {
   }
 
   /**
-   * Gets the chips collected.
+   * Bugs don't collect chips
    *
-   * @return the chips collected
+   * @return the chips collected if it had any
    */
   @Override
   public int getChipsCollected() {
