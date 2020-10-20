@@ -19,7 +19,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 
 /**
@@ -664,8 +663,7 @@ public class GUIWindow extends javax.swing.JFrame {
        * Processes users input when the button for autoReplay is pressed.
        * @param evt autoReplay button clicked.
        */
-      private void autoReplayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_autoReplayActionPerformed
-        // TODO add your handling code here:
+      private void autoReplayActionPerformed(java.awt.event.ActionEvent evt) {
           replayForwards.setEnabled(false);
           EventIterator it = this.eventIterator;
 			GUIWindow forwordable = this;
@@ -700,7 +698,7 @@ public class GUIWindow extends javax.swing.JFrame {
 			System.out.println("Auto-Replay latency initialized to: " + latency);
 			new Timer(latency, taskPerformer).start();
 
-      }//GEN-LAST:event_autoReplayActionPerformed
+      }
 
       /**
        * Processes users input when the button for moving forwards is pressed.
@@ -718,18 +716,17 @@ public class GUIWindow extends javax.swing.JFrame {
           }else {
               System.out.println("Replay finished the event iteration");
           }
-
-      }//GEN-LAST:event_forwardsActionPerformed
+      }
 
       /**
        * Processes users input when the button for saving is pressed.
        * @param evt save button on game menu is clicked.
        */
       private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {
-//GEN-FIRST:event_saveButtonActionPerformed
+
         EventListener.getRecord().saveToJson();
         evtOpen.getWindow().dispose();
-      }//GEN-LAST:event_saveButtonActionPerformed
+      }
 
       /**
        * Processes users input when the button for displaying rules is pressed.
@@ -765,16 +762,18 @@ public class GUIWindow extends javax.swing.JFrame {
             }
     }//GEN-LAST:event_formKeyPressed
 
-    private void speedChooserStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_speedChooserStateChanged
-        // TODO add your handling code here:
+    /**
+     * Set replay speed with the value of speedChooser.
+     * @param evt
+     */
+    private void speedChooserStateChanged(javax.swing.event.ChangeEvent evt) {
         	this.replaySpeed = speedChooser.getValue();
         if (this.eventIterator != null) {
         	// FayLu: User might adjust speed during auto-replay.
         	// If the slider changes, update new speed seed value to iterator and it will be used in auto-replay.
         	this.eventIterator.setSpeed(this.replaySpeed);
         }
-
-    }//GEN-LAST:event_speedChooserStateChanged
+    }
 
     /**
      * Activated when user clicks on Replay.
@@ -805,11 +804,11 @@ public class GUIWindow extends javax.swing.JFrame {
 			replaySetLevel();
 		} else {
 			System.out.println("File access cancelled by user.");
-			// Resume the app timer, return to current game
+			// Resume the GUIWindow timer, return to current game
 			mode = modes.Run.name(); // Game is back to running mode
 			gameCountdown = new GameTimer(pausedAtMin, pausedAtSec, this); // resume timer
 		}
-	}// GEN-LAST:event_replayButtonActionPerformed
+	}
     
 
     private void speedChooserAncestorAdded(javax.swing.event.AncestorEvent evt) {
@@ -954,7 +953,9 @@ public class GUIWindow extends javax.swing.JFrame {
               chipsLeft.setText( chips + " / " + m.target);
       }
 
-
+      /**
+       * Set level in replay mode.
+       */
       private void replaySetLevel() {
             if (this.eventIterator == null) {
                 System.err.println("Please select the saved game to replay from File menu");

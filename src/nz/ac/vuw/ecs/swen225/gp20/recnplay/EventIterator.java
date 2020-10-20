@@ -3,10 +3,15 @@ package nz.ac.vuw.ecs.swen225.gp20.recnplay;
 import java.util.Iterator;
 import java.sql.Timestamp;
 
+/**
+ * Implements Iterator.
+ * Pop up saved java objects to GUIWIndow in replay mode.
+ * @author YanLu
+ *
+ */
 public class EventIterator implements Iterator<Event>{
 	
 	private static int MAX_SPEED = 10;
-	private static int MIN_SPEED = 1;
 	private static int DEFAULT_SPEED = 1;
 
 	
@@ -15,6 +20,10 @@ public class EventIterator implements Iterator<Event>{
 	private int minDelay = 200;
 	private int speed;
 	
+	/**
+	 * Set replay speed with a given parameter.
+	 * @param speed
+	 */
 	public void setSpeed(int speed) {
 		this.speed = speed;
 	}
@@ -23,6 +32,7 @@ public class EventIterator implements Iterator<Event>{
 	
 	/**
 	 * Return latency for Swing Timer using.
+	 * @return latency which is calculated with selected speed.
 	 */
 	public int getLatency() {
 		// Highest speed: delay = minDelay = 200 (ms)
@@ -44,6 +54,11 @@ public class EventIterator implements Iterator<Event>{
 		return ev;	
 	}
 
+	/**
+	 * Constructor of EventIterator.
+	 * @param rg
+	 * @param speed
+	 */
 	public EventIterator(RecordedGame rg, int speed) {
 		super();
 		this.rg = rg;
@@ -51,13 +66,19 @@ public class EventIterator implements Iterator<Event>{
 		this.it = rg.actions.iterator();
 	}
 	
+	/**
+	 * Getter.
+	 * @return recordedGame.
+	 */
 	public RecordedGame getRg() {
 		return rg;
 	}
 
+	/**
+	 * Constructor of EventIterator.
+	 * @param recordedGame
+	 */
 	public EventIterator(RecordedGame recordedGame) {
 		this(recordedGame, EventIterator.DEFAULT_SPEED);
 	}
-	
-
 }
