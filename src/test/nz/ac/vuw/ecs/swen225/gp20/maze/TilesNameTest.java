@@ -5,12 +5,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.awt.Point;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Block;
-import nz.ac.vuw.ecs.swen225.gp20.maze.items.Bucket;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.ExitLock;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Harmful;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Key;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Player;
+import nz.ac.vuw.ecs.swen225.gp20.maze.items.Remedy;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Treasure;
+import nz.ac.vuw.ecs.swen225.gp20.maze.items.Remedy.Type;
 import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.ExitTile;
 import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.InfoTile;
 import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.ItemTile;
@@ -147,7 +148,7 @@ class TilesNameTest {
    */
   @Test
   void waterBucketNameTest() {
-    Tile tile = new ItemTile(new Bucket());
+    Tile tile = new ItemTile(new Remedy(Type.BUCKET));
     assertEquals("waterBucketTile", tile.getName());
   }
 
