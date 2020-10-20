@@ -5,12 +5,14 @@
  */
 package nz.ac.vuw.ecs.swen225.gp20.application;
 
+import com.google.gson.JsonArray;
 import nz.ac.vuw.ecs.swen225.gp20.maze.Maze;
 import nz.ac.vuw.ecs.swen225.gp20.maze.Move;
 import nz.ac.vuw.ecs.swen225.gp20.maze.SingleMove;
 import nz.ac.vuw.ecs.swen225.gp20.recnplay.Event;
 import nz.ac.vuw.ecs.swen225.gp20.recnplay.EventIterator;
 import nz.ac.vuw.ecs.swen225.gp20.recnplay.EventListener;
+import nz.ac.vuw.ecs.swen225.gp20.recnplay.RecordedGame;
 import nz.ac.vuw.ecs.swen225.gp20.render.Render;
 
 import javax.swing.*;
@@ -21,8 +23,8 @@ import java.io.IOException;
 
 /**
  *
- * @author camilalis 300504575
- * From Master
+ * @author camilalis 300504575.
+ * From Master.
  */
 public class GUIWindow extends javax.swing.JFrame {
 
@@ -200,7 +202,7 @@ public class GUIWindow extends javax.swing.JFrame {
         forwards.setText(">");
         forwards.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                forwardsActionPerformed(evt);
+                replayForwardsActionPerformed(evt);
             }
         });
 
@@ -446,7 +448,7 @@ public class GUIWindow extends javax.swing.JFrame {
           if (confirm == JOptionPane.OK_OPTION) {
             level = 2;
             setLevelNumber(level);
-            gameCountdown = new GameTimer(1, 60);
+            gameCountdown = new GameTimer(1, 60, this);
           }else if( confirm == JOptionPane.CANCEL_OPTION) {
             System.exit(0); //close all windows
           }
@@ -455,6 +457,29 @@ public class GUIWindow extends javax.swing.JFrame {
           System.exit(0);
         }
       }
+
+        /**
+         * Forms a warning message if user wins game bottom.
+         */
+        public void formWindowLost() {
+            String message = "Game Over\n";
+           if( gameCountdown.timeOut()){
+                message = message + "You ran out of time\nDo you want to play this level again?";
+
+            } else if (m.getStatus() == Maze.GameState.GAME_LOST) {
+               gameCountdown.pause();
+               message = message + m.getLastSpecialEvent().name().toLowerCase().replace("_", " ")
+                       + "Do you want to play again?";
+           }
+           int confirm = JOptionPane.showConfirmDialog(null, message, "Game Over",
+                   JOptionPane.YES_NO_OPTION);
+           if (confirm == JOptionPane.YES_OPTION) {
+               setLevelNumber(level);
+               gameCountdown = new GameTimer(1, 60, this);
+           }else if( confirm == JOptionPane.CANCEL_OPTION) {
+               System.exit(0); //close all windows
+           }
+        }
 
       /**
        * Forms a warning message if user clicks exit bottom.
@@ -473,7 +498,7 @@ public class GUIWindow extends javax.swing.JFrame {
           System.exit(0);
         }else if( confirm == JOptionPane.OK_CANCEL_OPTION && mode.equals(modes.Run.name())){
           //new timer continues from where it was left of.
-          gameCountdown = new GameTimer(pausedAtMin,pausedAtSec);
+          gameCountdown = new GameTimer(pausedAtMin,pausedAtSec, this);
         }
       }//GEN-LAST:event_formWindowClosing
 
@@ -512,7 +537,9 @@ public class GUIWindow extends javax.swing.JFrame {
           }
 
           // New timer for every game (2 minutes long)
-          gameCountdown = new GameTimer(1, 60);
+          gameCountdown = new GameTimer(1, 60, this);
+          //Updates level number with the input received by player and
+            // informs other modules.
           setLevelNumber(numSelected);
           boardCanvas.setVisible(false);
           render = new Render(m);
@@ -522,35 +549,63 @@ public class GUIWindow extends javax.swing.JFrame {
           validate();
           repaint();
           setVisible(true);
+          setChipsLeft();
         }else {
           System.exit(0);  //changed to prevent bug when closing
         }
       }//GEN-LAST:event_formWindowOpened
+
+    /**
+     * Updates other modules with the new move input by player.
+     * @param mv move indicating direction chap moves on the board.
+     */
+    private boolean handleMovement(SingleMove mv) {
+        if(m.getStatus() != Maze.GameState.PLAYING){
+            return false;
+        }
+            boolean isValidMove = m.movePlayer(mv);
+            render.updateRender();
+            setChipsLeft();
+
+            boardCanvas.setVisible(true);
+            gameCanvas.add(boardCanvas);
+            boardCanvas.setLocation(70, 35);
+            validate();
+            repaint();
+            setVisible(true);
+            if (m.getStatus() == Maze.GameState.GAME_WON) {
+                formWindowWon();
+            }else if(m.getStatus() == Maze.GameState.GAME_LOST){
+                formWindowLost();
+            }
+            transferFocus();
+            return isValidMove;
+        }
 
       /**
        * Processes users input to move Chap around the board.
        * @param evt arrow key released.
        */
       private void keyReleasedSetMove(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_keyReleasedSetMove
-    	  	//@TODO
-			SingleMove sMove = null;
-			if (!mode.equals("Replay")) {
-				requestFocus();
-
-				if (evt.getKeyCode() == KeyEvent.VK_LEFT) {
-					sMove = new SingleMove(Move.Direction.LEFT);
-				} else if (evt.getKeyCode() == KeyEvent.VK_DOWN) {
-					sMove = new SingleMove(Move.Direction.DOWN);
-				} else if (evt.getKeyCode() == KeyEvent.VK_RIGHT) {
-					sMove = new SingleMove(Move.Direction.RIGHT);
-				} else if (evt.getKeyCode() == KeyEvent.VK_UP) {
-					sMove = new SingleMove(Move.Direction.UP);
-				} else {
-					return;
-				}
-				this.eventListener.onEvent(Event.eventOfChapMove(sMove));
-			}
-			this.forwardMovement(sMove);
+          SingleMove singleMove = null;
+          if( !mode.equals("Replay")) {
+              requestFocus();
+              if (evt.getKeyCode() == KeyEvent.VK_LEFT) {
+                  singleMove = new SingleMove(Move.Direction.LEFT);
+              } else if (evt.getKeyCode() == KeyEvent.VK_DOWN) {
+                  singleMove = new SingleMove(Move.Direction.DOWN);
+              } else if (evt.getKeyCode() == KeyEvent.VK_RIGHT) {
+                  singleMove = new SingleMove(Move.Direction.RIGHT);
+              } else if (evt.getKeyCode() == KeyEvent.VK_UP) {
+                  singleMove = new SingleMove(Move.Direction.UP);
+              } else {
+                  return;
+              }
+              //Only updates event listener if move is valid.
+              if(handleMovement(singleMove)) {
+                  eventListener.onEvent(Event.eventOfChapMove(singleMove));
+              }
+          }
       }//GEN-LAST:event_keyReleasedSetMove
 
       /**
@@ -581,25 +636,27 @@ public class GUIWindow extends javax.swing.JFrame {
        * @param evt autoReplay button clicked.
        */
       private void autoReplayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_autoReplayActionPerformed
+        // TODO add your handling code here:
+          forwards.setEnabled(false);
       }//GEN-LAST:event_autoReplayActionPerformed
 
       /**
        * Processes users input when the button for moving forwards is pressed.
        * @param evt '>' button clicked.
        */
-      private void forwardsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_forwardsActionPerformed
+      private void replayForwardsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_forwardsActionPerformed
 
-    	  SingleMove mv = null;
-    	  if (this.eventIterator.hasNext() && mv == null) {
-    		  mv = this.eventIterator.next().getMove();
-    	  }
-    	  if (mv != null) {
-    		  System.out.println("Replay movement: " + mv.getLastDirection());
-    		  this.forwardMovement(mv);
-    	  }else {
-    		  System.out.println("Replay finished the event iteration");
-    	  }
-    	  
+          SingleMove mv = null;
+          if (this.eventIterator.hasNext() && mv == null) {
+              mv = this.eventIterator.next().getMove();
+          }
+          if (mv != null) {
+              System.out.println("Replay movement: " + mv.getLastDirection());
+              this.handleMovement(mv);
+          }else {
+              System.out.println("Replay finished the event iteration");
+          }
+
       }//GEN-LAST:event_forwardsActionPerformed
 
       /**
@@ -622,7 +679,7 @@ public class GUIWindow extends javax.swing.JFrame {
         gameCountdown.pause();
         display(" ~ Use the arrows on your key board to move Chap around the board.\n"
             +" ~ To win the game make sure you collect all the chips on \n"
-            +"the board within 2 minutes and go to the blue tile.\n"
+            +"  the board within 2 minutes and go to the blue tile.\n"
             +" ~ Open doors by collecting keys of the same color.\n"
             +" ~ On level 2 do not let the bug reach Chap!\n"
             +" ~ If you want to see all your moves play Replay mode.\n"
@@ -630,7 +687,7 @@ public class GUIWindow extends javax.swing.JFrame {
             +"You can also save the game and resume later by going to \"File\" and\n"
             +"click on \"Save\"");
         if( mode.equals(modes.Run.name())) {
-            gameCountdown = new GameTimer(pausedAtMin, pausedAtSec);
+            gameCountdown = new GameTimer(pausedAtMin, pausedAtSec, this);
         }
       }//GEN-LAST:event_rulesLegendActionPerformed
 
@@ -639,12 +696,27 @@ public class GUIWindow extends javax.swing.JFrame {
      * Uploads JsonFile and parsers level.
      * @param evt
      */
-	private void replayButtonActionPerformed(java.awt.event.ActionEvent evt) {
-		pausedAtMin = gameCountdown.getCurrentMin();
-		pausedAtSec = gameCountdown.getCurrentSec();
-		gameCountdown.pause();
+    private void replayButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_replayButtonActionPerformed
+            // FIXME: Pause the app timer, do not countdown time when user is choosing recorded game in JSON file
+            // FIXME: Set app to replay mode
+                // FIXME: Call RecordnReplay module to load replay iterator and the iterator has no latency by default
+                // FIXME: When the iterator is retrieved, load the first event to get the level first
+                //        If the first event is not SetLevel event (level is not positive int), raise exception
+                //        Load the map corresponding to level number, at the time being, below buttons shall be visible to user
+                //        "Next", "Adjust Speed", "Auto Replay"
+                //        However, the default mode shall be step-by-step prior to any pressoing on above buttons
+                //        * On action of "Next": call iterator to read next event, call the replay module method to turn this event back to movement
+                //        * On action of "Adjust Speed": suggested default latency is 1(s) and scope is 0.5 to 3 and unit is 0.5
+                //                                       When latency is selected from GUI, call the iterator method and it will change latency internally
+                //        * On "Auto Replay": Just loop the iterator and call correpsonding method to turn event to Movement and execute the movement as usual
+                //        A kind reminder: when app is in "replay" mode, the EventListenser.OnEvent() shall never be called
 
-		JsonFileFilter fileFilter = new JsonFileFilter();
+                //        Special notes: The replay is just one-directional, it has "Next" but there is no "Back" to simplify the logic
+                //        Use Case Impacts: If user click to replay, there is no graceful way designed so far to get back to previous on-going game.
+            //store variables locally to be able to re construct a new timer from where the old one was paused.
+            pausedAtMin = gameCountdown.getCurrentMin();
+            pausedAtSec = gameCountdown.getCurrentSec();
+            gameCountdown.pause();
 
 		timer.setText("-:- -"); // Timer is not applicable during replay mode
 
@@ -673,27 +745,19 @@ public class GUIWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_speedChooserAncestorAdded
     
 
-    /**
-     * Set level in replay mode.
-     */
-    private void replaySetLevel() {
-    	if (this.eventIterator == null) {
-    		System.err.println("Please select the saved game to replay from File menu");
-    		return;
-    	}
-    	Event evt = this.eventIterator.next();
-    	System.out.println("Replay saved game in level: " + evt.getLevel());
-    	this.setLevelNumber(evt.getLevel());
-    	//@TODO
-    	boardCanvas.setVisible(false);
-        render = new Render(m);
-        boardCanvas = render.getView();
-        gameCanvas.add(boardCanvas);
-        boardCanvas.setLocation(70, 35);
-        validate();
-        repaint();
-        setVisible(true);
-    }
+                //update game state
+                mode = modes.Replay.name();
+                System.out.println("Selected game record: " + file.getAbsolutePath());
+                this.eventIterator = EventListener.getRecord().getIteratorByFile(file.getAbsolutePath());
+                this.replaySetLevel();
+            } else {
+                System.out.println("File access cancelled by user.");
+                // FIXME: Resume the app timer, return to current game
+                mode = modes.Run.name(); // Game is back to running mode
+                gameCountdown = new GameTimer(pausedAtMin, pausedAtSec, this); // resume timer
+            }
+        }//GEN-LAST:event_replayButtonActionPerformed
+
       /**.
        * @param args the command line arguments
        */
@@ -789,23 +853,34 @@ public class GUIWindow extends javax.swing.JFrame {
         }
       }
 
-      /**
-       * Display board grid on the GUI by receiving information from the Render module.
-       * @return return a canvas for the Render module to display it in the game's GUI.
-       */
-      public JPanel getBoardCanvas() {
-        return boardCanvas;
-      }
-
         /**
          * Displays the number of treausures left on the board.
          */
-      private void setChipsLeft(){
-          if( level==1) {
-              int chips = 7 - m.getChipsLeft();
-              chipsLeft.setText( chips + " / 7");
-          }
+      private void setChipsLeft() {
+              int chips = m.target - m.getChipsLeft();
+              chipsLeft.setText( chips + " / " + m.target);
       }
+
+
+      private void replaySetLevel() {
+            if (this.eventIterator == null) {
+                System.err.println("Please select the saved game to replay from File menu");
+                return;
+            }
+            Event evt = this.eventIterator.next();
+            System.out.println("Replay saved game in level: " + evt.getLevel());
+            this.setLevelNumber(evt.getLevel());
+            //@TODO
+            boardCanvas.setVisible(false);
+            render = new Render(m);
+            boardCanvas = render.getView();
+            gameCanvas.add(boardCanvas);
+            boardCanvas.setLocation(70, 35);
+            validate();
+            repaint();
+            setVisible(true);
+      }
+
       /**
        * Displays the level on the GUI by receiving the information from the maze
        * module.
@@ -828,8 +903,7 @@ public class GUIWindow extends javax.swing.JFrame {
        * Countdown for game when players initializes the game.
        * @return countdown for game
        */
-      public static JLabel getTimer(){ return timer;}
-
+      public JLabel getTimer() { return timer;}
 
       /**
        *Mode or status to tell the gui what actions should be performed.
@@ -867,7 +941,7 @@ public class GUIWindow extends javax.swing.JFrame {
        *
        * @param data message to be displayed.
        */
-      public static void display(String data) {
+      public void display(String data) {
         int result = JOptionPane.showConfirmDialog(null, data, "Alert", JOptionPane.PLAIN_MESSAGE);
       }
       

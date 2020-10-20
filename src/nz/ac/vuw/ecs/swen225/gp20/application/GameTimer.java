@@ -13,16 +13,16 @@ public class GameTimer {
 
   private int currentMin;
   private int currentSec;
-  private boolean restarted = false;
-
+  private GUIWindow guiWindow;
 
   /**Timer constructor.
    * @param min from where it starts.
    * @param sec from where it starts.
    */
-  public GameTimer(int min, int sec) {
+  public GameTimer(int min, int sec, GUIWindow guiWindow) {
     this.currentMin = min;
     this.currentSec = sec;
+    this.guiWindow = guiWindow;
     this.start();
   }
 
@@ -38,16 +38,16 @@ public class GameTimer {
       if( currentSec == 0 && currentMin > 0){ //Decreases seconds only if minute is above 0.
         currentSec = 59;
         currentMin--;
-      }else if( timeOut()){
+      }
+      else if( timeOut()){
         timer.cancel();
-        GUIWindow.display("Game Over\nYou run out of time!");
-        System.exit(0);
+        guiWindow.formWindowLost();
       }
       //Check is number only contains 1 digit to add 0 for displaying purposes.
       if(currentSec < 10){
-        GUIWindow.getTimer().setText(currentMin + ":0" + currentSec);
+        guiWindow.getTimer().setText(currentMin + ":0" + currentSec);
       }else {
-        GUIWindow.getTimer().setText(currentMin + ":" + currentSec);
+        guiWindow.getTimer().setText(currentMin + ":" + currentSec);
       }
     }
   };
@@ -70,7 +70,7 @@ public class GameTimer {
    * Tells whether or not time is out.
    * @return time left
    */
-  private boolean timeOut(){ return currentSec == 0 && currentMin ==0 ;}
+  public boolean timeOut(){ return currentSec == 0 && currentMin ==0 ;}
 
   /**
    * Minute shown on timer.
