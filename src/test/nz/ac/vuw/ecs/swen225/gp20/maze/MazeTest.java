@@ -126,11 +126,14 @@ class MazeTest {
   /**
    * Create a new level one maze and catches IOException.
    */
-  private Maze mazeSample() {
+  protected static Maze mazeSample() {
     try {
       return new Maze(1);
     } catch (IOException e) {
-      assertTrue(false, "Test can't run without the definition of level one");
+      Assume.assumeTrue("Test can't run without the definition of level one", false);
+    } catch (Exception e) {
+      Assume.assumeTrue("The Maze package couldn't be tested due to an error "
+          + "while loading the data from the persistence package", false);
     }
     return null;
   }

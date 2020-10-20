@@ -227,10 +227,10 @@ public class LevelReader {
 		int length = jList.size();	//17
 		// initialize board
 		Tile[][] board = new Tile[length][jList.getJsonObject(0).getJsonArray("row").size()];
-		for (int i = 0; i < length-1; i++) {
+		for (int i = 0; i < length; i++) {
 			JsonObject jsonObj = jList.getJsonObject(i);
 			JsonArray internalList = jsonObj.getJsonArray("row");	//21
-			for (int j = 0; j < internalList.size()-1; j++) {
+			for (int j = 0; j < internalList.size(); j++) {
 				JsonObject internalJObj = internalList.getJsonObject(j);
 				board[i][j] = parseTile(internalJObj, target, p); // Parse each tile from the row array into the board
 																	// of tiles

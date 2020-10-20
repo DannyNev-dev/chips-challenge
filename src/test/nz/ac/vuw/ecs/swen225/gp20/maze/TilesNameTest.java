@@ -151,5 +151,14 @@ class TilesNameTest {
     Tile tile = new ItemTile(new Remedy(Type.BUCKET));
     assertEquals("waterBucketTile", tile.getName());
   }
+  
+  /**
+   * Test the creation of the medicine item.
+   */
+  @Test
+  void medicineNameTest() {
+    Tile tile = new ItemTile(new Remedy(Type.MEDICINE));
+    assertEquals("medicineTile", tile.getName());
+  }
 
 }
