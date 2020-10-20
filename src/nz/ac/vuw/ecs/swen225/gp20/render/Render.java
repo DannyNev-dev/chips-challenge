@@ -8,11 +8,17 @@ import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -24,6 +30,9 @@ import nz.ac.vuw.ecs.swen225.gp20.maze.Board;
 import nz.ac.vuw.ecs.swen225.gp20.maze.Maze;
 import nz.ac.vuw.ecs.swen225.gp20.maze.Maze.SpecialEvent;
 import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.Tile;
+import sun.applet.Main;
+import sun.audio.AudioPlayer;
+import sun.audio.AudioStream;
 
 /**
  * Render class This class renders the maze and provides a return method for the
@@ -117,7 +126,7 @@ class View {
 		Point lastP = new Point(lastPosition);
 
 		// ANIMATION
-		int delay = 100; // milliseconds
+		int delay = 75; // milliseconds
 		ActionListener taskPerformer = new ActionListener() {
 			int count = 1;
 
@@ -135,23 +144,30 @@ class View {
 							int newPosOldToken = x;
 							switch (moveDirection) {
 							case "Left":
-								System.out.println("Changing to left");
 								newPosOldToken = 0;
 								break;
 							case "Right":
-								System.out.println("Changing to Right");
 								newPosOldToken = 1;
 								break;
 							case "Up":
-								System.out.println("Changing to Up");
 								newPosOldToken = 2;
 								break;
 							case "Down":
-								System.out.println("Changing to Down");
 								newPosOldToken = 3;
 								break;
 							}
-							System.out.println(oldToken);
+							if((count == 1 && oldToken.get(newPosOldToken).equals("treasureTile")) 
+									|| (count == 1 && oldToken.get(newPosOldToken).equals("redLockedTile"))
+									|| (count == 1 && oldToken.get(newPosOldToken).equals("greenLockedTile"))
+									|| (count == 1 && oldToken.get(newPosOldToken).equals("blueLockedTile"))
+									|| (count == 1 && oldToken.get(newPosOldToken).equals("blueKeyTile"))
+									|| (count == 1 && oldToken.get(newPosOldToken).equals("redKeyTile"))
+									|| (count == 1 && oldToken.get(newPosOldToken).equals("greenKeyTile"))
+									|| (count == 1 && oldToken.get(newPosOldToken).equals("exitLockTile"))
+									|| (count == 1 && oldToken.get(newPosOldToken).equals("exitTile"))
+									) {
+								playSound(oldToken.get(newPosOldToken));
+							}
 							if (count < 3) {
 								dispList[i][j].setIcon(new ImageIcon("src/nz/ac/vuw/ecs/swen225/gp20/render/TileFile/"
 										+ oldToken.get(newPosOldToken) + ".png"));
@@ -179,6 +195,7 @@ class View {
 				}
 
 				count++;
+				BoardPanel.repaint();
 
 			}
 		};
@@ -186,33 +203,51 @@ class View {
 
 		oldBoard = new Board(maze.getBoard());
 		lastPosition = maze.getPlayerPosition();
-		BoardPanel.repaint();
+		// BoardPanel.repaint();
 
 	}
 
 	public void playMoveAnimation(int count, int i, int j, int x, int y, Point p, String moveDirection, boolean last) {
 		if (last) {
 			if (count < 3) {
-				System.out.println("LAST: chipTile" + moveDirection + count + ".png");
-				dispList[i][j].setIcon(new ImageIcon(
-						"src/nz/ac/vuw/ecs/swen225/gp20/render/TileFile/chipTile" + moveDirection + count + ".png"));
+				if (board[x][y].getName().equals("infoTile")) {
+					System.out.println("LAST INFO: " + "chipInfoTile" + moveDirection + count + ".png");
+					dispList[i][j].setIcon(new ImageIcon("src/nz/ac/vuw/ecs/swen225/gp20/render/TileFile/chipInfoTile"
+							+ moveDirection + count + ".png"));
+				} else {
+					System.out.println("LAST: " + board[x][y].getName());
+					dispList[i][j].setIcon(new ImageIcon("src/nz/ac/vuw/ecs/swen225/gp20/render/TileFile/chipTile"
+							+ moveDirection + count + ".png"));
+				}
 			} else if (count >= 3) {
-				System.out.println("LAST: " + board[x][y].getName() + ".png");
 				dispList[i][j].setIcon(new ImageIcon(
 						"src/nz/ac/vuw/ecs/swen225/gp20/render/TileFile/" + board[x][y].getName() + ".png"));
 			}
 		}
 		if (!last) {
 			if (count < 4 && count > 1) {
-				System.out.println("CURRENT : " + board[x][y].getName() + moveDirection + count + ".png");
+				System.out.println("CURRENT : " + board[x][y].getName() + moveDirection + (count + 1) + ".png");
 				dispList[i][j].setIcon(new ImageIcon("src/nz/ac/vuw/ecs/swen225/gp20/render/TileFile/"
 						+ board[x][y].getName() + moveDirection + (count + 1) + ".png"));
 			} else if (count == 4) {
-				System.out.println("AM I BEING CALLED: " + count);
 				dispList[i][j].setIcon(new ImageIcon(
 						"src/nz/ac/vuw/ecs/swen225/gp20/render/TileFile/" + board[x][y].getName() + ".png"));
 			}
 
+		}
+	}
+	
+	public void playSound(String name) {
+		String soundFile = "src/nz/ac/vuw/ecs/swen225/gp20/render/SoundFile/" + name + ".wav";
+	    InputStream in;
+		try {
+			in = new FileInputStream(soundFile);
+		    AudioStream audioStream = new AudioStream(in);
+		    AudioPlayer.player.start(audioStream);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 
