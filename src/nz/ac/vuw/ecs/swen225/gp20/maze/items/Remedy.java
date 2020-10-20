@@ -6,19 +6,46 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import nz.ac.vuw.ecs.swen225.gp20.maze.Maze.SpecialEvent;
 
 /**
- * Create an item which can be used to permanently extinguish a fire.
+ * Create an item which can be used as a remedy again Harmful items.
  * @author Emanuel Evans (ID: 300472656)
  *
  */
-public class Bucket implements Collectable {
+public class Remedy implements Collectable {
   
-  private static final String name = "waterBucket";
+  /**
+   * Specify what will this remedy is for.
+   * @author Emanuel Evans (ID: 300472656)
+   *
+   */
+  public static enum Type {
+    /**
+     * Permanently extinguish a fire.
+     */
+    BUCKET,
+    /**
+     * Cure the player from poison.
+     */
+    MEDICINE
+  }
   
-  private boolean isEmpty = false;
+  private final Type remedyType;
+  
+  
+  
+  public Remedy(Type remedyType) {
+    super();
+    this.remedyType = remedyType;
+  }
 
   @Override
   public String getName() {
-    return name;
+    switch (remedyType) {
+      case BUCKET:
+        return "waterBucket";
+      default:
+        assert remedyType == Type.MEDICINE; 
+        return "medicine";
+    }
   }
   
   @Override
@@ -32,48 +59,25 @@ public class Bucket implements Collectable {
     return SpecialEvent.BUCKET_PICKED_UP;
   }
 
-  /**
-   * Get the state of the bucket.
-   * @return whether the bucket is empty
-   */
-  public boolean isEmpty() {
-    return isEmpty;
-  }
-
-  /**
-   * Change the state of the bucket.
-   * @param isEmpty whether the bucket should be empty
-   */
-  public void setEmpty(boolean isEmpty) {
-    this.isEmpty = isEmpty;
-  }
-
   @Override
   public int hashCode() {
     final int prime = 31;
     int result = 1;
-    result = prime * result + (isEmpty ? 1231 : 1237);
+    result = prime * result + ((remedyType == null) ? 0 : remedyType.hashCode());
     return result;
   }
 
   @Override
   public boolean equals(Object obj) {
-    if (this == obj) {
+    if (this == obj)
       return true;
-    }
-    if (obj == null) {
+    if (obj == null)
       return false;
-    }
-    if (getClass() != obj.getClass()) {
+    if (getClass() != obj.getClass())
       return false;
-    }
-    Bucket other = (Bucket) obj;
-    if (isEmpty != other.isEmpty) {
+    Remedy other = (Remedy) obj;
+    if (remedyType != other.remedyType)
       return false;
-    }
     return true;
   }
-  
-  
-
 }

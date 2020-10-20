@@ -8,13 +8,14 @@ import java.awt.Point;
 
 import nz.ac.vuw.ecs.swen225.gp20.maze.Maze.SpecialEvent;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Block;
-import nz.ac.vuw.ecs.swen225.gp20.maze.items.Bucket;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.ExitLock;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Harmful;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Harmful.DangerType;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Key;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Key.Colour;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Player;
+import nz.ac.vuw.ecs.swen225.gp20.maze.items.Remedy;
+import nz.ac.vuw.ecs.swen225.gp20.maze.items.Remedy.Type;
 import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.ExitTile;
 import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.ItemTile;
 import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.Tile;
@@ -129,16 +130,16 @@ public class TilesLogicTest {
     Assume.assumeTrue(player.equals(twin));
     
     Tile fire = new ItemTile(new Harmful(DangerType.FIRE));
-    Tile bucket = new ItemTile(new Bucket());
+    Tile bucket = new ItemTile(new Remedy(Type.BUCKET));
     
     //Check that even if the player doesn't have the bucket 
     //it could still move into the fire, of course it would then cause the player to die
     assertTrue(fire.isAccessible(player));
     
-    Assume.assumeTrue(new Bucket().equals(new Bucket()));
+    Assume.assumeTrue(new Remedy(Type.BUCKET).equals(new Remedy(Type.BUCKET)));
     //Pick up the bucket
     bucket.applyAction(player);
-    Assume.assumeTrue(player.getInventory().contains(new Bucket()));
+    Assume.assumeTrue(player.getInventory().contains(new Remedy(Type.BUCKET)));
     //The players should now be different
     Assume.assumeFalse(player.equals(twin));
     
