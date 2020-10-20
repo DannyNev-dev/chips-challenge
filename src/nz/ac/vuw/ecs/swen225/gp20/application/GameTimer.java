@@ -42,6 +42,8 @@ public class GameTimer {
       else if( timeOut()){
         timer.cancel();
         guiWindow.formWindowLost();
+      }else if( currentSec%5 == 0){
+        guiWindow.getRender().updateRender();
       }
       //Check is number only contains 1 digit to add 0 for displaying purposes.
       if(currentSec < 10){

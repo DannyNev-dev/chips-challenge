@@ -875,7 +875,13 @@ public class GUIWindow extends javax.swing.JFrame {
        */
       public JLabel getTimer() { return timer;}
 
-      /**
+    /**
+     * Current render within this game.
+     * @return board of current game.
+     */
+    public Render getRender() { return render;}
+
+    /**
        *Mode or status to tell the gui what actions should be performed.
        * @return game mode ( loading, saving, running, replaying).
        */
