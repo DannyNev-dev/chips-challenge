@@ -12,7 +12,7 @@ import nz.ac.vuw.ecs.swen225.gp20.maze.items.Key;
 import org.junit.jupiter.api.Test;
 
 /**
- * Tests for special events
+ * Tests for special events.
  * @author Emanuel Evans (ID: 300472656)
  *
  */
@@ -22,24 +22,18 @@ public class GameEventsTest {
    */
   @Test
   void collectChipLevelOneTest() {
-    try {
-      
-      Maze maze = new Maze(1);
-      int target = maze.getChipsLeft();
-      //Move the player to a tile containing a chip
-      maze.movePlayer(new SingleMove(Direction.LEFT));
-      maze.movePlayer(new SingleMove(Direction.LEFT));
-      
-      //Check the chips left has decrease by exactly one
-      assertEquals(target - 1, maze.getChipsLeft());
-      
-      //Check that a special action was recorded
-      assertEquals(maze.getLastSpecialEvent(), SpecialEvent.TREASURE_PICKED_UP);
-      
-      
-    } catch (IOException e) {
-      assert false : "data for level one should be stored";
-    }
+    Maze maze = MazeTest.mazeSample();
+    int target = maze.getChipsLeft();
+    //Move the player to a tile containing a chip
+    maze.movePlayer(new SingleMove(Direction.LEFT));
+    maze.movePlayer(new SingleMove(Direction.LEFT));
+    
+    //Check the chips left has decrease by exactly one
+    assertEquals(target - 1, maze.getChipsLeft());
+    
+    //Check that a special action was recorded
+    assertEquals(maze.getLastSpecialEvent(), SpecialEvent.TREASURE_PICKED_UP);
+
   }
   
   /**
@@ -47,30 +41,24 @@ public class GameEventsTest {
    */
   @Test
   void collectKeyLevelOneTest() {
-    try {
-      
-      Maze maze = new Maze(1);
-      assertTrue(maze.getPlayerInventory().isEmpty(), 
-          "No items should be in the inventory at the start of level one");
-      final int target = maze.getChipsLeft();
-      //Move the player to a tile containing a key
-      maze.movePlayer(new SingleMove(Direction.DOWN));
-      maze.movePlayer(new SingleMove(Direction.LEFT));
-      maze.movePlayer(new SingleMove(Direction.LEFT));
-      
-      //Check the chips left has not changed
-      assertEquals(target, maze.getChipsLeft());
-      //Check that inventory contains only one item
-      assertEquals(maze.getPlayerInventory().size(), 1);
-      //Check the collected item is a key
-      assertTrue(maze.getPlayerInventory().get(0) instanceof Key);
-      //Check that a special action was recorded
-      assertEquals(maze.getLastSpecialEvent(), SpecialEvent.KEY_PICKED_UP);
-      
-      
-    } catch (IOException e) {
-      assert false : "data for level one should be stored";
-    }
+    Maze maze = MazeTest.mazeSample();
+    assertTrue(maze.getPlayerInventory().isEmpty(), 
+        "No items should be in the inventory at the start of level one");
+    final int target = maze.getChipsLeft();
+    //Move the player to a tile containing a key
+    maze.movePlayer(new SingleMove(Direction.DOWN));
+    maze.movePlayer(new SingleMove(Direction.LEFT));
+    maze.movePlayer(new SingleMove(Direction.LEFT));
+    
+    //Check the chips left has not changed
+    assertEquals(target, maze.getChipsLeft());
+    //Check that inventory contains only one item
+    assertEquals(maze.getPlayerInventory().size(), 1);
+    //Check the collected item is a key
+    assertTrue(maze.getPlayerInventory().get(0) instanceof Key);
+    //Check that a special action was recorded
+    assertEquals(maze.getLastSpecialEvent(), SpecialEvent.KEY_PICKED_UP);
+
   }
   
   /**
@@ -78,35 +66,29 @@ public class GameEventsTest {
    */
   @Test
   void openDoorLevelOneTest() {
-    try {
-      
-      Maze maze = new Maze(1);
-      assertTrue(maze.getPlayerInventory().isEmpty(), 
-          "No items should be in the inventory at the start of level one");
-      final int target = maze.getChipsLeft();
-      //Move the player to a tile containing a key
-      maze.movePlayer(new SingleMove(Direction.DOWN));
-      maze.movePlayer(new SingleMove(Direction.LEFT));
-      maze.movePlayer(new SingleMove(Direction.LEFT));
-      //Check the chips left has not changed
-      assertEquals(target, maze.getChipsLeft());
-      //Check a key has been picked up
-      assertTrue(maze.getPlayerInventory().get(0) instanceof Key);
-      
-      maze.movePlayer(new SingleMove(Direction.DOWN));
-      assertTrue(maze.movePlayer(new SingleMove(Direction.LEFT)), 
-          "The player hasn't be able to successfully move through the door, "
-          + "even though they had the correct key");
-      
-      
-      //Check that the key disappeared since it can only be used once
-      assertTrue(maze.getPlayerInventory().isEmpty());
-      //Check that a special action was recorded
-      assertEquals(maze.getLastSpecialEvent(), SpecialEvent.DOOR_OPENED);
-      
-    } catch (IOException e) {
-      assert false : "data for level one should be stored";
-    }
+    Maze maze = MazeTest.mazeSample();
+    assertTrue(maze.getPlayerInventory().isEmpty(), 
+        "No items should be in the inventory at the start of level one");
+    final int target = maze.getChipsLeft();
+    //Move the player to a tile containing a key
+    maze.movePlayer(new SingleMove(Direction.DOWN));
+    maze.movePlayer(new SingleMove(Direction.LEFT));
+    maze.movePlayer(new SingleMove(Direction.LEFT));
+    //Check the chips left has not changed
+    assertEquals(target, maze.getChipsLeft());
+    //Check a key has been picked up
+    assertTrue(maze.getPlayerInventory().get(0) instanceof Key);
+    
+    maze.movePlayer(new SingleMove(Direction.DOWN));
+    assertTrue(maze.movePlayer(new SingleMove(Direction.LEFT)), 
+        "The player hasn't be able to successfully move through the door, "
+        + "even though they had the correct key");
+    
+    
+    //Check that the key disappeared since it can only be used once
+    assertTrue(maze.getPlayerInventory().isEmpty());
+    //Check that a special action was recorded
+    assertEquals(maze.getLastSpecialEvent(), SpecialEvent.DOOR_OPENED);
   }
   
   /**
@@ -114,27 +96,20 @@ public class GameEventsTest {
    */
   @Test
   void displayInfoTileTest() {
-    try {
-      
-      Maze maze = new Maze(1);
-      //Move the player to the info tile
-      maze.movePlayer(new SingleMove(Direction.UP));
-      
-      String info = maze.getInfo();
-      
-      //assertTrue(info != null, "There should be an info message");
-      
-      assertEquals("Collect all of the treasures to access the exit \n"
-          + " The colourful keys unlock the colourful doors ", info);
-      
-     
-      //Check that a special action was recorded
-      assertEquals(maze.getLastSpecialEvent(), SpecialEvent.INFO_POINT);
-      
-    } catch (IOException e) {
-      assert false : "data for level one should be stored";
-    }
+    Maze maze = MazeTest.mazeSample();
+    //Move the player to the info tile
+    maze.movePlayer(new SingleMove(Direction.UP));
     
+    String info = maze.getInfo();
+    
+    //assertTrue(info != null, "There should be an info message");
+    
+    assertEquals("Collect all of the treasures to access the exit \n"
+        + " The colourful keys unlock the colourful doors ", info);
+    
+   
+    //Check that a special action was recorded
+    assertEquals(maze.getLastSpecialEvent(), SpecialEvent.INFO_POINT);
   }
   
   /**
@@ -142,21 +117,14 @@ public class GameEventsTest {
    */
   @Test
   void invalidDisplayInfoTileTest() {
-    try {
+    Maze maze = MazeTest.mazeSample();
       
-      Maze maze = new Maze(1);
-      
-      String info = maze.getInfo();
-      
-      assertTrue(info == null, "There should not be an info message");
-      
-      //Check that a special action was recorded
-      assertEquals(maze.getLastSpecialEvent(), null);
-      
-    } catch (IOException e) {
-      assert false : "data for level one should be stored";
-    }
+    String info = maze.getInfo();
     
+    assertTrue(info == null, "There should not be an info message");
+    
+    //Check that a special action was recorded
+    assertEquals(maze.getLastSpecialEvent(), null);
   }
 
 }

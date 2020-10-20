@@ -66,6 +66,9 @@ public class Harmful implements Item {
           }
           return SpecialEvent.CHAP_DIED_BURNT;
         case POISON:
+          if (entity.getInventory().contains(new Remedy(Type.MEDICINE))) {
+            return SpecialEvent.POISONED_CURED;
+          }
           return SpecialEvent.CHAP_DIED_POISONED;
         default:
           return null;
