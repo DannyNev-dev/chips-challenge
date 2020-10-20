@@ -45,8 +45,10 @@ public class LevelReader {
 	/** The maze obj in json form. */
 	JsonObject mazeObj;
 	
+	/** List of the bugs added to the level**/
 	public ArrayList<BugEntity> bugs = new ArrayList<BugEntity>();
 	
+	/** Reference to the games maze class**/
 	public Maze maze;	//maybe protected
 
 	/**
@@ -167,7 +169,6 @@ public class LevelReader {
 				item = new Bucket();
 				break;
 			default:
-				System.out.println(var);
 				throw new RuntimeException("Invalid JSON input for the item");
 			}
 			tile = new ItemTile(item); // item is null if incorrect json input for item is present

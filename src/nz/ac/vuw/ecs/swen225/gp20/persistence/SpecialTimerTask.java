@@ -7,16 +7,33 @@ import nz.ac.vuw.ecs.swen225.gp20.maze.Maze;
 import nz.ac.vuw.ecs.swen225.gp20.maze.SingleMove;
 import nz.ac.vuw.ecs.swen225.gp20.persistence.level2.BugEntity;
 
+/**
+ * The Class SpecialTimerTask.
+ * 
+ * @author Daniel Neville
+ */
 public class SpecialTimerTask extends TimerTask{
 	
+	/** The bug. */
 	BugEntity bug;
+	
+	/** The m. */
 	Maze m;
 	
+	/**
+	 * Instantiates a new special timer task.
+	 *
+	 * @param bug the bug object
+	 * @param m the map object
+	 */
 	public SpecialTimerTask(BugEntity bug,Maze m){
 		this.bug = bug;
 		this.m = m;
 	}
 	
+	/**
+	 * Run method that contains the logic to find and execute a random single move on the bug
+	 */
 	@Override
 	public void run() {
 		Board b = m.getBoardObject();
