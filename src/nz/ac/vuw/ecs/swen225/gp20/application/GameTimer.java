@@ -38,12 +38,11 @@ public class GameTimer {
       if( currentSec == 0 && currentMin > 0){ //Decreases seconds only if minute is above 0.
         currentSec = 59;
         currentMin--;
+        guiWindow.getRender().updateRender();
       }
       else if( timeOut()){
         timer.cancel();
-        guiWindow.formWindowLost();
-      }else if( currentSec%5 == 0){
-        guiWindow.getRender().updateRender();
+        guiWindow.formWindowLost(guiWindow.getEvtOpen());
       }
       //Check is number only contains 1 digit to add 0 for displaying purposes.
       if(currentSec < 10){

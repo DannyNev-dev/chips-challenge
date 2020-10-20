@@ -34,6 +34,9 @@ public class GUIWindow extends javax.swing.JFrame {
     initComponents();
     this.eventListener = EventListener.eventListenerFactory();
     this.setFocusable(true);
+    //Replay buttons are desactivated until user activates Replay mode
+      replayForwards.setEnabled(false);
+      autoReplay.setEnabled(false);
       inventoryLabels[0] = item0;
       inventoryLabels[1] = item1;
       inventoryLabels[2] = item2;
@@ -91,10 +94,16 @@ public class GUIWindow extends javax.swing.JFrame {
                 formWindowClosing(evt);
             }
             public void windowOpened(java.awt.event.WindowEvent evt) {
-                formWindowOpened(evt);
+                evtOpen = evt;
+                if(level!=-1){
+                    newGame(level);
+                }formWindowOpened(evt);
             }
         });
         addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                formKeyPressed(evt);
+            }
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 keyReleasedSetMove(evt);
             }
@@ -117,7 +126,7 @@ public class GUIWindow extends javax.swing.JFrame {
             .addGap(0, 450, Short.MAX_VALUE)
         );
 
-        levelAndTimer.setBackground(new java.awt.Color(204, 204, 204));
+        levelAndTimer.setBackground(new java.awt.Color(102, 102, 102));
         levelAndTimer.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, null, null, null, new java.awt.Color(102, 102, 102)));
 
         levelText.setBackground(new java.awt.Color(0, 0, 0));
@@ -128,7 +137,6 @@ public class GUIWindow extends javax.swing.JFrame {
 
         levelNumber.setBackground(new java.awt.Color(204, 204, 204));
         levelNumber.setFont(new java.awt.Font("Arial Narrow", 1, 80)); // NOI18N
-        levelNumber.setForeground(new java.awt.Color(0, 0, 204));
         levelNumber.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         levelNumber.setToolTipText("");
         levelNumber.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -142,14 +150,12 @@ public class GUIWindow extends javax.swing.JFrame {
 
         timer.setBackground(new java.awt.Color(204, 204, 204));
         timer.setFont(new java.awt.Font("Arial Rounded MT Bold", 1, 48)); // NOI18N
-        timer.setForeground(new java.awt.Color(0, 0, 204));
         timer.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         timer.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         timer.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
         chipsLeft.setBackground(new java.awt.Color(204, 204, 204));
         chipsLeft.setFont(new java.awt.Font("Arial Rounded MT Bold", 1, 48)); // NOI18N
-        chipsLeft.setForeground(new java.awt.Color(0, 0, 204));
         chipsLeft.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         chipsLeft.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         chipsLeft.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -232,8 +238,9 @@ public class GUIWindow extends javax.swing.JFrame {
         changeSpeedText.setText("C H A N G E   S P E E D");
         changeSpeedText.setAutoscrolls(true);
 
-        inventoryPanel.setBackground(new java.awt.Color(204, 204, 204));
+        inventoryPanel.setBackground(new java.awt.Color(102, 102, 102));
         inventoryPanel.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        inventoryPanel.setForeground(new java.awt.Color(102, 102, 102));
 
         inventoryText.setFont(new java.awt.Font("Lucida Grande", 1, 18)); // NOI18N
         inventoryText.setForeground(new java.awt.Color(153, 0, 0));
@@ -293,11 +300,11 @@ public class GUIWindow extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(inventoryText, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(inventoryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(item0, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(item1, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(item2, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(item3, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(inventoryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(item1, javax.swing.GroupLayout.DEFAULT_SIZE, 62, Short.MAX_VALUE)
+                    .addComponent(item2, javax.swing.GroupLayout.DEFAULT_SIZE, 62, Short.MAX_VALUE)
+                    .addComponent(item3, javax.swing.GroupLayout.DEFAULT_SIZE, 62, Short.MAX_VALUE)
+                    .addComponent(item0, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(inventoryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(item4, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -445,7 +452,7 @@ public class GUIWindow extends javax.swing.JFrame {
       /**
        * Forms a warning message if user wins game bottom.
        */
-      private void formWindowWon() {
+      private void formWindowWon(java.awt.event.WindowEvent evt) {
         gameCountdown.pause();
         if (level == 1) {
           int confirm = JOptionPane.showConfirmDialog(null,
@@ -456,18 +463,18 @@ public class GUIWindow extends javax.swing.JFrame {
             setLevelNumber(level);
             gameCountdown = new GameTimer(1, 60, this);
           }else if( confirm == JOptionPane.CANCEL_OPTION) {
-            System.exit(0); //close all windows
+            evt.getWindow().dispose(); //close all windows
           }
         } else{
           display(" Congratulations!\nYou completed all levels");
-          System.exit(0);
+          evt.getWindow().dispose();
         }
       }
 
         /**
          * Forms a warning message if user wins game bottom.
          */
-        public void formWindowLost() {
+        public void formWindowLost(java.awt.event.WindowEvent evt) {
             String message = "Game Over\n";
            if( gameCountdown.timeOut()){
                 message = message + "You ran out of time\nDo you want to play this level again?";
@@ -482,8 +489,14 @@ public class GUIWindow extends javax.swing.JFrame {
            if (confirm == JOptionPane.YES_OPTION) {
                setLevelNumber(level);
                gameCountdown = new GameTimer(1, 60, this);
-           }else if( confirm == JOptionPane.CANCEL_OPTION) {
-               System.exit(0); //close all windows
+           }else if( confirm == JOptionPane.NO_OPTION) {
+               int confirm2 = JOptionPane.showConfirmDialog(null, "Do you want to play another level?", "Game Over",
+                       JOptionPane.YES_NO_OPTION);
+               if(confirm2 == JOptionPane.YES_OPTION){
+                   formWindowOpened(evt);
+               }else {
+                   evt.getWindow().dispose(); //close this window only
+               }
            }
         }
 
@@ -497,11 +510,11 @@ public class GUIWindow extends javax.swing.JFrame {
         pausedAtSec = gameCountdown.getCurrentSec();
         gameCountdown.pause();
         int confirm = JOptionPane.showConfirmDialog(null,
-            "Are you sure you want to leave this match?\n You will lose all your progress if\n you leave without saving",
+            "Are you sure you want to leave the game?\n You will lose all your progress if\n you leave without saving",
             "Leave Game?", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
         if (confirm == JOptionPane.OK_OPTION) {
           //closes all windows
-          System.exit(0);
+          evt.getWindow().dispose();
         }else if( confirm == JOptionPane.OK_CANCEL_OPTION && mode.equals(modes.Run.name())){
           //new timer continues from where it was left of.
           gameCountdown = new GameTimer(pausedAtMin,pausedAtSec, this);
@@ -516,19 +529,20 @@ public class GUIWindow extends javax.swing.JFrame {
         int numSelected;
         JRadioButton one = new JRadioButton("1");
         JRadioButton two = new JRadioButton("2");
-        replayForwards.setEnabled(false);
-        autoReplay.setEnabled(false);
+        JRadioButton three = new JRadioButton("Resume old game");
         mode = modes.Run.name();
         //Group the radio buttons.
         ButtonGroup levelSelected = new ButtonGroup();
         levelSelected.add(one);
         levelSelected.add(two);
+        levelSelected.add(three);
         //Default option, level one
         one.setSelected(true);
         final JComponent[] inputs = new JComponent[]{
             new JLabel("Choose a level to play"),
             one,
             two,
+            three,
         };
         int result = JOptionPane.showConfirmDialog(null, inputs, "Welcome", JOptionPane.PLAIN_MESSAGE);
         if (result == JOptionPane.OK_OPTION) {
@@ -536,30 +550,35 @@ public class GUIWindow extends javax.swing.JFrame {
             numSelected = 1;
           }else if( two.isSelected()){
             numSelected = 2;
-          } else{
+          } else if (three.isSelected()){
+            return;
+            }else{
             //Here user has clicked OK without choosing option
-            System.exit(0);
+            evt.getWindow().dispose();
             return;
           }
-
-          // New timer for every game (2 minutes long)
-          gameCountdown = new GameTimer(1, 60, this);
-          //Updates level number with the input received by player and
-            // informs other modules.
-          setLevelNumber(numSelected);
-          boardCanvas.setVisible(false);
-          render = new Render(m);
-          boardCanvas = render.getView();
-          gameCanvas.add(boardCanvas);
-          boardCanvas.setLocation(70, 35);
-          validate();
-          repaint();
-          setVisible(true);
-          setChipsLeft();
+            newGame(numSelected);
         }else {
-          System.exit(0);  //changed to prevent bug when closing
+          evt.getWindow().dispose();  //changed to prevent bug when closing
         }
       }//GEN-LAST:event_formWindowOpened
+
+    private void newGame(int level){
+        // New timer for every game (2 minutes long)
+        gameCountdown = new GameTimer(1, 60, this);
+        //Updates level number with the input received by player and
+        // informs other modules.
+        setLevelNumber(level);
+        boardCanvas.setVisible(false);
+        render = new Render(m);
+        boardCanvas = render.getView();
+        gameCanvas.add(boardCanvas);
+        boardCanvas.setLocation(70, 35);
+        validate();
+        repaint();
+        setVisible(true);
+        setChipsLeft();
+    }
 
     /**
      * Updates other modules with the new move input by player.
@@ -581,9 +600,9 @@ public class GUIWindow extends javax.swing.JFrame {
             popUpInfo(m.getInfo());
             displayInventory();
             if (m.getStatus() == Maze.GameState.GAME_WON) {
-                formWindowWon();
+                formWindowWon(evtOpen);
             }else if(m.getStatus() == Maze.GameState.GAME_LOST){
-                formWindowLost();
+                formWindowLost(evtOpen);
             }
             transferFocus();
             return isValidMove;
@@ -625,19 +644,17 @@ public class GUIWindow extends javax.swing.JFrame {
 			setChipsLeft();
 
 			boardCanvas.setVisible(true);
-			// render = new Render(m);
-			// boardCanvas = render.getView();
 			gameCanvas.add(boardCanvas);
 			boardCanvas.setLocation(70, 35);
 			validate();
 			repaint();
 			setVisible(true);
 			if (m.getStatus().name().equals("GAME_WON")) {
-				this.formWindowWon();
+				this.formWindowWon(evtOpen);
 			}
 			transferFocus();
 		}
-		
+
       /**
        * Processes users input when the button for autoReplay is pressed.
        * @param evt autoReplay button clicked.
@@ -673,6 +690,7 @@ public class GUIWindow extends javax.swing.JFrame {
       private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {
 //GEN-FIRST:event_saveButtonActionPerformed
         EventListener.getRecord().saveToJson();
+        evtOpen.getWindow().dispose();
       }//GEN-LAST:event_saveButtonActionPerformed
 
       /**
@@ -701,12 +719,20 @@ public class GUIWindow extends javax.swing.JFrame {
         }
       }//GEN-LAST:event_rulesLegendActionPerformed
 
+    private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
+        // TODO add your handling code here:
+            if( evt.getKeyCode() == KeyEvent.VK_1){
+                level = 1;
+                new GUIWindow().setVisible(true);
+            }
+    }//GEN-LAST:event_formKeyPressed
+
     /**
      * Activated when user clicks on Replay.
      * Uploads JsonFile and parsers level.
      * @param evt
      */
-    private void replayButtonActionPerformed(java.awt.event.ActionEvent evt) {                                             
+    private void replayButtonActionPerformed(java.awt.event.ActionEvent evt) {
             pausedAtMin = gameCountdown.getCurrentMin();
             pausedAtSec = gameCountdown.getCurrentSec();
             gameCountdown.pause();
@@ -726,8 +752,8 @@ public class GUIWindow extends javax.swing.JFrame {
 			File file = fileChooser.getSelectedFile();
             mode = modes.Replay.name();
 			System.out.println("Selected game record: " + file.getAbsolutePath());
-			this.eventIterator = EventListener.getRecord().getIteratorByFile(file.getAbsolutePath());
-			this.replaySetLevel();
+			eventIterator = EventListener.getRecord().getIteratorByFile(file.getAbsolutePath());
+			replaySetLevel();
 		} else {
 			System.out.println("File access cancelled by user.");
 			// Resume the app timer, return to current game
@@ -735,10 +761,11 @@ public class GUIWindow extends javax.swing.JFrame {
 			gameCountdown = new GameTimer(pausedAtMin, pausedAtSec, this); // resume timer
 		}
 	}// GEN-LAST:event_replayButtonActionPerformed
+    
 
-    private void speedChooserAncestorAdded(javax.swing.event.AncestorEvent evt) {                                          
+    private void speedChooserAncestorAdded(javax.swing.event.AncestorEvent evt) {
 
-        }                                            
+        }
 
       /**.
        * @param args the command line arguments
@@ -780,7 +807,7 @@ public class GUIWindow extends javax.swing.JFrame {
     private javax.swing.JButton autoReplay;
     private javax.swing.JPanel boardCanvas;
     private javax.swing.JLabel changeSpeedText;
-    private static javax.swing.JLabel chipsLeft;
+    private javax.swing.JLabel chipsLeft;
     private javax.swing.JLabel chipsleftText2;
     private javax.swing.JMenu fileMenu;
     private javax.swing.JPanel gameCanvas;
@@ -805,14 +832,14 @@ public class GUIWindow extends javax.swing.JFrame {
     private javax.swing.JMenuItem rulesLegend;
     private javax.swing.JMenuItem saveButton;
     private javax.swing.JSlider speedChooser;
-    private static javax.swing.JLabel timer;
+    private javax.swing.JLabel timer;
     private javax.swing.JLabel timerText;
     // End of variables declaration//GEN-END:variables
       // Game variables
         private final JFileChooser fileChooser = new JFileChooser();
-      private static ImageIcon[] numberImg = new ImageIcon[10];
+      private ImageIcon[] numberImg = new ImageIcon[10];
       private String mode;
-      private int level;
+      private static int level = -1;
       private enum modes { Run, Load, Save, Replay}
 
       private GameTimer gameCountdown;
@@ -824,6 +851,7 @@ public class GUIWindow extends javax.swing.JFrame {
       private EventIterator eventIterator;
       private ImageIcon[] inventoryItems = new ImageIcon[8];
       private JLabel[] inventoryLabels = new JLabel[8];
+      private java.awt.event.WindowEvent evtOpen;
 
       /**
        * initialize the number images  by linking each face to its image and storing them.
@@ -859,9 +887,13 @@ public class GUIWindow extends javax.swing.JFrame {
      * @param information hint to help player.
      */
     private void popUpInfo( String information){
+        pausedAtMin = gameCountdown.getCurrentMin();
+        pausedAtSec = gameCountdown.getCurrentSec();
+        gameCountdown.pause();
           if( information!=null){
               display(information);
           }
+          gameCountdown = new GameTimer(pausedAtMin,pausedAtSec,this);
       }
 
         /**
@@ -898,7 +930,7 @@ public class GUIWindow extends javax.swing.JFrame {
        * @param level level chosen by user.
        */
       private void setLevelNumber(int level) {
-        this.level = level;
+        GUIWindow.level = level;
         levelNumber.setText("0" + level);
         if( !mode.equals("Replay"))  {
         	this.eventListener.onEvent(Event.eventOfLevelSetting(level));
@@ -915,6 +947,8 @@ public class GUIWindow extends javax.swing.JFrame {
        * @return countdown for game
        */
       public JLabel getTimer() { return timer;}
+
+      public java.awt.event.WindowEvent getEvtOpen() { return evtOpen;}
 
     /**
      * Current render within this game.
