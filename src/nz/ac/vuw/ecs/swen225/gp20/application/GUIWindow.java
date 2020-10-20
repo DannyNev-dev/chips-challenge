@@ -11,14 +11,12 @@ import nz.ac.vuw.ecs.swen225.gp20.maze.SingleMove;
 import nz.ac.vuw.ecs.swen225.gp20.recnplay.Event;
 import nz.ac.vuw.ecs.swen225.gp20.recnplay.EventIterator;
 import nz.ac.vuw.ecs.swen225.gp20.recnplay.EventListener;
-import nz.ac.vuw.ecs.swen225.gp20.recnplay.RecordedGame;
 import nz.ac.vuw.ecs.swen225.gp20.render.Render;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 
 /**
@@ -555,6 +553,10 @@ public class GUIWindow extends javax.swing.JFrame {
 			this.forwardMovement(sMove);
       }//GEN-LAST:event_keyReleasedSetMove
 
+      /**
+       * Shared method which will be called by both keyReleaseSetMove and forwardsActionPerformed.
+       * @param mv SingleMove object, created by keystroke or converted from saved JSon file
+       */
 		private void forwardMovement(SingleMove mv) {
 			m.movePlayer(mv);
 			render.updateRender();
@@ -574,32 +576,11 @@ public class GUIWindow extends javax.swing.JFrame {
 			transferFocus();
 		}
 		
-		private void forwardMovementAsyc(GUIWindow forwardable, SingleMove mv) {
-			SwingUtilities.invokeLater(new Runnable() {
-	            public void run() {
-	              forwardable.forwardMovement(mv);
-	            }
-	          });
-		}
       /**
        * Processes users input when the button for autoReplay is pressed.
        * @param evt autoReplay button clicked.
        */
       private void autoReplayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_autoReplayActionPerformed
-    	  
-    	  SingleMove mv = null;
-    	  while(this.eventIterator.hasNext() && mv == null) {
-    		  Event ev = this.eventIterator.next();
-    		  System.out.println("Auto-Replay event: " + ev.getType());
-    		  mv = ev.getMove();
-    		  if (mv != null) {
-        		  System.out.println("Auto-Replay movement: " + mv.getLastDirection());
-        		  this.forwardMovement(mv);
-        		  mv = null;
-        	  }else {
-        		  System.err.println("Auto-Replay expects a movement but event emitted is: " + ev.getType());
-        	  }
-    	  }
       }//GEN-LAST:event_autoReplayActionPerformed
 
       /**
@@ -658,8 +639,7 @@ public class GUIWindow extends javax.swing.JFrame {
      * Uploads JsonFile and parsers level.
      * @param evt
      */
-	private void replayButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_replayButtonActionPerformed
-
+	private void replayButtonActionPerformed(java.awt.event.ActionEvent evt) {
 		pausedAtMin = gameCountdown.getCurrentMin();
 		pausedAtSec = gameCountdown.getCurrentSec();
 		gameCountdown.pause();
@@ -683,21 +663,19 @@ public class GUIWindow extends javax.swing.JFrame {
 			this.replaySetLevel();
 		} else {
 			System.out.println("File access cancelled by user.");
-			// FIXME: Resume the app timer, return to current game
+			// Resume the app timer, return to current game
 			mode = modes.Run.name(); // Game is back to running mode
 			gameCountdown = new GameTimer(pausedAtMin, pausedAtSec); // resume timer
 		}
 	}// GEN-LAST:event_replayButtonActionPerformed
 
-    private void speedChooserAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_speedChooserAncestorAdded
-        // TODO add your handling code here:
-        this.replaySpeed = speedChooser.getValue();
+    private void speedChooserAncestorAdded(javax.swing.event.AncestorEvent evt) {
     }//GEN-LAST:event_speedChooserAncestorAdded
     
-    public int getSpeed() {
-    	return replaySpeed;
-    }
 
+    /**
+     * Set level in replay mode.
+     */
     private void replaySetLevel() {
     	if (this.eventIterator == null) {
     		System.err.println("Please select the saved game to replay from File menu");
@@ -798,7 +776,6 @@ public class GUIWindow extends javax.swing.JFrame {
       private int pausedAtMin;
       private int pausedAtSec;
       private EventIterator eventIterator;
-      private int replaySpeed;
 
       /**
        * initialize the number images  by linking each face to its image and storing them.
