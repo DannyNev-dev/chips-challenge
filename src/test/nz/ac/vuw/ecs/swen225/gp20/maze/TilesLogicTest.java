@@ -153,6 +153,39 @@ public class TilesLogicTest {
     
   }
   
+  /**
+   * Test that the poison can be cured with the medicine.
+   */
+  @Test
+  void poisonCuredTest() {
+    Player player = new Player(new Point(5, 2));
+    Player twin = player.clone();
+    Assume.assumeTrue(player.equals(twin));
+    
+    Tile poison = new ItemTile(new Harmful(DangerType.POISON));
+    Tile medicine = new ItemTile(new Remedy(Type.MEDICINE));
+    
+    //Check that even if the player doesn't have the medicine 
+    //it could still move into the poison, of course it would then cause the player to die
+    assertTrue(poison.isAccessible(player));
+    
+    Assume.assumeTrue(new Remedy(Type.BUCKET).equals(new Remedy(Type.BUCKET)));
+    //Pick up the medicine
+    medicine.applyAction(player);
+    Assume.assumeTrue(player.getInventory().contains(new Remedy(Type.BUCKET)));
+    //The players should now be different
+    Assume.assumeFalse(player.equals(twin));
+    
+    assertEquals(SpecialEvent.CHAP_DIED_BURNT, poison.applyAction(twin));
+    
+    assertEquals(SpecialEvent.FIRE_EXTINGUISHED, poison.applyAction(player));
+    
+    //Check that the medicine didn't affect whether the player can access the poison tile
+    assertTrue(poison.isAccessible(player));
+    
+    
+  }
+  
   @Test
   void sameColourKeysEqualsTest() {
     Key key1 = new Key(Key.Colour.GREEN);

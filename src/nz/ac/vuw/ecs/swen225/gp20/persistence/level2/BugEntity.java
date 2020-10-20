@@ -14,7 +14,6 @@ import nz.ac.vuw.ecs.swen225.gp20.maze.Maze.SpecialEvent;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Collectable;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Entity;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Player;
-import nz.ac.vuw.ecs.swen225.gp20.persistence.SpecialTimerTask;
 
 /**
  * Create a bug entity.

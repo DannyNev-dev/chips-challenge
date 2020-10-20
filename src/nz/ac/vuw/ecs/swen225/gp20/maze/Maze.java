@@ -101,6 +101,10 @@ public class Maze {
      */
     CHAP_DIED_POISONED,
     /**
+     * The player cured themselves from the poison.
+     */
+    POISONED_CURED,
+    /**
      * Specify that the player has died due to a fire.
      */
     CHAP_DIED_BURNT,
@@ -114,35 +118,6 @@ public class Maze {
     INFO_POINT
     
   }
-  
-
-  /**
-   * Load a maze.
-   * 
-   * @param player coordinates of the Tile containing the player
-   * @param boardData 2-D array of tiles grouping each location on the maze
-   * @param target Chips left to collect
-   * @param level the level of the current board
-   */
-  /*
-  public Maze(Player player, Tile[][] boardData, int target, int level) {
-    
-    //TODO remove this constructor!!
-    
-    checkArgument(player != null, "There must be a player on the board");
-    checkArgument(boardData != null);
-    checkArgument(target >= 0, "there can't be a negative target");
-    checkArgument(level >= 0, "levels can't be negative");
-    this.player = player;
-    this.board = new Board(boardData);
-    
-    //TODO clone board
-    
-    this.target = target;
-    this.level = level;
-    assert (isPlayerPosValid());
-  }
-  */
   
   /**
    * Create a new maze given a level.
