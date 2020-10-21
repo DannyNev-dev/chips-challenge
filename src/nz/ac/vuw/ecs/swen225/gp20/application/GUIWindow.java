@@ -39,6 +39,7 @@ public class GUIWindow extends javax.swing.JFrame {
     //Replay buttons are desactivated until user activates Replay mode
       replayForwards.setEnabled(false);
       autoReplay.setEnabled(false);
+      speedChooser.setEnabled(false);
       inventoryLabels[0] = item0;
       inventoryLabels[1] = item1;
       inventoryLabels[2] = item2;
@@ -83,26 +84,36 @@ public class GUIWindow extends javax.swing.JFrame {
         item7 = new javax.swing.JLabel();
         inventoryText1 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
-        gameMenu = new javax.swing.JMenu();
-        rulesLegend = new javax.swing.JMenuItem();
+        Pause = new javax.swing.JMenu();
+        pause = new javax.swing.JMenuItem();
+        exitWithX = new javax.swing.JMenuItem();
+        jMenuItem3 = new javax.swing.JMenuItem();
         fileMenu = new javax.swing.JMenu();
         saveButton = new javax.swing.JMenuItem();
         replayButton = new javax.swing.JMenuItem();
+        help = new javax.swing.JMenu();
+        rulesLegend = new javax.swing.JMenuItem();
+        levelsMenu = new javax.swing.JMenu();
+        levelOne = new javax.swing.JMenuItem();
+        levelTwo = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
-        setBackground(new java.awt.Color(0, 207, 18));
+        setBackground(new java.awt.Color(102, 0, 0));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 formWindowClosing(evt);
             }
             public void windowOpened(java.awt.event.WindowEvent evt) {
-                formWindowOpened(evt);
+                evtOpen = evt;
+                mode = modes.Run.name();
+                if( level!=-1){
+                    newGame(level);
+                }else {
+                    formWindowOpened(evt);
+                }
             }
         });
         addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                formKeyPressed(evt);
-            }
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 keyReleasedSetMove(evt);
             }
@@ -379,17 +390,31 @@ public class GUIWindow extends javax.swing.JFrame {
                 .addContainerGap(12, Short.MAX_VALUE))
         );
 
-        gameMenu.setText("Game");
+        Pause.setText("Game");
 
-        rulesLegend.setText("Instructions - Rules");
-        rulesLegend.addActionListener(new java.awt.event.ActionListener() {
+        pause.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_SPACE, 0));
+        pause.setText("Pause Game");
+        pause.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rulesLegendActionPerformed(evt);
+                pauseActionPerformed(evt);
             }
         });
-        gameMenu.add(rulesLegend);
+        Pause.add(pause);
 
-        jMenuBar1.add(gameMenu);
+        exitWithX.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_X, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        exitWithX.setText("Exit Game");
+        exitWithX.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exitWithXActionPerformed(evt);
+            }
+        });
+        Pause.add(exitWithX);
+
+        jMenuItem3.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        jMenuItem3.setText("Resume Game");
+        Pause.add(jMenuItem3);
+
+        jMenuBar1.add(Pause);
 
         fileMenu.setText("File");
 
@@ -402,7 +427,7 @@ public class GUIWindow extends javax.swing.JFrame {
         });
         fileMenu.add(saveButton);
 
-        replayButton.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        replayButton.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.SHIFT_DOWN_MASK | java.awt.event.InputEvent.CTRL_DOWN_MASK));
         replayButton.setText("Replay Game");
         replayButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -412,6 +437,40 @@ public class GUIWindow extends javax.swing.JFrame {
         fileMenu.add(replayButton);
 
         jMenuBar1.add(fileMenu);
+
+        help.setText("Help");
+
+        rulesLegend.setText("Instructions - Rules");
+        rulesLegend.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rulesLegendActionPerformed(evt);
+            }
+        });
+        help.add(rulesLegend);
+
+        jMenuBar1.add(help);
+
+        levelsMenu.setText("Levels");
+
+        levelOne.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_1, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        levelOne.setText("Leve 1");
+        levelOne.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                levelOneActionPerformed(evt);
+            }
+        });
+        levelsMenu.add(levelOne);
+
+        levelTwo.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_2, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        levelTwo.setText("Level 2");
+        levelTwo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                levelTwoActionPerformed(evt);
+            }
+        });
+        levelsMenu.add(levelTwo);
+
+        jMenuBar1.add(levelsMenu);
 
         setJMenuBar(jMenuBar1);
 
@@ -464,14 +523,13 @@ public class GUIWindow extends javax.swing.JFrame {
               "Game Won", JOptionPane.WARNING_MESSAGE);
           if (confirm == JOptionPane.OK_OPTION) {
             level = 2;
-            setLevelNumber(level);
-            gameCountdown = new GameTimer(1, 60, this);
+            newGame(level);
           }else if( confirm == JOptionPane.CANCEL_OPTION) {
-            evt.getWindow().dispose(); //close all windows
+            System.exit(0); //close all windows
           }
         } else{
           display(" Congratulations!\nYou completed all levels");
-          evt.getWindow().dispose();
+          System.exit(0);
         }
       }
 
@@ -486,20 +544,19 @@ public class GUIWindow extends javax.swing.JFrame {
             } else if (m.getStatus() == Maze.GameState.GAME_LOST) {
                gameCountdown.pause();
                message = message + m.getLastSpecialEvent().name().toLowerCase().replace("_", " ")
-                       + "Do you want to play again?";
+                       + "Do you want to play this level again?";
            }
            int confirm = JOptionPane.showConfirmDialog(null, message, "Game Over",
                    JOptionPane.YES_NO_OPTION);
            if (confirm == JOptionPane.YES_OPTION) {
-               setLevelNumber(level);
-               gameCountdown = new GameTimer(1, 60, this);
+                newGame(level);
            }else if( confirm == JOptionPane.NO_OPTION) {
                int confirm2 = JOptionPane.showConfirmDialog(null, "Do you want to play another level?", "Game Over",
                        JOptionPane.YES_NO_OPTION);
                if(confirm2 == JOptionPane.YES_OPTION){
                    formWindowOpened(evt);
                }else {
-                   evt.getWindow().dispose(); //close this window only
+                   System.exit(0); //close this window only
                }
            }
         }
@@ -518,10 +575,10 @@ public class GUIWindow extends javax.swing.JFrame {
             "Leave Game?", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
         if (confirm == JOptionPane.OK_OPTION) {
           //closes all windows
-          evt.getWindow().dispose();
+          System.exit(0);
         }else if( confirm == JOptionPane.OK_CANCEL_OPTION && mode.equals(modes.Run.name())){
           //new timer continues from where it was left of.
-          gameCountdown = new GameTimer(pausedAtMin,pausedAtSec, this);
+          gameCountdown = new GameTimer(pausedAtMin, pausedAtSec, this);
         }
       }//GEN-LAST:event_formWindowClosing
 
@@ -567,9 +624,17 @@ public class GUIWindow extends javax.swing.JFrame {
         }
       }//GEN-LAST:event_formWindowOpened
 
+    /**
+     * Creates a game by creating a new timer and passes the information
+     * to the other modules too.
+     * @param level to be played.
+     */
     private void newGame(int level){
         // New timer for every game (2 minutes long)
-        gameCountdown = new GameTimer(1, 60, this);
+        if(gameCountdown != null) {
+            gameCountdown.pause();
+        }
+        gameCountdown = new GameTimer(1, 59,this);
         //Updates level number with the input received by player and
         // informs other modules.
         setLevelNumber(level);
@@ -618,7 +683,7 @@ public class GUIWindow extends javax.swing.JFrame {
        */
       private void keyReleasedSetMove(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_keyReleasedSetMove
           SingleMove singleMove = null;
-          if( !mode.equals("Replay")) {
+          if( mode != null && !mode.equals("Replay")) {
               requestFocus();
               if (evt.getKeyCode() == KeyEvent.VK_LEFT) {
                   singleMove = new SingleMove(Move.Direction.LEFT);
@@ -639,66 +704,46 @@ public class GUIWindow extends javax.swing.JFrame {
       }//GEN-LAST:event_keyReleasedSetMove
 
       /**
-       * Shared method which will be called by both keyReleaseSetMove and forwardsActionPerformed.
-       * @param mv SingleMove object, created by keystroke or converted from saved JSon file
-       */
-		private void forwardsActionPerformed(SingleMove mv) {
-			m.movePlayer(mv);
-			render.updateRender();
-			setChipsLeft();
-
-			boardCanvas.setVisible(true);
-			gameCanvas.add(boardCanvas);
-			boardCanvas.setLocation(70, 35);
-			validate();
-			repaint();
-			setVisible(true);
-			if (m.getStatus().name().equals("GAME_WON")) {
-				this.formWindowWon(evtOpen);
-			}
-			transferFocus();
-		}
-
-      /**
        * Processes users input when the button for autoReplay is pressed.
        * @param evt autoReplay button clicked.
        */
-      private void autoReplayActionPerformed(java.awt.event.ActionEvent evt) {
-          replayForwards.setEnabled(false);
-          EventIterator it = this.eventIterator;
-			GUIWindow forwordable = this;
+      private void autoReplayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_autoReplayActionPerformed
+        // TODO add your handling code here:
+              replayForwards.setEnabled(false);
+              EventIterator it = this.eventIterator;
+              GUIWindow forwordable = this;
 
-			ActionListener taskPerformer = new ActionListener() {
-				public void actionPerformed(ActionEvent evt) {
-					if (!it.hasNext()) {
-						((Timer)evt.getSource()).stop();
-						System.out.println("Auto-Replay stopped iteration");
-						return;
-					}
-					Event ev = it.next();
-					SingleMove mv = null;
-					System.out.println("Auto-Replay event: " + ev.getType());
-					mv = ev.getMove();
-					if (mv != null) {
-						System.out.println("Auto-Replay movement: " + mv.getLastDirection());
-						forwordable.handleMovement(mv);
-						mv = null;
-					} else {
-						System.err.println("Auto-Replay expects a movement but event emitted is: " + ev.getType());
-					}
-					int latency = (int) it.getLatency();
-					System.out.println("Auto-Replay latency updated to: " + latency);
-					//FayLu: Theoretically the speed might be adjusted during the auto-replay
-					((Timer)evt.getSource()).setDelay(latency);
-				}
-			};
-			// When auto-replay is triggered the real-time speed value is used
-			it.setSpeed(this.replaySpeed);
-			int latency = (int) it.getLatency();
-			System.out.println("Auto-Replay latency initialized to: " + latency);
-			new Timer(latency, taskPerformer).start();
+              ActionListener taskPerformer = new ActionListener() {
+                  public void actionPerformed(ActionEvent evt) {
+                      if (!it.hasNext()) {
+                          ((Timer) evt.getSource()).stop();
+                          System.out.println("Auto-Replay stopped iteration");
+                          return;
+                      }
+                      Event ev = it.next();
+                      SingleMove mv = null;
+                      System.out.println("Auto-Replay event: " + ev.getType());
+                      mv = ev.getMove();
+                      if (mv != null) {
+                          System.out.println("Auto-Replay movement: " + mv.getLastDirection());
+                          forwordable.handleMovement(mv);
+                          mv = null;
+                      } else {
+                          System.err.println("Auto-Replay expects a movement but event emitted is: " + ev.getType());
+                      }
+                      int latency = (int) it.getLatency();
+                      System.out.println("Auto-Replay latency updated to: " + latency);
+                      //FayLu: Theoretically the speed might be adjusted during the auto-replay
+                      ((Timer) evt.getSource()).setDelay(latency);
+                  }
+              };
+              // When auto-replay is triggered the real-time speed value is used
+              it.setSpeed(this.replaySpeed);
+              int latency = (int) it.getLatency();
+              System.out.println("Auto-Replay latency initialized to: " + latency);
+              new Timer(latency, taskPerformer).start();
 
-      }
+      }//GEN-LAST:event_autoReplayActionPerformed
 
       /**
        * Processes users input when the button for moving forwards is pressed.
@@ -716,17 +761,18 @@ public class GUIWindow extends javax.swing.JFrame {
           }else {
               System.out.println("Replay finished the event iteration");
           }
-      }
+
+      }//GEN-LAST:event_forwardsActionPerformed
 
       /**
        * Processes users input when the button for saving is pressed.
        * @param evt save button on game menu is clicked.
        */
       private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {
-
+//GEN-FIRST:event_saveButtonActionPerformed
         EventListener.getRecord().saveToJson();
-        evtOpen.getWindow().dispose();
-      }
+        System.exit(0);
+      }//GEN-LAST:event_saveButtonActionPerformed
 
       /**
        * Processes users input when the button for displaying rules is pressed.
@@ -750,30 +796,50 @@ public class GUIWindow extends javax.swing.JFrame {
             +"You can also save the game and resume later by going to \"File\" and\n"
             +"click on \"Save\"");
         if( mode.equals(modes.Run.name())) {
-            gameCountdown = new GameTimer(pausedAtMin, pausedAtSec, this);
+            gameCountdown = new GameTimer(pausedAtMin, pausedAtSec,this);
         }
       }//GEN-LAST:event_rulesLegendActionPerformed
 
-    private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
+    private void speedChooserStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_speedChooserStateChanged
         // TODO add your handling code here:
-            if( evt.getKeyCode() == KeyEvent.VK_1){
-                level = 1;
-                new GUIWindow().setVisible(true);
-            }
-    }//GEN-LAST:event_formKeyPressed
-
-    /**
-     * Set replay speed with the value of speedChooser.
-     * @param evt
-     */
-    private void speedChooserStateChanged(javax.swing.event.ChangeEvent evt) {
         	this.replaySpeed = speedChooser.getValue();
         if (this.eventIterator != null) {
         	// FayLu: User might adjust speed during auto-replay.
         	// If the slider changes, update new speed seed value to iterator and it will be used in auto-replay.
         	this.eventIterator.setSpeed(this.replaySpeed);
         }
-    }
+
+    }//GEN-LAST:event_speedChooserStateChanged
+
+    private void pauseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pauseActionPerformed
+        // TODO add your handling code here:
+        pausedAtSec = gameCountdown.getCurrentSec();
+        pausedAtMin = gameCountdown.getCurrentMin();
+        gameCountdown.pause();
+        display("GAME PAUSED");
+        gameCountdown = new GameTimer(pausedAtMin,pausedAtSec, this);
+    }//GEN-LAST:event_pauseActionPerformed
+
+    private void exitWithXActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitWithXActionPerformed
+        // TODO add your handling code here:
+        System.exit(0);
+    }//GEN-LAST:event_exitWithXActionPerformed
+
+    private void levelOneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_levelOneActionPerformed
+        // TODO add your handling code here:
+        level = 1;
+        gameCountdown.pause();
+        new GUIWindow().setVisible(true);
+        GUIWindow.getWindows()[0].dispose();
+    }//GEN-LAST:event_levelOneActionPerformed
+
+    private void levelTwoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_levelTwoActionPerformed
+        // TODO add your handling code here:
+        level = 2;
+        gameCountdown.pause();
+        new GUIWindow().setVisible(true);
+        GUIWindow.getWindows()[0].dispose();
+    }//GEN-LAST:event_levelTwoActionPerformed
 
     /**
      * Activated when user clicks on Replay.
@@ -791,6 +857,7 @@ public class GUIWindow extends javax.swing.JFrame {
 		// Allow user to use buttons for Replay mode
 		replayForwards.setEnabled(true);
 		autoReplay.setEnabled(true);
+		speedChooser.setEnabled(true);
 
 		fileChooser.setDialogTitle("Open Json File to Replay a match");
 		fileChooser.setFileFilter(fileFilter);
@@ -804,12 +871,12 @@ public class GUIWindow extends javax.swing.JFrame {
 			replaySetLevel();
 		} else {
 			System.out.println("File access cancelled by user.");
-			// Resume the GUIWindow timer, return to current game
+			// Resume the app timer, return to current game
 			mode = modes.Run.name(); // Game is back to running mode
 			gameCountdown = new GameTimer(pausedAtMin, pausedAtSec, this); // resume timer
 		}
-	}
-    
+	}// GEN-LAST:event_replayButtonActionPerformed
+
 
     private void speedChooserAncestorAdded(javax.swing.event.AncestorEvent evt) {
 
@@ -852,14 +919,16 @@ public class GUIWindow extends javax.swing.JFrame {
       }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenu Pause;
     private javax.swing.JButton autoReplay;
     private javax.swing.JPanel boardCanvas;
     private javax.swing.JLabel changeSpeedText;
     private javax.swing.JLabel chipsLeft;
     private javax.swing.JLabel chipsleftText2;
+    private javax.swing.JMenuItem exitWithX;
     private javax.swing.JMenu fileMenu;
     private javax.swing.JPanel gameCanvas;
-    private javax.swing.JMenu gameMenu;
+    private javax.swing.JMenu help;
     private javax.swing.JPanel inventoryPanel;
     private javax.swing.JLabel inventoryText;
     private javax.swing.JLabel inventoryText1;
@@ -872,9 +941,14 @@ public class GUIWindow extends javax.swing.JFrame {
     private javax.swing.JLabel item6;
     private javax.swing.JLabel item7;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JPanel levelAndTimer;
     private javax.swing.JLabel levelNumber;
+    private javax.swing.JMenuItem levelOne;
     private javax.swing.JLabel levelText;
+    private javax.swing.JMenuItem levelTwo;
+    private javax.swing.JMenu levelsMenu;
+    private javax.swing.JMenuItem pause;
     private javax.swing.JMenuItem replayButton;
     private javax.swing.JButton replayForwards;
     private javax.swing.JMenuItem rulesLegend;
@@ -953,9 +1027,7 @@ public class GUIWindow extends javax.swing.JFrame {
               chipsLeft.setText( chips + " / " + m.target);
       }
 
-      /**
-       * Set level in replay mode.
-       */
+
       private void replaySetLevel() {
             if (this.eventIterator == null) {
                 System.err.println("Please select the saved game to replay from File menu");
@@ -983,9 +1055,7 @@ public class GUIWindow extends javax.swing.JFrame {
       private void setLevelNumber(int level) {
         GUIWindow.level = level;
         levelNumber.setText("0" + level);
-        if( !mode.equals("Replay"))  {
-        	this.eventListener.onEvent(Event.eventOfLevelSetting(level));
-        }
+        this.eventListener.onEvent(Event.eventOfLevelSetting(level));
         try {
           m =  new Maze(level);
         } catch (IOException e) {
