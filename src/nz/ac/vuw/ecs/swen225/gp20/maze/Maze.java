@@ -142,16 +142,15 @@ public class Maze {
   }
   
   /**
-   * Create a new maze given a level and an already created loader.
-   * @param level of the maze
+   * Create a new maze given an already created loader.
    * @param loader object used to obtain the data
    */ 
-  public Maze(int level, LevelReader loader) {
+  public Maze(LevelReader loader) {
     checkArgument(loader != null, "The loader must be well defined");
     this.player = loader.loadPlayer();
     this.board = new Board(loader.loadBoard());
     this.target = loader.loadTarget();
-    this.level = level;
+    this.level = loader.getLevelNum();
     loader.setMaze(this);
     assert (isPlayerPosValid());
     
