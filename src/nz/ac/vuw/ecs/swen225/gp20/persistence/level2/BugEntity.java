@@ -3,13 +3,14 @@ package nz.ac.vuw.ecs.swen225.gp20.persistence.level2;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.awt.Point;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.List;
-import java.util.Timer;
 
+import nz.ac.vuw.ecs.swen225.gp20.application.GUIWindow;
 import nz.ac.vuw.ecs.swen225.gp20.maze.Board;
 import nz.ac.vuw.ecs.swen225.gp20.maze.Maze;
 import nz.ac.vuw.ecs.swen225.gp20.maze.SingleMove;
-import nz.ac.vuw.ecs.swen225.gp20.maze.Maze.GameState;
 import nz.ac.vuw.ecs.swen225.gp20.maze.Maze.SpecialEvent;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Collectable;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Entity;
@@ -23,39 +24,43 @@ import nz.ac.vuw.ecs.swen225.gp20.maze.items.Player;
  * @author Daniel Neville
  *
  */
-public class BugEntity implements Entity, Collectable {
+@SuppressWarnings("deprecation")
+public class BugEntity implements Entity, Collectable, PropertyChangeListener {
 
 	/** The Constant name. */
 	// All bugs share the same name, stored to improve efficiency
 	private static final String name = "bug";
 
+	public int ID;
 	/** The position. */
 	private Point position;
 
 	/** The paused. */
 	public boolean paused = false;
 
+	/** ref to the application **/
+	public GUIWindow gw;
+
+	/** ref to the maze **/
+	private Maze m;
+
 	/**
 	 * Instantiates a new bug entity.
 	 *
 	 * @param p the p
 	 */
-	public BugEntity(Point p) {
+	public BugEntity(Point p, int id) {
 		this.position = p;
+		this.ID = id;
 	}
 
 	/**
-	 * Execute bug move.
+	 * Sets the maze ref in bug
 	 *
 	 * @param m the maze
 	 */
-	public void executeBugMove(Maze m) {
-		// loop with delay to move bug
-		while (m.getStatus().equals(GameState.PLAYING)) {
-			Timer t = new Timer();
-			SpecialTimerTask specialTask = new SpecialTimerTask(this, m);
-			t.scheduleAtFixedRate(specialTask, 100, 5000);
-		}
+	public void setMaze(Maze m) {
+		this.m = m;
 	}
 
 	/**
@@ -95,7 +100,7 @@ public class BugEntity implements Entity, Collectable {
 	 */
 	@Override
 	public List<Collectable> getInventory() {
-		return null; //indicates this does not have an inventory
+		return null; // indicates this does not have an inventory
 	}
 
 	/**
@@ -199,4 +204,18 @@ public class BugEntity implements Entity, Collectable {
 		return true;
 	}
 
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+		Board b = m.getBoardObject();
+		SingleMove sm = this.randomAdjacentPos(b);
+		m.moveEntity(sm, this); // returns false if game is paused
+		// call static application method to notify record and replay
+		// GUIWindow.notifyRecorder(sm,name); //name to identify this as bug move
+		gw.notifyRecord(sm, this.ID);
+	}
+
+	public void setApplication(GUIWindow gw) {
+		this.gw = gw;
+		gw.addPropertyChangeListener(this);
+	}
 }

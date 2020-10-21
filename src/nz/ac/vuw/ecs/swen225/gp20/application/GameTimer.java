@@ -40,11 +40,9 @@ public class GameTimer {
         currentSec = 59;
         currentMin--;
       }
-      else if( timeOut()){
+      else if( timeOut()) {
         timer.cancel();
         guiWindow.formWindowLost(guiWindow.getEvtOpen());
-      }else if( currentSec%2 == 0){
-        guiWindow.getRender().updateRender();
       }
       //Check is number only contains 1 digit to add 0 for displaying purposes.
       if(currentSec < 10){
