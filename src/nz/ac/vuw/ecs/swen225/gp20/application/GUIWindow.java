@@ -19,6 +19,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyEditorSupport;
 import java.io.File;
@@ -35,7 +36,6 @@ public class GUIWindow extends JFrame {
    * Creates new form Window
    */
   public GUIWindow() {
-    numberOnPanel();
     initComponents();
     this.eventListener = EventListener.eventListenerFactory();
     this.setFocusable(true);
@@ -528,7 +528,7 @@ public class GUIWindow extends JFrame {
       /**
        * Forms a warning message if user wins game bottom.
        */
-      private void formWindowWon(java.awt.event.WindowEvent evt) {
+      private void formWindowWon() {
         gameCountdown.pause();
         if (level == 1) {
           int confirm = JOptionPane.showConfirmDialog(null,
@@ -548,6 +548,7 @@ public class GUIWindow extends JFrame {
 
         /**
          * Forms a warning message if user wins game bottom.
+         * @param evt event of opening the window.
          */
         public void formWindowLost(java.awt.event.WindowEvent evt) {
             String message = "Game Over\n";
@@ -567,7 +568,7 @@ public class GUIWindow extends JFrame {
                int confirm2 = JOptionPane.showConfirmDialog(null, "Do you want to play another level?", "Game Over",
                        JOptionPane.YES_NO_OPTION);
                if(confirm2 == JOptionPane.YES_OPTION){
-                   formWindowOpened(evt);
+                   formWindowOpened(evtOpen);
                }else {
                    System.exit(0); //close this window only
                }
@@ -684,7 +685,7 @@ public class GUIWindow extends JFrame {
             popUpInfo(m.getInfo());
             displayInventory();
             if (m.getStatus() == Maze.GameState.GAME_WON) {
-                formWindowWon(evtOpen);
+                formWindowWon();
             }else if(m.getStatus() == Maze.GameState.GAME_LOST){
                 formWindowLost(evtOpen);
             }
@@ -817,6 +818,10 @@ public class GUIWindow extends JFrame {
         }
       }//GEN-LAST:event_rulesLegendActionPerformed
 
+    /**
+     * Controls what happens when the speed chooser from Replay mode is changed.
+     * @param evt speed changed from bar.
+     */
     private void speedChooserStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_speedChooserStateChanged
         // TODO add your handling code here:
         	this.replaySpeed = speedChooser.getValue();
@@ -1009,25 +1014,15 @@ public class GUIWindow extends JFrame {
       private EventIterator eventIterator;
       private ImageIcon[] inventoryItems = new ImageIcon[8];
       private JLabel[] inventoryLabels = new JLabel[8];
-      private java.awt.event.WindowEvent evtOpen;
       private int replaySpeed;
+      private java.awt.event.WindowEvent evtOpen;
       private PropertyEditorSupport propertyEditorSupport= new PropertyEditorSupport();
-      /**
-       * initialize the number images  by linking each face to its image and storing them.
-       */
-      public void numberOnPanel() {
-        for (int i = 0; i < numberImg.length; i++) {
-          numberImg[i] = new ImageIcon("src/nz/ac/vuw/ecs/swen225/gp20/application/data/numbers/" + i + ".png");
-          //set the size
-          numberImg[i].setImage(numberImg[i].getImage().getScaledInstance(90, 100, Image.SCALE_DEFAULT));
 
-        }
-      }
-
-    public void displayInventory(){
-
+    /**
+     * Initialices the images and JPanels honding them to display Chap's inventory.
+     */
+    private void displayInventory(){
         for (int i = 0; i < inventoryItems.length; i++) {
-
             if(i<m.getPlayerInventory().size()) {
                 inventoryItems[i] = new ImageIcon("src/nz/ac/vuw/ecs/swen225/gp20/render/TileFile/" + m.getPlayerInventory().get(i).getName() + "Tile.png");
                 //set the size
@@ -1063,8 +1058,10 @@ public class GUIWindow extends JFrame {
               chipsLeft.setText( chips + " / " + m.target);
       }
 
-
-      private void replaySetLevel() {
+    /**
+     * Allocates the level for the replay mode.
+     */
+    private void replaySetLevel() {
           if( mode != null && mode.equals(modes.Replay.name())) {
               if (this.eventIterator == null) {
                   System.err.println("Please select the saved game to replay from File menu");
@@ -1111,20 +1108,29 @@ public class GUIWindow extends JFrame {
        */
       public JLabel getTimer() { return timer;}
 
-      public java.awt.event.WindowEvent getEvtOpen() { return evtOpen;}
-
     /**
      * Current render within this game.
      * @return board of current game.
      */
     public Render getRender() { return render;}
 
+    /**
+     * Event of window opening.
+     * @return event when GUI Window opens.
+     */
+    public WindowEvent getOpenEvt(){ return evtOpen;}
 
+    /**
+     * Notifies record and replay module where the bugs move.
+     * @param move direction of bug.
+     * @param entityID bug reference.
+     */
     public void notifyRecord(SingleMove move, int entityID){
-
+        //TODO
+        // Update Single move to move and implement a new parameter to
+        //add the bug's ID (as there is 2)
+      eventListener.onEvent(Event.eventOfBugMove(move));
     }
-
-    public void recordToPersistence(){}
 
       /**.
        *
@@ -1134,6 +1140,11 @@ public class GUIWindow extends JFrame {
         int result = JOptionPane.showConfirmDialog(null, data, "Alert", JOptionPane.PLAIN_MESSAGE);
       }
 
+    /**
+     * Adds listeners/observers to notify them when users
+     * presses a key.
+      * @param propertyChangeListener
+     */
     public void addPropertyChangeListener(PropertyChangeListener propertyChangeListener) {
        propertyEditorSupport.addPropertyChangeListener(propertyChangeListener);
     }
