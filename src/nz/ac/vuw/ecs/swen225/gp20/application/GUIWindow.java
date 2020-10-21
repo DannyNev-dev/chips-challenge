@@ -1090,7 +1090,7 @@ public class GUIWindow extends JFrame {
       private void setLevelNumber(int level) {
         GUIWindow.level = level;
         levelNumber.setText("0" + level);
-        if(mode != null && mode.equals(modes.Replay.name())) {
+        if(mode != null && !mode.equals(modes.Replay.name())) {
             this.eventListener.onEvent(Event.eventOfLevelSetting(level));
         }
         try {
@@ -1143,7 +1143,7 @@ public class GUIWindow extends JFrame {
     /**
      * Adds listeners/observers to notify them when users
      * presses a key.
-      * @param propertyChangeListener
+      * @param propertyChangeListener observer. 
      */
     public void addPropertyChangeListener(PropertyChangeListener propertyChangeListener) {
        propertyEditorSupport.addPropertyChangeListener(propertyChangeListener);
