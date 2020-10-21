@@ -4,11 +4,21 @@ import java.awt.Point;
 import java.util.List;
 
 
+/**
+ * A mock class for test usage.
+ * @author YanLu
+ *
+ */
 public class TestMove {
 
 	private TestDirection direction;
     List<Point> steps;
     
+    /**
+     * Four different directions.
+     * @author YanLu
+     *
+     */
     public enum TestDirection {
         /**
          * Towards the North of the board.
@@ -27,21 +37,25 @@ public class TestMove {
          */
         LEFT
       }
-    
-    
-
+ 
     private TestMove() {
 		this.direction = null;
     }
 
+    /**
+     * Constructor of TestMove.
+     * @param direction
+     */
     public TestMove(TestDirection direction) {
     	this();	
         this.direction = direction;
     }
 
+    /**
+     * Getter.
+     * @return direction
+     */
     public TestDirection getDirection() {
         return direction;
     }
-    
-    
 }

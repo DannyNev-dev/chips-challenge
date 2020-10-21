@@ -3,8 +3,6 @@ package nz.ac.vuw.ecs.swen225.gp20.recnplay;
 import java.util.ArrayList;
 import java.util.List;
 
-import nz.ac.vuw.ecs.swen225.gp20.recnplay.test.TestMove;
-
 /**
  * A class for storing key information of 
  * @author YanLu
@@ -19,7 +17,7 @@ public class RecordedGame {
 	}
 
 	/**
-	 * constructor of RecordedGame.
+	 * Constructor of RecordedGame.
 	 * @param level
 	 */
 	public RecordedGame(int level) {
@@ -30,12 +28,16 @@ public class RecordedGame {
 	}
 	
 	
+	/**
+	 * Set actions with given parameter.
+	 * @param actions
+	 */
 	public void setActions(List<Event> actions) {
 		this.actions = actions;
 	}
 
 	/**
-	 * get list of happened actions.
+	 * Get list of happened actions.
 	 * @return list of Event
 	 */
 	public List<Event> getActions(){
@@ -43,7 +45,7 @@ public class RecordedGame {
 	}
 	
 	/**
-	 * get level.
+	 * Get level.
 	 * @return current level
 	 */
 	public int getLevel(){
@@ -51,7 +53,7 @@ public class RecordedGame {
 	}
 
 	/**
-	 * set level with given information.
+	 * Set level with given information.
 	 * @param level
 	 */
 	public void setLevel(int level) {
@@ -59,7 +61,7 @@ public class RecordedGame {
 	}
 	
 	/**
-	 * add new performed action to list of event.
+	 * Add new performed action to list of event.
 	 * @param event
 	 */
 	public void addAction(Event event) {

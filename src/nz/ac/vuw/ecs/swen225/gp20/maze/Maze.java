@@ -115,7 +115,12 @@ public class Maze {
     /**
      * When the player is on the info tile.
      */
-    INFO_POINT
+    INFO_POINT,
+    /**
+     * This events is used to indicate a move being rejected.
+     * For instance when the player moves to an inaccessible cell like a wall.
+     */
+    MOVE_REJECTED
     
   }
   
@@ -191,6 +196,7 @@ public class Maze {
     
     //Check if entity can enter the new tile
     if (!newTile.isAccessible(movingEntity)) {
+      lastEvent = SpecialEvent.MOVE_REJECTED;
       return false;
     }
     
