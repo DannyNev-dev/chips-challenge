@@ -140,6 +140,22 @@ public class Maze {
     assert (isPlayerPosValid());
     
   }
+  
+  /**
+   * Create a new maze given a level and an already created loader.
+   * @param level of the maze
+   * @param loader object used to obtain the data
+   */ 
+  public Maze(int level, LevelReader loader) {
+    checkArgument(loader != null, "The loader must be well defined");
+    this.player = loader.loadPlayer();
+    this.board = new Board(loader.loadBoard());
+    this.target = loader.loadTarget();
+    this.level = level;
+    loader.setMaze(this);
+    assert (isPlayerPosValid());
+    
+  }
 
   /**
    * Move the player from it's current position to a different tile in the board.

@@ -56,7 +56,7 @@ public class ExitTile extends Tile {
 
   @Override
   public boolean isAccessible(Entity entity) {
-    return true;
+    return entity instanceof Player;
   }
 
   @Override

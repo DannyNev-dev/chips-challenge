@@ -3,6 +3,7 @@ package nz.ac.vuw.ecs.swen225.gp20.maze.tiles;
 import nz.ac.vuw.ecs.swen225.gp20.maze.Maze.SpecialEvent;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Entity;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Item;
+import nz.ac.vuw.ecs.swen225.gp20.maze.items.Player;
 
 /**
  * Tile which displays info when the player stands on it.
@@ -66,7 +67,7 @@ public class InfoTile extends Tile {
 
   @Override
   public boolean isAccessible(Entity entity) {
-    return true;
+    return entity instanceof Player;
   }
 
   @Override
