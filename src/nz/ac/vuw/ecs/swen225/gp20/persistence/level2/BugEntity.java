@@ -16,6 +16,7 @@ import nz.ac.vuw.ecs.swen225.gp20.maze.items.Collectable;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Entity;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Player;
 
+// TODO: Auto-generated Javadoc
 /**
  * Create a bug entity. Implements collectable as well so that it is required to
  * be able to affect the player when they try to pick it up, in this case making
@@ -24,13 +25,13 @@ import nz.ac.vuw.ecs.swen225.gp20.maze.items.Player;
  * @author Daniel Neville
  *
  */
-@SuppressWarnings("deprecation")
 public class BugEntity implements Entity, Collectable, PropertyChangeListener {
 
 	/** The Constant name. */
 	// All bugs share the same name, stored to improve efficiency
 	private static final String name = "bug";
 
+	/** The id. */
 	public int ID;
 	/** The position. */
 	private Point position;
@@ -38,16 +39,17 @@ public class BugEntity implements Entity, Collectable, PropertyChangeListener {
 	/** The paused. */
 	public boolean paused = false;
 
-	/** ref to the application **/
+	/**  ref to the application *. */
 	public GUIWindow gw;
 
-	/** ref to the maze **/
+	/**  ref to the maze *. */
 	private Maze m;
 
 	/**
 	 * Instantiates a new bug entity.
 	 *
 	 * @param p the p
+	 * @param id the id
 	 */
 	public BugEntity(Point p, int id) {
 		this.position = p;
@@ -55,7 +57,7 @@ public class BugEntity implements Entity, Collectable, PropertyChangeListener {
 	}
 
 	/**
-	 * Sets the maze ref in bug
+	 * Sets the maze ref in bug.
 	 *
 	 * @param m the maze
 	 */
@@ -104,7 +106,7 @@ public class BugEntity implements Entity, Collectable, PropertyChangeListener {
 	}
 
 	/**
-	 * Bugs don't collect chips
+	 * Bugs don't collect chips.
 	 *
 	 * @return the chips collected if it had any
 	 */
@@ -160,6 +162,11 @@ public class BugEntity implements Entity, Collectable, PropertyChangeListener {
 		return false;
 	}
 
+	/**
+	 * Hash code.
+	 *
+	 * @return the int
+	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -169,12 +176,24 @@ public class BugEntity implements Entity, Collectable, PropertyChangeListener {
 		return result;
 	}
 
+	/**
+	 * Checks if is accessible.
+	 *
+	 * @param entity the entity
+	 * @return true, if is accessible
+	 */
 	@Override
 	public boolean isAccessible(Entity entity) {
 		// Other entity can move into the player's tile to kill them
 		return true;
 	}
 
+	/**
+	 * Equals.
+	 *
+	 * @param obj the obj
+	 * @return true, if successful
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -204,6 +223,11 @@ public class BugEntity implements Entity, Collectable, PropertyChangeListener {
 		return true;
 	}
 
+	/**
+	 * Property change.
+	 *
+	 * @param evt the evt
+	 */
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		Board b = m.getBoardObject();
@@ -213,7 +237,21 @@ public class BugEntity implements Entity, Collectable, PropertyChangeListener {
 		// GUIWindow.notifyRecorder(sm,name); //name to identify this as bug move
 		gw.notifyRecord(sm, this.ID);
 	}
-
+	
+	/**
+	 * Move the bug using the given SingleMove.
+	 *
+	 * @param sm the sm
+	 */
+	public void moveBug(SingleMove sm) {
+		m.moveEntity(sm, this);
+	}
+	
+	/**
+	 * Sets the application.
+	 *
+	 * @param gw the new application
+	 */
 	public void setApplication(GUIWindow gw) {
 		this.gw = gw;
 		gw.addPropertyChangeListener(this);
