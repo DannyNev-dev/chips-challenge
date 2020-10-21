@@ -46,7 +46,7 @@ public class Harmful implements Item {
 
   @Override
   public boolean isAccessible(Entity entity) {
-    return true;
+    return entity instanceof Player;
   }
   
   @Override

@@ -44,6 +44,10 @@ public class Block implements Item {
   @Override
   public boolean isAccessible(Entity entity) {
     checkNotNull(entity, "An entity needs to be initialized before checking where it can move");
+    //Return false if the entity is not able to collect items
+    if (entity.getInventory() == null) {
+      return false;
+    }
     //Look if this collectable item is a key of the right colour
     //Note contains uses equals method, two keys of the same colour are equals
     return entity.getInventory().contains(key);

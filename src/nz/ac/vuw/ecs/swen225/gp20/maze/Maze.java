@@ -155,6 +155,8 @@ public class Maze {
       
       player.setOrientation(move.getLastDirection());
       successful = true;
+    } else {
+      lastEvent = SpecialEvent.MOVE_REJECTED;
     }
     
     //Check that there the player position matches and that there is exactly one player on the board
@@ -196,7 +198,6 @@ public class Maze {
     
     //Check if entity can enter the new tile
     if (!newTile.isAccessible(movingEntity)) {
-      lastEvent = SpecialEvent.MOVE_REJECTED;
       return false;
     }
     
