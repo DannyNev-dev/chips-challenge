@@ -13,7 +13,7 @@ public class Event {
 	private Type type;
 	
 	/**
-	 * list all types of Event.
+	 * List all types of Event.
 	 * @author YanLu
 	 *
 	 */
@@ -49,7 +49,7 @@ public class Event {
 	}
 	
 	/**
-	 * constructor of Event.
+	 * Constructor of Event.
 	 * @param type
 	 * @param level
 	 * @param move
@@ -64,7 +64,7 @@ public class Event {
 	}  
 	
     /**
-     * construct event when set level occurs.
+     * Construct event when set level occurs.
      * @param level
      * @return event of SetLevel
      */
@@ -73,7 +73,7 @@ public class Event {
     }
 	
     /**
-     * construct event when move of chap occurs.
+     * Construct event when move of chap occurs.
      * @param move
      * @return event of ChapMove
      */
@@ -82,7 +82,7 @@ public class Event {
     }
     
     /**
-    * construct event when a move of bug occurs.
+    * Construct event when a move of bug occurs.
      * @param move
      * @return event of BugMove
      */
@@ -91,7 +91,7 @@ public class Event {
     }
     
     /**
-     * construct event when chap dies.
+     * Construct event when chap dies.
      * @param chapDies
      * @return event of ChapDies
      */
@@ -100,7 +100,7 @@ public class Event {
     } 
     
     /**
-	 * get the current level.
+	 * Get the current level.
 	 * @return current level
 	 */
 	public int getLevel() {
@@ -108,7 +108,7 @@ public class Event {
 	}
 
 	/**
-	 * set level with given information.
+	 * Set level with given information.
 	 * @param level
 	 */
 	public void setLevel(int level) {
@@ -116,7 +116,7 @@ public class Event {
 	}
 
 	/**
-	 * get the current level.
+	 * Get the current level.
 	 * @return current type information
 	 */
 	public Type getType() {
@@ -124,7 +124,7 @@ public class Event {
 	}
 	
 	/**
-	 * set type with given information.
+	 * Set type with given information.
 	 * @param type
 	 */
 	public void setType(Type type) {
@@ -132,7 +132,7 @@ public class Event {
 	}
 
 	/**
-	 * get the current Move object.
+	 * Get the current Move object.
 	 * @return current move
 	 */
 	public SingleMove getMove() {
@@ -140,7 +140,7 @@ public class Event {
 	}
 	
 	/**
-	 * set move with given information.
+	 * Set move with given information.
 	 * @param move
 	 */
 	public void setMove(SingleMove move) {
@@ -148,7 +148,7 @@ public class Event {
 	}
 	
 	/**
-	 * get the current chapDies.
+	 * Get the current chapDies.
 	 * @return current chapDies
 	 */
 	public boolean getChapDies() {
@@ -156,7 +156,7 @@ public class Event {
 	}
 	
 	/**
-	 * set chapDies with given information.
+	 * Set chapDies with given information.
 	 * @param chapDies
 	 */
 	public void setChapDies(boolean chapDies) {
