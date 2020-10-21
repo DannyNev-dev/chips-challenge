@@ -41,7 +41,7 @@ import nz.ac.vuw.ecs.swen225.gp20.persistence.level2.BugEntity;
 public class LevelReader {
 
 	/** The level num. */
-	int levelNum;
+	final int levelNum;
 
 	/** The maze obj in json form. */
 	JsonObject mazeObj;
@@ -133,6 +133,13 @@ public class LevelReader {
 		for(BugEntity e: bugs) {
 			e.setApplication(gw);
 		}
+	}
+	
+	/**
+	 * @return the levelNum
+	 */
+	public int getLevelNum() {
+		return levelNum;
 	}
 	
 	/**
@@ -261,4 +268,5 @@ public class LevelReader {
 		}
 		return board;
 	}
+	
 }

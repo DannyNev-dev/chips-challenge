@@ -52,7 +52,6 @@ public class BugEntity implements Entity, Collectable, PropertyChangeListener {
 	public BugEntity(Point p, int id) {
 		this.position = p;
 		this.ID = id;
-		gw.addPropertyChangeListener(this);
 	}
 
 	/**
@@ -217,5 +216,6 @@ public class BugEntity implements Entity, Collectable, PropertyChangeListener {
 
 	public void setApplication(GUIWindow gw) {
 		this.gw = gw;
+		gw.addPropertyChangeListener(this);
 	}
 }
