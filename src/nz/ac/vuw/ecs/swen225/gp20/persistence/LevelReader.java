@@ -12,6 +12,7 @@ import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
 
+import nz.ac.vuw.ecs.swen225.gp20.application.GUIWindow;
 import nz.ac.vuw.ecs.swen225.gp20.maze.Maze;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Block;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.ExitLock;
@@ -31,7 +32,6 @@ import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.Tile;
 import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.Wall;
 import nz.ac.vuw.ecs.swen225.gp20.persistence.level2.BugEntity;
 
-// TODO: Auto-generated Javadoc
 /**
  * Contains methods and static variables required for reading levels from json
  * files Contains methods that return a maze which will be parsed maze module.
@@ -46,11 +46,14 @@ public class LevelReader {
 	/** The maze obj in json form. */
 	JsonObject mazeObj;
 	
-	/** List of the bugs added to the level**/
+	/**  List of the bugs added to the level*. */
 	public ArrayList<BugEntity> bugs = new ArrayList<BugEntity>();
 	
-	/** Reference to the games maze class**/
+	/**  Reference to the games maze class*. */
 	public Maze maze;	//maybe protected
+	
+	/** The gw. */
+	public GUIWindow gw;
 
 	/**
 	 * Instantiates a new level reader.
@@ -105,14 +108,33 @@ public class LevelReader {
 		Player p = new Player(new Point(x, y));
 		return p;
 	}
-	//The maze variable needs to be set after the board is created, create issue
+	
+	/**
+	 * Sets the maze. and gives the bugs references
+	 *
+	 * @param m the new maze
+	 */
 	public void setMaze(Maze m) {
 		this.maze = m;
 		//after the board is made we want to begin the bugs movements
 		for(BugEntity e: bugs) {
-			e.executeBugMove(maze);
+			e.setMaze(maze);
 		}
 	}
+	
+	/**
+	 * Sets the application. and gives the bugs references
+	 *
+	 * @param gw the new application
+	 */
+	//Camila needs to call this after the maze is created or at any point before the player moves
+	public void setApplication(GUIWindow gw) {
+		this.gw = gw;
+		for(BugEntity e: bugs) {
+			e.setApplication(gw);
+		}
+	}
+	
 	/**
 	 * Load target.
 	 *
@@ -132,7 +154,8 @@ public class LevelReader {
 	 * @throws RuntimeException exception thrown when the json format for items/tiles is incorrect
 	 */
 	public Tile parseTile(JsonObject jsonObj, int target, Player p) throws RuntimeException {
-
+		
+		int bugCount = 1;
 		Item item = null;
 		Tile tile = null;
 		String type = jsonObj.getString("type");
@@ -205,7 +228,7 @@ public class LevelReader {
 			JsonObject varObj = jsonObj.getJsonObject("item");
 			int x = varObj.getInt("x");
 			int y = varObj.getInt("y");
-			BugEntity bug = new BugEntity(new Point(x,y));
+			BugEntity bug = new BugEntity(new Point(x,y),bugCount++);
 			tile = new ItemTile(bug);
 			bugs.add(bug);
 			break;
