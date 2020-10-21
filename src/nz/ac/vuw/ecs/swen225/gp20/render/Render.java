@@ -30,8 +30,6 @@ import nz.ac.vuw.ecs.swen225.gp20.maze.Board;
 import nz.ac.vuw.ecs.swen225.gp20.maze.Maze;
 import nz.ac.vuw.ecs.swen225.gp20.maze.Maze.SpecialEvent;
 import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.Tile;
-import sun.audio.AudioPlayer;
-import sun.audio.AudioStream;
 
 /**
  * Render class This class renders the maze and provides a return method for the
@@ -237,6 +235,26 @@ class View {
 	}
 	
 	public void playSound(String name) {
+		
+		new Thread(new Runnable() {
+			    public void run() {
+			      try {
+			        Clip clip = AudioSystem.getClip();
+			        System.out.println(Render.class);
+			        AudioInputStream inputStream = AudioSystem.getAudioInputStream(
+			        		
+			          Render.class.getResourceAsStream("SoundFile/" + name + ".wav"));
+			        clip.open(inputStream);
+			        clip.start(); 
+			      } catch (Exception e) {
+			        System.err.println(e.getMessage());
+			      }
+			    }
+			  }).start();
+		
+		/*
+		 * SUN LIBRARY
+		 * 
 		String soundFile = "src/nz/ac/vuw/ecs/swen225/gp20/render/SoundFile/" + name + ".wav";
 	    InputStream in;
 		try {
@@ -248,6 +266,7 @@ class View {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		*/
 	}
 
 	public String findDirection(Point p) {
