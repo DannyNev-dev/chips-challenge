@@ -30,6 +30,8 @@ import nz.ac.vuw.ecs.swen225.gp20.maze.Board;
 import nz.ac.vuw.ecs.swen225.gp20.maze.Maze;
 import nz.ac.vuw.ecs.swen225.gp20.maze.Maze.SpecialEvent;
 import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.Tile;
+import sun.audio.AudioPlayer;
+import sun.audio.AudioStream;
 
 /**
  * Render class This class renders the maze and provides a return method for the
