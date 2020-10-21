@@ -19,6 +19,7 @@ public class GameTimer {
   /**Timer constructor.
    * @param min from where it starts.
    * @param sec from where it starts.
+   * @param guiWindow window where timer is displayed.
    */
   public GameTimer(int min, int sec, GUIWindow guiWindow) {
     this.currentMin = min;
@@ -42,7 +43,7 @@ public class GameTimer {
       }
       else if( timeOut()) {
         timer.cancel();
-        guiWindow.formWindowLost(guiWindow.getEvtOpen());
+        guiWindow.formWindowLost(guiWindow.getOpenEvt());
       }
       //Check is number only contains 1 digit to add 0 for displaying purposes.
       if(currentSec < 10){
