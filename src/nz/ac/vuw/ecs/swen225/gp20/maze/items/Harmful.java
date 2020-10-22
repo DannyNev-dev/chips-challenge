@@ -6,14 +6,16 @@ import nz.ac.vuw.ecs.swen225.gp20.maze.Maze.SpecialEvent;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Remedy.Type;
 
 /**
- * An item that if the player moves into it will die.
+ * An item that when players interacts with these items they will
+ * be affected in a negative way. 
  * @author Emanuel Evans (ID: 300472656)
  *
  */
 public class Harmful implements Item {
   
   /**
-   * Types of harmful items.
+   * Types of harmful items. When players interacts with these items they will
+   * be affected in a negative way. 
    * @author Emanuel Evans (ID: 300472656)
    *
    */
@@ -58,15 +60,18 @@ public class Harmful implements Item {
   public SpecialEvent applyAction(Entity entity) {
     checkNotNull(entity, "An entity needs to be initialized before doing an action");
     
+    
     if (entity instanceof Player) {
       switch (type) {
         case FIRE: 
           if (entity.getInventory().contains(new Remedy(Type.BUCKET))) {
+            entity.dropCollectable(new Remedy(Type.BUCKET));
             return SpecialEvent.FIRE_EXTINGUISHED;
           }
           return SpecialEvent.CHAP_DIED_BURNT;
         case POISON:
           if (entity.getInventory().contains(new Remedy(Type.MEDICINE))) {
+            entity.dropCollectable(new Remedy(Type.MEDICINE));
             return SpecialEvent.POISONED_CURED;
           }
           return SpecialEvent.CHAP_DIED_POISONED;

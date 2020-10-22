@@ -1,8 +1,5 @@
 package nz.ac.vuw.ecs.swen225.gp20.maze.tiles;
 
-
-import com.google.common.base.Preconditions;
-import nz.ac.vuw.ecs.swen225.gp20.maze.items.Collectable;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Entity;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Item;
 
@@ -25,29 +22,6 @@ public class ItemTile extends Tile {
   public ItemTile(Item item) {
     super(item);
   }
-
-  /**
-   * Obtain the Collectable item at this tile and removes it from here.
-   * This method should only be invoked when there is an item that can be pick up.
-   * Hence if the method executes correctly the return value is different form null.
-   * 
-   * @return the item which have just been removed from this tile
-   * @throws RuntimeException if contains a Collectable item which doesn't implement the interface
-   */
-  /*
-  public Collectable pickupItem() throws RuntimeException {
-    Preconditions.checkState(item != null && item.isCollectable(), 
-        "There is no item to pick up in this tile");
-    
-    if (item instanceof Collectable) {
-      Collectable collected = (Collectable) item;
-      item = null;
-      return collected;
-    }
-    throw new RuntimeException("This tile has a not collectable item "
-        + "which however it says that it can be picked up");
-  }
-  */
   
   @Override
   public String getName() {

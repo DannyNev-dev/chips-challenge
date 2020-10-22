@@ -56,7 +56,7 @@ public class SingleMove implements Move {
   
   @Override
   public Direction getLastDirection() {
-    checkNotNull(lastDirection, "This move has not been created properly, direction must be defined");
+    checkNotNull(lastDirection, "invalid move, its direction must be defined");
     return lastDirection;
   }
 
@@ -64,7 +64,7 @@ public class SingleMove implements Move {
   public Point getDestination(Point old) {
     
     checkArgument(old != null, "The starting point given must be well defined");
-    checkNotNull(lastDirection, "This move has not been created properly, direction must be defined");
+    checkNotNull(lastDirection, "invalid move, its direction must be defined");
     
     switch (lastDirection) {
       case UP:
