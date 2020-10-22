@@ -2,28 +2,29 @@ package nz.ac.vuw.ecs.swen225.gp20.recnplay.test;
 
 /**
  * A mock class for test usage.
+ * Similar to Event class.
  * @author YanLu
  *
  */
-public class Action {
+public class TestEvent {
 
     private TestMove tMove;
 
-    private Action() {
+    private TestEvent() {
     }
 
     /**
      * Constructor of Action.
-     * @param tMove
+     * @param a created mock move object
      */
-    public Action(TestMove tMove) {
+    public TestEvent(TestMove tMove) {
         this();
         this.tMove = tMove;
     }
 
     /**
      * Getter.
-     * @return TestMove object.
+     * @return current TestMove object
      */
     public TestMove getMove() {
         return tMove;

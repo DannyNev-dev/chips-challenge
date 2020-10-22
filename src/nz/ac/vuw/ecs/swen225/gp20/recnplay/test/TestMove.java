@@ -6,6 +6,7 @@ import java.util.List;
 
 /**
  * A mock class for test usage.
+ * Main attributes are same as SingleMove class.
  * @author YanLu
  *
  */
@@ -44,7 +45,7 @@ public class TestMove {
 
     /**
      * Constructor of TestMove.
-     * @param direction
+     * @param direction where this move is going to
      */
     public TestMove(TestDirection direction) {
     	this();	
@@ -53,7 +54,7 @@ public class TestMove {
 
     /**
      * Getter.
-     * @return direction
+     * @return direction where this move is going to
      */
     public TestDirection getDirection() {
         return direction;

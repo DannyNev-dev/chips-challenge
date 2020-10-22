@@ -32,7 +32,7 @@ public class Record{
 	
 	/**
 	 * Update current record when any new action performed and a matching event created.
-	 * @param event
+	 * @param event happened when game is playing
 	 */
 	public void update(Event event) {
 		recordedGame.addAction(event);
@@ -102,9 +102,9 @@ public class Record{
 
 	/**
 	 * Constructor of EventIterator.
-	 * @param filepath
-	 * @param speed
-	 * @return EventIterator instance.
+	 * @param filepath of saved JSon file
+	 * @param speed of replay
+	 * @return EventIterator instance
 	 */
 	public EventIterator getIteratorByFile(String filepath, int speed) {
 		return new EventIterator(loadRecordedGame(filepath), speed);	
@@ -112,8 +112,8 @@ public class Record{
 	
 	/**
 	 * Constructor of EventIterator.
-	 * @param filepath
-	 * @return EventIterator instance.
+	 * @param filepath of saved JSon file
+	 * @return EventIterator instance
 	 */
 	public EventIterator getIteratorByFile(String filepath) {
 		return new EventIterator(loadRecordedGame(filepath));	

@@ -22,7 +22,7 @@ public class EventIterator implements Iterator<Event>{
 	
 	/**
 	 * Set replay speed with a given parameter.
-	 * @param speed
+	 * @param a given speed
 	 */
 	public void setSpeed(int speed) {
 		this.speed = speed;
@@ -56,8 +56,8 @@ public class EventIterator implements Iterator<Event>{
 
 	/**
 	 * Constructor of EventIterator.
-	 * @param rg
-	 * @param speed
+	 * @param a saved RecordedGame object
+	 * @param replay speed
 	 */
 	public EventIterator(RecordedGame rg, int speed) {
 		super();
@@ -68,7 +68,7 @@ public class EventIterator implements Iterator<Event>{
 	
 	/**
 	 * Getter.
-	 * @return recordedGame.
+	 * @return a saved RecordedGame object
 	 */
 	public RecordedGame getRg() {
 		return rg;
@@ -76,7 +76,7 @@ public class EventIterator implements Iterator<Event>{
 
 	/**
 	 * Constructor of EventIterator.
-	 * @param recordedGame
+	 * @param a saved RecordedGame object
 	 */
 	public EventIterator(RecordedGame recordedGame) {
 		this(recordedGame, EventIterator.DEFAULT_SPEED);

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A class for storing key information of 
+ * A class for storing key information of a game which the user wants to save.
  * @author YanLu
  *
  */
@@ -18,7 +18,7 @@ public class RecordedGame {
 
 	/**
 	 * Constructor of RecordedGame.
-	 * @param level
+	 * @param level of current game
 	 */
 	public RecordedGame(int level) {
 		this();
@@ -30,7 +30,7 @@ public class RecordedGame {
 	
 	/**
 	 * Set actions with given parameter.
-	 * @param actions
+	 * @param actions happened during game playing
 	 */
 	public void setActions(List<Event> actions) {
 		this.actions = actions;
@@ -38,7 +38,7 @@ public class RecordedGame {
 
 	/**
 	 * Get list of happened actions.
-	 * @return list of Event
+	 * @return list of event occurred when game is playing 
 	 */
 	public List<Event> getActions(){
 		return actions;
@@ -62,7 +62,7 @@ public class RecordedGame {
 	
 	/**
 	 * Add new performed action to list of event.
-	 * @param event
+	 * @param event happened when game is playing 
 	 */
 	public void addAction(Event event) {
 		if (event.getType().equals(Event.Type.SetLevel)) {
