@@ -230,7 +230,8 @@ class View {
 										|| (count == 1 && oldToken.get(newPosOldToken).equals("greenKeyTile"))
 										|| (count == 1 && oldToken.get(newPosOldToken).equals("exitLockTile"))
 										|| (count == 1 && oldToken.get(newPosOldToken).equals("exitTile"))
-										|| (count == 1 && oldToken.get(newPosOldToken).equals("fireTile"))) {
+										|| (count == 1 && oldToken.get(newPosOldToken).equals("fireTile"))
+										|| (count == 1 && oldToken.get(newPosOldToken).equals("waterBucketTile"))) {
 									playSound(oldToken.get(newPosOldToken));
 								}
 								if (count < 3) {
