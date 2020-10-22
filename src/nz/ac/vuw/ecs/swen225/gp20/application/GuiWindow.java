@@ -10,6 +10,7 @@ import nz.ac.vuw.ecs.swen225.gp20.maze.Maze;
 import nz.ac.vuw.ecs.swen225.gp20.maze.Move;
 import nz.ac.vuw.ecs.swen225.gp20.maze.SingleMove;
 import nz.ac.vuw.ecs.swen225.gp20.persistence.LevelReader;
+import nz.ac.vuw.ecs.swen225.gp20.persistence.level2.BugEntity;
 import nz.ac.vuw.ecs.swen225.gp20.recnplay.Event;
 import nz.ac.vuw.ecs.swen225.gp20.recnplay.EventIterator;
 import nz.ac.vuw.ecs.swen225.gp20.recnplay.EventListener;
@@ -24,6 +25,9 @@ import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyEditorSupport;
 import java.io.*;
+import java.io.IOException;
+import java.util.HashMap;
+
 
 /**
  *Main class of the application module. Creates the 
@@ -568,7 +572,6 @@ public class GuiWindow extends JFrame {
       }
     });
     Pause.add(newGameSameLevel);
-
     jMenuBar1.add(Pause);
 
     fileMenu.setText("File");
@@ -649,6 +652,158 @@ public class GuiWindow extends JFrame {
 
     pack();
   }
+
+      /**
+       * Processes users input when the button for autoReplay is pressed.
+       * @param evt autoReplay button clicked.
+       */
+      private void autoReplayActionPerformed(java.awt.event.ActionEvent evt) {
+
+              replayForwards.setEnabled(false);
+              EventIterator it = this.eventIterator;
+              GuiWindow forwordable = this;
+              Maze mz = this.m;
+
+              ActionListener taskPerformer = new ActionListener() {
+                  public void actionPerformed(ActionEvent evt) {
+                      if (!it.hasNext()) {
+                          ((Timer) evt.getSource()).stop();
+                          System.out.println("Auto-Replay stopped iteration");
+                          return;
+                      }
+                      Event ev = it.next();
+                      SingleMove mv = null;
+                      System.out.println("Auto-Replay event: " + ev.getType());
+                      switch(ev.getType()){
+                      case ChapMove:
+                    	  mv = ev.getMove();
+                          if (mv != null) {
+                              System.out.println("Auto-Replay ChapMove: " + mv.getLastDirection());
+                              forwordable.handleMovement(mv);
+                              mv = null;
+                          } else {
+                              System.err.println("Auto-Replay ChapMove has no movement to replay ");
+                          }
+                          break;
+                      case BugMove:
+                    	  mv = ev.getMove();
+                          if (mv != null) {
+                              System.out.println("Auto-Replay BugMove: " + mv.getLastDirection() + "BugId: " + ev.getBugId());
+	                    	  int bugId = ev.getBugId();
+	                    	  BugEntity bug = forwordable.getBug(bugId);
+	                    	  mz.moveEntity(mv, bug);
+                          } else {
+                              System.err.println("Auto-Replay BugMove has no movement to replay ");
+                          }
+                          break;
+                      default:
+                    	  System.err.println("Auto-Replay reads unexpected event: " + ev.getType());
+                    	  break;  
+                      }
+                      int latency = (int) it.getLatency();
+                      System.out.println("Auto-Replay latency updated to: " + latency);
+                      //FayLu: Theoretically the speed might be adjusted during the auto-replay
+                      ((Timer) evt.getSource()).setDelay(latency);
+                  }
+              };
+              // When auto-replay is triggered the real-time speed value is used
+              it.setSpeed(this.replaySpeed);
+              int latency = (int) it.getLatency();
+              System.out.println("Auto-Replay latency initialized to: " + latency);
+              new Timer(latency, taskPerformer).start();
+
+      }//GEN-LAST:event_autoReplayActionPerformed
+
+      /**
+       * Processes users input when the button for moving forwards is pressed.
+       * @param evt '>' button clicked.
+       */
+      private void replayForwardsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_forwardsActionPerformed
+    	  
+    	  EventIterator it = this.eventIterator;
+          GuiWindow forwordable = this;
+          Maze mz = this.m;
+          
+          if (!it.hasNext()) {
+              System.out.println("Replay stopped iteration");
+              return;
+          }
+          Event ev = it.next();
+          SingleMove mv = null;
+          System.out.println("Replay event: " + ev.getType());
+          switch(ev.getType()){
+          case ChapMove:
+        	  mv = ev.getMove();
+              if (mv != null) {
+                  System.out.println("Replay ChapMove: " + mv.getLastDirection());
+                  forwordable.handleMovement(mv);
+                  mv = null;
+              } else {
+                  System.err.println("Replay ChapMove has no movement to replay ");
+              }
+              break;
+          case BugMove:
+        	  mv = ev.getMove();
+              if (mv != null) {
+                  System.out.println("Replay BugMove: " + mv.getLastDirection() + "BugId: " + ev.getBugId());
+            	  int bugId = ev.getBugId();
+            	  BugEntity bug = forwordable.getBug(bugId);
+            	  mz.moveEntity(mv, bug);
+              } else {
+                  System.err.println("Replay BugMove has no movement to replay ");
+              }
+              break;
+          default:
+        	  System.err.println("Replay reads unexpected event: " + ev.getType());
+        	  break;  
+          }
+
+      }//GEN-LAST:event_forwardsActionPerformed
+
+
+
+      /**
+       * Processes users input when the button for displaying rules is pressed.
+       * @param evt rules and instructions button clicked on the game menu.
+       */
+      private void rulesLegendActionPerformed(java.awt.event.ActionEvent evt) {
+//GEN-FIRST:event_rulesLegendActionPerformed
+        pausedAtMin = gameCountdown.getCurrentMin();
+        pausedAtSec = gameCountdown.getCurrentSec();
+        gameCountdown.pause();
+        display(" ~ Use the arrows on your key board to move Chap around the board.\n"
+            +" ~ To win the game make sure you collect all the chips on \n"
+            +"  the board within 2 minutes and go to the blue tile.\n"
+            +" ~ Open doors by collecting keys of the same color.\n"
+            +" ~ On level 2 do not let the bug reach Chap and be careful\n"
+                + "with the special tiles! Some items withing the board\n"
+            + "will help you with those ;)"
+            +" ~ If you want to see all your moves play Replay mode.\n"
+            + "Use the \">\" button to replay forwards step by step (Default).\n"
+                + "or set AutoReplay and adjust to your desired speed.\n"
+            +"You can also save the game and resume later by going to \"File\" and\n"
+            +"click on \"Save\"");
+        if( mode.equals(modes.Run.name())) {
+            gameCountdown = new GameTimer(pausedAtMin, pausedAtSec,this);
+        }
+      }//GEN-LAST:event_rulesLegendActionPerformed
+
+    /**
+     * Controls what happens when the speed chooser from Replay mode is changed.
+     * @param evt speed changed from bar.
+     */
+    private void speedChooserStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_speedChooserStateChanged
+        // TODO add your handling code here:
+        	this.replaySpeed = speedChooser.getValue();
+        if (this.eventIterator != null) {
+        	// FayLu: User might adjust speed during auto-replay.
+        	// If the slider changes, update new speed seed value to iterator and it will be used in auto-replay.
+        	this.eventIterator.setSpeed(this.replaySpeed);
+        }
+    }
+
+
+    
 
   /**
    * Forms a warning message if user wins game bottom.
@@ -870,9 +1025,9 @@ public class GuiWindow extends JFrame {
   }
 
   /**
-   * Activated when user clicks on Replay. Uploads JsonFile and parsers level.
+   * Processes users input when the button for moving forwards is pressed.
    *
-   * @param evt rReplay is clicked.
+   * @param evt '>' button clicked.
    */
   private void replayButtonActionPerformed(java.awt.event.ActionEvent evt) {
     pausedAtMin = gameCountdown.getCurrentMin();
@@ -904,83 +1059,6 @@ public class GuiWindow extends JFrame {
       mode = modes.Run.name(); // Game is back to running mode
       // resume timer
       gameCountdown = new GameTimer(pausedAtMin, pausedAtSec, this);
-    }
-  }
-
-  /**
-   * Processes users input when the button for autoReplay is pressed.
-   *
-   * @param evt autoReplay button clicked.
-   */
-  private void autoReplayActionPerformed(java.awt.event.ActionEvent evt) {
-    replayForwards.setEnabled(false);
-    EventIterator it = this.eventIterator;
-    GuiWindow forwordable = this;
-
-    ActionListener taskPerformer = new ActionListener() {
-      public void actionPerformed(ActionEvent evt) {
-        if (!it.hasNext()) {
-          ((Timer) evt.getSource()).stop();
-          System.out.println("Auto-Replay stopped iteration");
-          return;
-        }
-        Event ev = it.next();
-        SingleMove mv = null;
-        System.out.println("Auto-Replay event: " + ev.getType());
-        mv = ev.getMove();
-        if (mv != null) {
-          System.out.println("Auto-Replay movement: " + mv.getLastDirection());
-          forwordable.handleMovement(mv);
-          mv = null;
-        } else {
-          System.err.println("Auto-Replay expects a movement but event emitted is: " 
-              + ev.getType());
-        }
-        int latency = (int) it.getLatency();
-        System.out.println("Auto-Replay latency updated to: " + latency);
-        // FayLu: Theoretically the speed might be adjusted during the auto-replay
-        ((Timer) evt.getSource()).setDelay(latency);
-      }
-    };
-    // When auto-replay is triggered the real-time speed value is used
-    it.setSpeed(this.replaySpeed);
-    int latency = (int) it.getLatency();
-    System.out.println("Auto-Replay latency initialized to: " + latency);
-    new Timer(latency, taskPerformer).start();
-
-  }
-
-  /**
-   * Processes users input when the button for moving forwards is pressed.
-   *
-   * @param evt '>' button clicked.
-   */
-  private void replayForwardsActionPerformed(java.awt.event.ActionEvent evt) {
-    SingleMove mv = null;
-    if (this.eventIterator.hasNext() && mv == null) {
-      mv = this.eventIterator.next().getMove();
-    }
-    if (mv != null) {
-      System.out.println("Replay movement: " + mv.getLastDirection());
-      this.handleMovement(mv);
-    } else {
-      System.out.println("Replay finished the event iteration");
-    }
-
-  }
-
-  /**
-   * Controls what happens when the speed chooser from Replay mode is changed.
-   *
-   * @param evt speed changed from bar.
-   */
-  private void speedChooserStateChanged(javax.swing.event.ChangeEvent evt) {
-    this.replaySpeed = speedChooser.getValue();
-    if (this.eventIterator != null) {
-      // FayLu: User might adjust speed during auto-replay.
-      // If the slider changes, update new speed seed value to iterator and it will be
-      // used in auto-replay.
-      this.eventIterator.setSpeed(this.replaySpeed);
     }
   }
 
@@ -1037,6 +1115,17 @@ public class GuiWindow extends JFrame {
     }
   }
 
+    
+    private HashMap<Integer, BugEntity> bugMap = new HashMap<Integer, BugEntity>();
+    
+    public void addBug(int bugId, BugEntity bug) {
+    	this.bugMap.put(bugId, bug);
+    }
+    
+    public BugEntity getBug(int bugId) {
+    	return this.bugMap.get(bugId);
+    }
+
   /**
    * Resumes unfinished games.
    *
@@ -1079,30 +1168,6 @@ public class GuiWindow extends JFrame {
 
   }
 
-  /**
-   * Processes users input when the button for displaying rules is pressed.
-   *
-   * @param evt rules and instructions button clicked on the game menu.
-   */
-  private void rulesLegendActionPerformed(java.awt.event.ActionEvent evt) {
-    pausedAtMin = gameCountdown.getCurrentMin();
-    pausedAtSec = gameCountdown.getCurrentSec();
-    gameCountdown.pause();
-    display(" ~ Use the arrows on your key board to move Chap around the board.\n"
-        + " ~ To win the game make sure you collect all the chips on \n"
-        + "  the board within 2 minutes and go to the blue tile.\n"
-        + " ~ Open doors by collecting keys of the same color.\n"
-        + " ~ On level 2 do not let the bug reach Chap and be careful\n"
-        + "with the special tiles! Some items withing the board\n" + "will help you with those ;)\n"
-        + " ~ If you want to see all your moves play Replay mode.\n"
-        + "Use the \">\" button to replay forwards step by step (Default).\n"
-        + "or set AutoReplay and adjust to your desired speed.\n"
-        + "You can also save the game and resume later by going to \"File\" and\n" 
-        + "click on \"Save\"");
-    if (mode.equals(modes.Run.name())) {
-      gameCountdown = new GameTimer(pausedAtMin, pausedAtSec, this);
-    }
-  }
 
   /**
    * Initialices the images and JPanels honding them to display Chap's inventory.
@@ -1170,7 +1235,7 @@ public class GuiWindow extends JFrame {
       setVisible(true);
     }
   }
-
+    
   /**
    * Displays the level on the GUI by receiving the information from the maze
    * module.
@@ -1191,6 +1256,7 @@ public class GuiWindow extends JFrame {
     } catch (IOException e) {
       e.printStackTrace();
     }
+    
   }
 
   /**
@@ -1273,7 +1339,10 @@ public class GuiWindow extends JFrame {
    * @param entityID bug reference.
    */
   public void notifyRecord(SingleMove move, int entityID) {
-    eventListener.onEvent(Event.eventOfBugMove(move));
+	  if(mode != null && !mode.equals(modes.Replay.name())) {
+		  //@TODO: Need to check if game is not continuing (maze.mode?), don't emit event.
+		  eventListener.onEvent(Event.eventOfBugMove(move, entityID));
+	  }
   }
 
   /**

@@ -5,6 +5,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import nz.ac.vuw.ecs.swen225.gp20.maze.Maze.SpecialEvent;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Entity;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Item;
+import nz.ac.vuw.ecs.swen225.gp20.maze.items.Player;
 
 
 
@@ -53,18 +54,6 @@ public abstract class Tile implements Cloneable {
    * @return whether this tile can be currently accessed
    */
   public abstract boolean isAccessible(Entity entity);
-  
-  /**
-   * Get the item in this tile.
-   * @return the item on this tile
-   */
-  public Item getItem() {
-    /*
-    if(item instanceof Entity) {
-      return ((Object)item).clone();
-    }*/
-    return item;
-  }
   
   /**
    * Check if this item in the tile is linked with an action.
@@ -126,6 +115,15 @@ public abstract class Tile implements Cloneable {
     Item previous = item;
     item = newItem;
     return previous;
+  }
+  
+  /**
+   * Get the item in this tile.
+   * Modifications on this item are not allowed
+   * @return the item on this tile
+   */
+  public Item getItem() {
+    return Item.unmodifiableItem(item);
   }
   
   @Override

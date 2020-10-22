@@ -31,20 +31,15 @@ public class Event {
 		/**
 		 * if Event object is Move of Bug.
 		 */
-		BugMove,   
-		
-		/**
-		 * if Event object is ChapDies.
-		 */
-		ChapDies;  
+		BugMove
 	}
 	
 	private SingleMove move;
 	
 	private int level;
-	
-	private boolean chapDies;
-	
+
+	private int bugId;
+
 	private Event() {
 	}
 	
@@ -55,12 +50,12 @@ public class Event {
 	 * @param move of the Event
 	 * @param chapDies of the Event
 	 */
-	public Event(Type type, int level, SingleMove move, boolean chapDies) {
+	public Event(Type type, int level, SingleMove move, int bugId) {
 		this();
 		this.type = type;
 		this.level = level;
 		this.move = move;
-		this.chapDies = chapDies;
+		this.bugId = bugId;
 	}  
 	
     /**
@@ -69,7 +64,7 @@ public class Event {
      * @return event of SetLevel
      */
     public static Event eventOfLevelSetting(int level) {
-    	return new Event(Type.SetLevel, level, null, false);
+    	return new Event(Type.SetLevel, level, null, 0);
     }
 	
     /**
@@ -78,7 +73,7 @@ public class Event {
      * @return event of ChapMove
      */
     public static Event eventOfChapMove(SingleMove move) {
-    	return new Event(Type.ChapMove, 0, move, false);   	
+    	return new Event(Type.ChapMove, 0, move, 0);   	
     }
     
     /**
@@ -86,18 +81,10 @@ public class Event {
      * @param move object created by computing
      * @return event of BugMove
      */
-    public static Event eventOfBugMove(SingleMove move) {
-    	return new Event(Type.BugMove, 0, move, false);   	
+    public static Event eventOfBugMove(SingleMove move, int bugId) {
+    	return new Event(Type.BugMove, 0, move, bugId);   	
     }
-    
-    /**
-     * Construct event when chap dies.
-     * @param boolean of whether chap dies
-     * @return event of ChapDies
-     */
-    public static Event eventOfChapDies(boolean chapDies) {
-    	return new Event(Type.ChapDies, 0, null, true);   	
-    } 
+
     
     /**
 	 * Get the current level.
@@ -147,19 +134,11 @@ public class Event {
 		this.move = move;
 	}
 	
-	/**
-	 * Get the current chapDies.
-	 * @return current chapDies
-	 */
-	public boolean getChapDies() {
-		return this.chapDies;
+	public int getBugId() {
+		return bugId;
 	}
-	
-	/**
-	 * Set chapDies with given information.
-	 * @param a given boolean chapDies
-	 */
-	public void setChapDies(boolean chapDies) {
-		this.chapDies = chapDies;
+
+	public void setBugId(int bugId) {
+		this.bugId = bugId;
 	}
 }

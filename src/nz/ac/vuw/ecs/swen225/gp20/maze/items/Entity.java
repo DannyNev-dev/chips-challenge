@@ -51,15 +51,20 @@ public interface Entity extends Item, Cloneable {
    * @return this
    */
   public default Entity getEntity() {
-    throw new UnsupportedOperationException("Required for plugin");
+    throw new UnsupportedOperationException("This is not a standard features! It can "
+        + "be activated to incorporate extentions. It particular it allows the renderer"
+        + "to obtain more information about this entity");
   }
  
   /**
    * Get the path for this entity data.
    * @param prefix location of generic data folder
+   * @return the path for this entity data
    */
-  public default void getFile(String prefix) {
-    throw new UnsupportedOperationException("This entity cannot drop an item");
+  public default String getFile(String prefix) {
+    throw new UnsupportedOperationException("This is not a standard features! It can "
+        + "be activated to incorporate extentions. It particular it allows the renderer"
+        + "to identify where are the files used to represent the extentison.");
   }
   
   @Override

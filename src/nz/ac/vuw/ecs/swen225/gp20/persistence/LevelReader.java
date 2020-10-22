@@ -134,6 +134,7 @@ public class LevelReader {
 		this.gw = gw;
 		for (BugEntity e : bugs) {
 			e.setApplication(gw);
+			gw.addBug(e.ID, e);
 		}
 		return true;
 	}
