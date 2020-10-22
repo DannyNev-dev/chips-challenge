@@ -29,6 +29,7 @@ import javax.swing.Timer;
 import nz.ac.vuw.ecs.swen225.gp20.maze.Board;
 import nz.ac.vuw.ecs.swen225.gp20.maze.Maze;
 import nz.ac.vuw.ecs.swen225.gp20.maze.Maze.SpecialEvent;
+import nz.ac.vuw.ecs.swen225.gp20.maze.items.Entity;
 import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.Tile;
 
 /**
@@ -254,11 +255,16 @@ class View {
 
 							} else {
 								if (dispList[i][j] != null) {
-
+									if(board[x][y].getName().equals("bugTile")) {
+									    Entity bug = (Entity) board[x][y].getItem();
+										System.out.println("hi");
+										dispList[i][j]
+												.setIcon(new ImageIcon(bug.getFile(board[x][y].getName())));
+									} else {
 									dispList[i][j]
 											.setIcon(new ImageIcon("src/nz/ac/vuw/ecs/swen225/gp20/render/TileFile/"
 													+ board[x][y].getName() + ".png"));
-
+									}
 								}
 							}
 							y++;
