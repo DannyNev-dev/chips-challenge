@@ -12,7 +12,7 @@ import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
 
-import nz.ac.vuw.ecs.swen225.gp20.application.GUIWindow;
+import nz.ac.vuw.ecs.swen225.gp20.application.GuiWindow;
 import nz.ac.vuw.ecs.swen225.gp20.maze.Maze;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Block;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.ExitLock;
@@ -53,7 +53,7 @@ public class LevelReader {
 	public Maze maze;	//maybe protected
 	
 	/** The gw. */
-	public GUIWindow gw;
+	public GuiWindow gw;
 
 	/**
 	 * Instantiates a new level reader.
@@ -128,7 +128,7 @@ public class LevelReader {
 	 * @param gw the new application
 	 */
 	//Camila needs to call this after the maze is created or at any point before the player moves
-	public void setApplication(GUIWindow gw) {
+	public void setApplication(GuiWindow gw) {
 		this.gw = gw;
 		for(BugEntity e: bugs) {
 			e.setApplication(gw);

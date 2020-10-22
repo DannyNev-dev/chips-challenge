@@ -14,14 +14,14 @@ public class GameTimer {
 
   private int currentMin;
   private int currentSec;
-  private GUIWindow guiWindow;
+  private GuiWindow guiWindow;
 
   /**Timer constructor.
    * @param min from where it starts.
    * @param sec from where it starts.
    * @param guiWindow window where timer is displayed.
    */
-  public GameTimer(int min, int sec, GUIWindow guiWindow) {
+  public GameTimer(int min, int sec, GuiWindow guiWindow) {
     this.currentMin = min;
     this.currentSec = sec;
     this.guiWindow = guiWindow;
@@ -37,11 +37,11 @@ public class GameTimer {
     @Override
     public void run() {
       currentSec--;
-      if( currentSec == 0 && currentMin > 0){ //Decreases seconds only if minute is above 0.
+      if currentSec == 0 && currentMin > 0){ //Decreases seconds only if minute is above 0.
         currentSec = 59;
         currentMin--;
       }
-      else if( timeOut()) {
+      else if(timeOut()) {
         timer.cancel();
         guiWindow.formWindowLost(guiWindow.getOpenEvt());
       }
