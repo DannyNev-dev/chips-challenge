@@ -7,6 +7,8 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
 
+import javax.swing.ImageIcon;
+
 import nz.ac.vuw.ecs.swen225.gp20.application.GuiWindow;
 import nz.ac.vuw.ecs.swen225.gp20.maze.Board;
 import nz.ac.vuw.ecs.swen225.gp20.maze.Maze;
@@ -16,18 +18,19 @@ import nz.ac.vuw.ecs.swen225.gp20.maze.items.Collectable;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Entity;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Player;
 
-// TODO: Auto-generated Javadoc
 /**
  * Create a bug entity. Implements collectable as well so that it is required to
  * be able to affect the player when they try to pick it up, in this case making
  * the player die
+ * Also implements the property listener so that it can add itself into the application 
+ * to be updated using the observer pattern
  *
  * @author Daniel Neville
  *
  */
 public class BugEntity implements Entity, Collectable, PropertyChangeListener {
 
-	/** The Constant name. */
+	/** The Constant bug name. */
 	// All bugs share the same name, stored to improve efficiency
 	private static final String name = "bug";
 
@@ -39,16 +42,16 @@ public class BugEntity implements Entity, Collectable, PropertyChangeListener {
 	/** The paused. */
 	public boolean paused = false;
 
-	/**  ref to the application *. */
+	/** ref to the application *. */
 	public GuiWindow gw;
 
-	/**  ref to the maze *. */
+	/** ref to the maze *. */
 	private Maze m;
 
 	/**
 	 * Instantiates a new bug entity.
 	 *
-	 * @param p the p
+	 * @param p  the p
 	 * @param id the id
 	 */
 	public BugEntity(Point p, int id) {
@@ -84,7 +87,18 @@ public class BugEntity implements Entity, Collectable, PropertyChangeListener {
 		}
 		return sm;
 	}
-
+	
+	
+	/**
+	 * Gets the file.
+	 *
+	 * @param prefix the prefix for the image
+	 * @return an image 
+	 */
+	public ImageIcon getFile(String prefix) {
+		return new ImageIcon("src/nz/ac/vuw/ecs/swen225/gp20/persistence/level2/BugImages/" + prefix + ".png");
+	}
+	
 	/**
 	 * Gets the name.
 	 *
@@ -116,7 +130,7 @@ public class BugEntity implements Entity, Collectable, PropertyChangeListener {
 	}
 
 	/**
-	 * Gets the position.
+	 * Gets the position of the bug.
 	 *
 	 * @return the position
 	 */
@@ -126,7 +140,7 @@ public class BugEntity implements Entity, Collectable, PropertyChangeListener {
 	}
 
 	/**
-	 * Sets the position.
+	 * Sets the position of the bug.
 	 *
 	 * @param newCoordinates the new position
 	 */
@@ -138,7 +152,7 @@ public class BugEntity implements Entity, Collectable, PropertyChangeListener {
 	}
 
 	/**
-	 * Apply action.
+	 * Apply action. Returns a special event that kills chap
 	 *
 	 * @param entity entity thats triggering the action
 	 * @return the special event to kill chap
@@ -224,29 +238,31 @@ public class BugEntity implements Entity, Collectable, PropertyChangeListener {
 	}
 
 	/**
-	 * Property change.
+	 * Property change, this is called when GUI notifies the listeners Finds a
+	 * random single move accessible to the bug and executes that move on the bug
+	 * then calls applications notify method to record the entity move.
 	 *
-	 * @param evt the evt
+	 * @param evt the event passed by the event creator
 	 */
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		Board b = m.getBoardObject();
 		SingleMove sm = this.randomAdjacentPos(b);
 		m.moveEntity(sm, this); // returns false if game is paused
+
 		// call static application method to notify record and replay
-		// GUIWindow.notifyRecorder(sm,name); //name to identify this as bug move
 		gw.notifyRecord(sm, this.ID);
 	}
-	
+
 	/**
 	 * Move the bug using the given SingleMove.
 	 *
-	 * @param sm the sm
+	 * @param sm the the single move you desire the bug to execute
 	 */
 	public void moveBug(SingleMove sm) {
 		m.moveEntity(sm, this);
 	}
-	
+
 	/**
 	 * Sets the application.
 	 *
