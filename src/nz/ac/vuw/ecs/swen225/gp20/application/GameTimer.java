@@ -37,7 +37,7 @@ public class GameTimer {
     @Override
     public void run() {
       currentSec--;
-      if( currentSec == 0 && currentMin > 0){ //Decreases seconds only if minute is above 0.
+      if (currentSec == 0 && currentMin > 0) { //Decreases seconds only if minute is above 0.
         currentSec = 59;
         currentMin--;
       } else if(timeOut()) {
@@ -45,7 +45,7 @@ public class GameTimer {
         guiWindow.formWindowLost(guiWindow.getOpenEvt());
       }
       //Check is number only contains 1 digit to add 0 for displaying purposes.
-      if(currentSec < 10){
+      if (currentSec < 10) {
         guiWindow.getTimer().setText(currentMin + ":0" + currentSec);
       }else {
         guiWindow.getTimer().setText(currentMin + ":" + currentSec);
@@ -56,14 +56,14 @@ public class GameTimer {
   /**
    * Runs a countdown starting at 2 minutes.
    */
-  public void start(){
+  public void start() {
     timer.scheduleAtFixedRate(task, 1000, 1000);
   }
 
   /**
    * Stops countdown and stored the current timer components to be able to restart it later.
    */
-  public void pause(){
+  public void pause() {
     timer.cancel();
   }
 
@@ -71,31 +71,18 @@ public class GameTimer {
    * Tells whether or not time is out.
    * @return time left
    */
-  public boolean timeOut(){ return currentSec == 0 && currentMin ==0 ;}
+  public boolean timeOut() { return currentSec == 0 && currentMin ==0 ;}
 
   /**
    * Minute shown on timer.
    * @return integer of the current minute
    */
-  public int getCurrentMin(){
-    return currentMin;
-  }
+  public int getCurrentMin() { return currentMin; }
 
   /**
    * Seconds shown on the timer.
    * @return integer of the current minute
    */
-  public int getCurrentSec(){
-    return currentSec;
-  }
-
-  /**
-   * Method used to trim seconds into 0-9 digits to display more
-   * easily with images.
-   * @return array of digits withing second;
-   */
-  public char[] getDigitsOfSecs(){
-    return String.valueOf(currentSec).toCharArray();
-  }
+  public int getCurrentSec() { return currentSec; }
 
 }
