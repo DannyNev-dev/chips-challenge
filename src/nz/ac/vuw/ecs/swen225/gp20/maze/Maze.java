@@ -189,12 +189,16 @@ public class Maze {
    * @param movingEntity who needs to be moved
    * @return whether the move was successful
    */
-  public boolean moveEntity(Move move, Entity movingEntity) {    
-    checkState(status == GameState.PLAYING, "Moves can't be applied unless the game is active");
-    checkState(areChipCollectedMatching(), 
-        "The game status is invalid, the number of treasures left in the board do not match");
+  public boolean moveEntity(Move move, Entity movingEntity) {
     checkArgument(move != null, "A well initialized move is required");
     checkArgument(isEntityPosValid(movingEntity));
+    checkState(areChipCollectedMatching(), 
+        "The game status is invalid, the number of treasures left in the board do not match");
+    
+    if (status != GameState.PLAYING) {
+      //Moves can't be applied unless the game is active
+      return false;
+    }
     
 
     lastEvent = null; //Reset any special events from the last movement
