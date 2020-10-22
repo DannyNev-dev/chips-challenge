@@ -255,15 +255,14 @@ class View {
 
 							} else {
 								if (dispList[i][j] != null) {
-									if(board[x][y].getName().equals("bugTile")) {
-									    Entity bug = (Entity) board[x][y].getItem();
+									if (board[x][y].getName().equals("bugTile")) {
+										Entity bug = (Entity) board[x][y].getItem();
 										System.out.println("hi");
-										dispList[i][j]
-												.setIcon(new ImageIcon(bug.getFile(board[x][y].getName())));
+										dispList[i][j].setIcon(new ImageIcon(bug.getFile(board[x][y].getName())));
 									} else {
-									dispList[i][j]
-											.setIcon(new ImageIcon("src/nz/ac/vuw/ecs/swen225/gp20/render/TileFile/"
-													+ board[x][y].getName() + ".png"));
+										dispList[i][j]
+												.setIcon(new ImageIcon("src/nz/ac/vuw/ecs/swen225/gp20/render/TileFile/"
+														+ board[x][y].getName() + ".png"));
 									}
 								}
 							}
@@ -295,8 +294,12 @@ class View {
 							+ moveDirection + count + ".png"));
 				} else {
 					System.out.println("LAST: " + board[x][y].getName());
-					dispList[i][j].setIcon(new ImageIcon("src/nz/ac/vuw/ecs/swen225/gp20/render/TileFile/chipTile"
-							+ moveDirection + count + ".png"));
+					if (moveDirection == null) {
+						dispList[i][j].setIcon(new ImageIcon("src/nz/ac/vuw/ecs/swen225/gp20/render/TileFile/chipTile.png"));
+					} else {
+						dispList[i][j].setIcon(new ImageIcon("src/nz/ac/vuw/ecs/swen225/gp20/render/TileFile/chipTile"
+								+ moveDirection + count + ".png"));
+					}
 				}
 			} else if (count >= 3) {
 				dispList[i][j].setIcon(new ImageIcon(
