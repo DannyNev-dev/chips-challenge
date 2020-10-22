@@ -1,6 +1,9 @@
 package nz.ac.vuw.ecs.swen225.gp20.maze.items;
 
 import java.awt.Point;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 import java.util.List;
 
 /**
@@ -65,6 +68,29 @@ public interface Entity extends Item, Cloneable {
     throw new UnsupportedOperationException("This is not a standard features! It can "
         + "be activated to incorporate extentions. It particular it allows the renderer"
         + "to identify where are the files used to represent the extentison.");
+  }
+  
+  @Override
+  public default Item unmodifiableItem(Item item) {
+    InvocationHandler handler = new InvocationHandler() {
+      
+      @Override
+      public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+        String methodName = method.getName();
+        boolean isMutatingState = methodName.startsWith("collect") || methodName.startsWith("set")
+            || methodName.startsWith("drop");
+        if (isMutatingState) {
+          throw new UnsupportedOperationException();
+        } else {
+          return method.invoke(item, args);
+        }
+      }
+    };
+    return (Entity) Proxy.newProxyInstance(
+      Entity.class.getClassLoader(),
+      new Class[]{Entity.class},
+      handler
+    );
   }
   
   @Override

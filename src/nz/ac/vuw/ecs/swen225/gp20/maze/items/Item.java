@@ -73,7 +73,7 @@ public interface Item { // extends Cloneable {
    * @param item the original item to be protected 
    * @return the original Item which however can't be modified
    */
-  static Item unmodifiableItem(Item item) {
+  public default Item unmodifiableItem(Item item) {
     InvocationHandler handler = new InvocationHandler() {
       
       @Override
