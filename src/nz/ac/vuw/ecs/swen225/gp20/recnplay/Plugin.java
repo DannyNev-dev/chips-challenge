@@ -9,7 +9,7 @@ package nz.ac.vuw.ecs.swen225.gp20.recnplay;
 public interface Plugin {
 	/**
 	 * a method will be called by Application module when actions performed.
-	 * @param e
+	 * @param event occurs when game is playing
 	 */
 	void onEvent(Event e);
 }

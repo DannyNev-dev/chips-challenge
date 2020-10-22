@@ -7,7 +7,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.List;
 
-import nz.ac.vuw.ecs.swen225.gp20.application.GUIWindow;
+import nz.ac.vuw.ecs.swen225.gp20.application.GuiWindow;
 import nz.ac.vuw.ecs.swen225.gp20.maze.Board;
 import nz.ac.vuw.ecs.swen225.gp20.maze.Maze;
 import nz.ac.vuw.ecs.swen225.gp20.maze.SingleMove;
@@ -40,7 +40,7 @@ public class BugEntity implements Entity, Collectable, PropertyChangeListener {
 	public boolean paused = false;
 
 	/**  ref to the application *. */
-	public GUIWindow gw;
+	public GuiWindow gw;
 
 	/**  ref to the maze *. */
 	private Maze m;
@@ -235,7 +235,7 @@ public class BugEntity implements Entity, Collectable, PropertyChangeListener {
 		m.moveEntity(sm, this); // returns false if game is paused
 		// call static application method to notify record and replay
 		// GUIWindow.notifyRecorder(sm,name); //name to identify this as bug move
-		//gw.notifyRecord(sm, this.ID);
+		gw.notifyRecord(sm, this.ID);
 	}
 	
 	/**
@@ -252,7 +252,7 @@ public class BugEntity implements Entity, Collectable, PropertyChangeListener {
 	 *
 	 * @param gw the new application
 	 */
-	public void setApplication(GUIWindow gw) {
+	public void setApplication(GuiWindow gw) {
 		this.gw = gw;
 		gw.addPropertyChangeListener(this);
 	}

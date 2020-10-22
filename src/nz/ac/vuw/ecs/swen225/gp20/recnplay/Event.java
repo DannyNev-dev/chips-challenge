@@ -50,10 +50,10 @@ public class Event {
 	
 	/**
 	 * Constructor of Event.
-	 * @param type
-	 * @param level
-	 * @param move
-	 * @param chapDies
+	 * @param type of the Event
+	 * @param level of the Event
+	 * @param move of the Event
+	 * @param chapDies of the Event
 	 */
 	public Event(Type type, int level, SingleMove move, boolean chapDies) {
 		this();
@@ -65,7 +65,7 @@ public class Event {
 	
     /**
      * Construct event when set level occurs.
-     * @param level
+     * @param level of user selection
      * @return event of SetLevel
      */
     public static Event eventOfLevelSetting(int level) {
@@ -74,7 +74,7 @@ public class Event {
 	
     /**
      * Construct event when move of chap occurs.
-     * @param move
+     * @param move object created by user input
      * @return event of ChapMove
      */
     public static Event eventOfChapMove(SingleMove move) {
@@ -83,7 +83,7 @@ public class Event {
     
     /**
     * Construct event when a move of bug occurs.
-     * @param move
+     * @param move object created by computing
      * @return event of BugMove
      */
     public static Event eventOfBugMove(SingleMove move) {
@@ -92,7 +92,7 @@ public class Event {
     
     /**
      * Construct event when chap dies.
-     * @param chapDies
+     * @param boolean of whether chap dies
      * @return event of ChapDies
      */
     public static Event eventOfChapDies(boolean chapDies) {
@@ -109,7 +109,7 @@ public class Event {
 
 	/**
 	 * Set level with given information.
-	 * @param level
+	 * @param a given level
 	 */
 	public void setLevel(int level) {
 		this.level = level;
@@ -125,7 +125,7 @@ public class Event {
 	
 	/**
 	 * Set type with given information.
-	 * @param type
+	 * @param a given type
 	 */
 	public void setType(Type type) {
 		this.type = type;
@@ -141,7 +141,7 @@ public class Event {
 	
 	/**
 	 * Set move with given information.
-	 * @param move
+	 * @param a given move object
 	 */
 	public void setMove(SingleMove move) {
 		this.move = move;
@@ -157,7 +157,7 @@ public class Event {
 	
 	/**
 	 * Set chapDies with given information.
-	 * @param chapDies
+	 * @param a given boolean chapDies
 	 */
 	public void setChapDies(boolean chapDies) {
 		this.chapDies = chapDies;

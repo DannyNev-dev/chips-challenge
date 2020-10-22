@@ -3,7 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package nz.ac.vuw.ecs.swen225.gp20.application;
+
 
 import nz.ac.vuw.ecs.swen225.gp20.maze.Maze;
 import nz.ac.vuw.ecs.swen225.gp20.maze.Move;
@@ -25,17 +27,18 @@ import java.beans.PropertyEditorSupport;
 import java.io.File;
 import java.io.IOException;
 
-/**
- *
+
+
+/**.
  * @author camilalis 300504575.
- * From Master.
+ *         from Master.
  */
-public class GUIWindow extends JFrame {
+public class GuiWindow extends JFrame {
 
   /**.
    * Creates new form Window
    */
-  public GUIWindow() {
+  public GuiWindow() {
     initComponents();
     this.eventListener = EventListener.eventListenerFactory();
     this.setFocusable(true);
@@ -558,7 +561,7 @@ public class GUIWindow extends JFrame {
             } else if (m.getStatus() == Maze.GameState.GAME_LOST) {
                gameCountdown.pause();
                message = message + m.getLastSpecialEvent().name().toLowerCase().replace("_", " ")
-                       + "Do you want to play this level again?";
+                       + ".\nDo you want to play this level again?";
            }
            int confirm = JOptionPane.showConfirmDialog(null, message, "Game Over",
                    JOptionPane.YES_NO_OPTION);
@@ -577,7 +580,7 @@ public class GUIWindow extends JFrame {
 
       /**
        * Forms a warning message if user clicks exit bottom.
-       * @param evt default event.
+       * @param evt window is closing.
        */
       private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         //stores data locally before this timer gets destroyed on c.paused()
@@ -598,7 +601,7 @@ public class GUIWindow extends JFrame {
 
       /**
        * Forms the window when running the game and allows user to select a level.
-       * @param evt default event
+       * @param evt window open.
        */
       private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         int numSelected;
@@ -667,6 +670,8 @@ public class GUIWindow extends JFrame {
     /**
      * Updates other modules with the new move input by player.
      * @param mv move indicating direction chap moves on the board.
+     * @return true if move is valid (Chap does not try to go on
+     * the wall).
      */
     private boolean handleMovement(SingleMove mv) {
         if(m.getStatus() != Maze.GameState.PLAYING){
@@ -690,7 +695,6 @@ public class GUIWindow extends JFrame {
                 formWindowLost(evtOpen);
             }
             transferFocus();
-            propertyEditorSupport.firePropertyChange();
             return isValidMove;
         }
 
@@ -700,7 +704,8 @@ public class GUIWindow extends JFrame {
        */
       private void keyReleasedSetMove(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_keyReleasedSetMove
           SingleMove singleMove = null;
-          if( mode != null && !mode.equals("Replay")) {
+          canMove = canMove+1;
+          if( mode != null && !mode.equals("Replay") && canMove %2 == 0) {
               requestFocus();
               if (evt.getKeyCode() == KeyEvent.VK_LEFT) {
                   singleMove = new SingleMove(Move.Direction.LEFT);
@@ -717,7 +722,12 @@ public class GUIWindow extends JFrame {
               if(handleMovement(singleMove)) {
                   eventListener.onEvent(Event.eventOfChapMove(singleMove));
               }
-
+          }
+          //Bug moves regardless Chaps move is valid or not.
+          propertyEditorSupport.firePropertyChange();
+          render.updateRender();
+          if(m.getStatus() == Maze.GameState.GAME_LOST){
+              formWindowLost(evtOpen);
           }
       }//GEN-LAST:event_keyReleasedSetMove
 
@@ -729,7 +739,7 @@ public class GUIWindow extends JFrame {
        //  TODO add your handling code here:
               replayForwards.setEnabled(false);
               EventIterator it = this.eventIterator;
-              GUIWindow forwordable = this;
+              GuiWindow forwordable = this;
 
               ActionListener taskPerformer = new ActionListener() {
                   public void actionPerformed(ActionEvent evt) {
@@ -784,12 +794,16 @@ public class GUIWindow extends JFrame {
 
       /**
        * Processes users input when the button for saving is pressed.
-       * @param evt save button on game menu is clicked.
+       * @param evt save button on game menu is clicked or CTRL+S.
        */
       private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {
 //GEN-FIRST:event_saveButtonActionPerformed
-        EventListener.getRecord().saveToJson();
-        System.exit(0);
+          if (!mode.equals(modes.Replay.name())) {
+              EventListener.getRecord().saveToJson();
+              System.exit(0);
+          }else{
+              display("You are not allowed to save while Replay mode is on.");
+          }
       }//GEN-LAST:event_saveButtonActionPerformed
 
       /**
@@ -833,6 +847,10 @@ public class GUIWindow extends JFrame {
 
     }//GEN-LAST:event_speedChooserStateChanged
 
+    /**
+     * Pauses the game and shows a message.
+     * @param evt Click on pause game on the game menu or space key.
+     */
     private void pauseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pauseActionPerformed
         // TODO add your handling code here:
         pausedAtSec = gameCountdown.getCurrentSec();
@@ -842,41 +860,57 @@ public class GUIWindow extends JFrame {
         gameCountdown = new GameTimer(pausedAtMin,pausedAtSec, this);
     }//GEN-LAST:event_pauseActionPerformed
 
+    /**
+     * Exits game without saving nor warnings.
+     * @param evt Click on exit game in the game menu or CTRL+X
+     */
     private void exitWithXActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitWithXActionPerformed
         // TODO add your handling code here:
         System.exit(0);
     }//GEN-LAST:event_exitWithXActionPerformed
 
+    /**
+     * Starts a new game from level 1.
+     * @param evt level is selected form the menu bar or CTRL+1
+     */
     private void levelOneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_levelOneActionPerformed
         // TODO add your handling code here:
         level = 1;
         gameCountdown.pause();
-        new GUIWindow().setVisible(true);
-        if(GUIWindow.getWindows().length > 1){
-            for( int i = 0 ; i < GUIWindow.getWindows().length-1; i++){
-                GUIWindow.getWindows()[i].dispose();
+        new GuiWindow().setVisible(true);
+        if(GuiWindow.getWindows().length > 1){
+            for(int i = 0; i < GuiWindow.getWindows().length-1; i++){
+                GuiWindow.getWindows()[i].dispose();
             }
         }
     }//GEN-LAST:event_levelOneActionPerformed
 
+    /**
+     * Starts a new game from level 2.
+     * @param evt level is selected form the menu bar or CTRL+2
+     */
     private void levelTwoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_levelTwoActionPerformed
         // TODO add your handling code here:
         level = 2;
         gameCountdown.pause();
-        new GUIWindow().setVisible(true);
-        if(GUIWindow.getWindows().length > 1){
-            for( int i = 0 ; i < GUIWindow.getWindows().length-1; i++){
-                GUIWindow.getWindows()[i].dispose();
+        new GuiWindow().setVisible(true);
+        if(GuiWindow.getWindows().length > 1){
+            for(int i = 0; i < GuiWindow.getWindows().length-1; i++){
+                GuiWindow.getWindows()[i].dispose();
             }
         }
     }//GEN-LAST:event_levelTwoActionPerformed
 
+    /**
+     * Creates a new game from last unfinished level.
+     * @param evt Click or CTRL+P
+     */
     private void newGameSameLevelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newGameSameLevelActionPerformed
         // TODO add your handling code here:
 
-        if(GUIWindow.getWindows().length > 1){
-            for( int i = 0 ; i < GUIWindow.getWindows().length-1; i++){
-                GUIWindow.getWindows()[i].dispose();
+        if(GuiWindow.getWindows().length > 1){
+            for(int i = 0; i < GuiWindow.getWindows().length-1; i++){
+                GuiWindow.getWindows()[i].dispose();
             }
         }
     }//GEN-LAST:event_newGameSameLevelActionPerformed
@@ -898,6 +932,7 @@ public class GUIWindow extends JFrame {
 		replayForwards.setEnabled(true);
 		autoReplay.setEnabled(true);
 		speedChooser.setEnabled(true);
+		saveButton.setEnabled(false);
 
 		fileChooser.setDialogTitle("Open Json File to Replay a match");
 		fileChooser.setFileFilter(fileFilter);
@@ -939,13 +974,13 @@ public class GUIWindow extends JFrame {
             }
           }
         } catch (ClassNotFoundException ex) {
-          java.util.logging.Logger.getLogger(GUIWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+          java.util.logging.Logger.getLogger(GuiWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-          java.util.logging.Logger.getLogger(GUIWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+          java.util.logging.Logger.getLogger(GuiWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-          java.util.logging.Logger.getLogger(GUIWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+          java.util.logging.Logger.getLogger(GuiWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-          java.util.logging.Logger.getLogger(GUIWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+          java.util.logging.Logger.getLogger(GuiWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         //</editor-fold>
@@ -953,7 +988,7 @@ public class GUIWindow extends JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
           public void run() {
-            new GUIWindow().setVisible(true);
+            new GuiWindow().setVisible(true);
           }
         });
       }
@@ -999,24 +1034,24 @@ public class GUIWindow extends JFrame {
     private javax.swing.JLabel timerText;
     // End of variables declaration//GEN-END:variables
       // Game variables
-        private final JFileChooser fileChooser = new JFileChooser();
-      private ImageIcon[] numberImg = new ImageIcon[10];
-      private String mode;
-      private static int level = -1;
-      private enum modes { Run, Load, Save, Replay}
-
-      private GameTimer gameCountdown;
-      private Render render;
-      private Maze m;
-      private EventListener eventListener;
-      private int pausedAtMin;
-      private int pausedAtSec;
-      private EventIterator eventIterator;
-      private ImageIcon[] inventoryItems = new ImageIcon[8];
-      private JLabel[] inventoryLabels = new JLabel[8];
-      private int replaySpeed;
-      private java.awt.event.WindowEvent evtOpen;
-      private PropertyEditorSupport propertyEditorSupport= new PropertyEditorSupport();
+    private final JFileChooser fileChooser = new JFileChooser();
+    private ImageIcon[] numberImg = new ImageIcon[10];
+    private String mode;
+    private static int level = -1;
+    private enum modes { Run, Load, Save, Replay}
+    private GameTimer gameCountdown;
+    private Render render;
+    private Maze m;
+    private EventListener eventListener;
+    private int pausedAtMin;
+    private int pausedAtSec;
+    private EventIterator eventIterator;
+    private ImageIcon[] inventoryItems = new ImageIcon[8];
+    private JLabel[] inventoryLabels = new JLabel[8];
+    private int replaySpeed;
+    private java.awt.event.WindowEvent evtOpen;
+    private PropertyEditorSupport propertyEditorSupport= new PropertyEditorSupport();
+    private int canMove = 1;
 
     /**
      * Initialices the images and JPanels honding them to display Chap's inventory.
@@ -1028,7 +1063,7 @@ public class GUIWindow extends JFrame {
                 //set the size
                 inventoryItems[i].setImage(inventoryItems[i].getImage().getScaledInstance(66, 62, Image.SCALE_DEFAULT));
                 inventoryLabels[i].setIcon(inventoryItems[i]);
-               // inventoryLabels[i].setToolTipText(m.getPlayerInventory().get(i).getName());
+                // inventoryLabels[i].setToolTipText(m.getPlayerInventory().get(i).getName());
             } else {
                 inventoryLabels[i].setIcon(null);
             }
@@ -1041,72 +1076,72 @@ public class GUIWindow extends JFrame {
      * @param information hint to help player.
      */
     private void popUpInfo( String information){
-          if( information!=null){
-              pausedAtMin = gameCountdown.getCurrentMin();
-              pausedAtSec = gameCountdown.getCurrentSec();
-              gameCountdown.pause();
-              display(information);
-              gameCountdown = new GameTimer(pausedAtMin,pausedAtSec,this);
-          }
-      }
+        if( information!=null){
+            pausedAtMin = gameCountdown.getCurrentMin();
+            pausedAtSec = gameCountdown.getCurrentSec();
+            gameCountdown.pause();
+            display(information);
+            gameCountdown = new GameTimer(pausedAtMin,pausedAtSec,this);
+        }
+    }
 
-        /**
-         * Displays the number of treausures left on the board.
-         */
-      private void setChipsLeft() {
-              int chips = m.target - m.getChipsLeft();
-              chipsLeft.setText( chips + " / " + m.target);
-      }
+    /**
+     * Displays the number of treausures left on the board.
+     */
+    private void setChipsLeft() {
+        int chips = m.target - m.getChipsLeft();
+        chipsLeft.setText( chips + " / " + m.target);
+    }
 
     /**
      * Allocates the level for the replay mode.
      */
     private void replaySetLevel() {
-          if( mode != null && mode.equals(modes.Replay.name())) {
-              if (this.eventIterator == null) {
-                  System.err.println("Please select the saved game to replay from File menu");
-                  return;
-              }
-              Event evt = this.eventIterator.next();
-              System.out.println("Replay saved game in level: " + evt.getLevel());
-              this.setLevelNumber(evt.getLevel());
-              //@TODO
-              boardCanvas.setVisible(false);
-              render = new Render(m);
-              boardCanvas = render.getView();
-              gameCanvas.add(boardCanvas);
-              boardCanvas.setLocation(70, 35);
-              validate();
-              repaint();
-              setVisible(true);
-          }
-      }
+        if( mode != null && mode.equals(modes.Replay.name())) {
+            if (this.eventIterator == null) {
+                System.err.println("Please select the saved game to replay from File menu");
+                return;
+            }
+            Event evt = this.eventIterator.next();
+            System.out.println("Replay saved game in level: " + evt.getLevel());
+            this.setLevelNumber(evt.getLevel());
+            //@TODO
+            boardCanvas.setVisible(false);
+            render = new Render(m);
+            boardCanvas = render.getView();
+            gameCanvas.add(boardCanvas);
+            boardCanvas.setLocation(70, 35);
+            validate();
+            repaint();
+            setVisible(true);
+        }
+    }
 
-      /**
-       * Displays the level on the GUI by receiving the information from the maze
-       * module.
-       * @param level level chosen by user.
-       */
-      private void setLevelNumber(int level) {
-        GUIWindow.level = level;
+    /**
+     * Displays the level on the GUI by receiving the information from the maze
+     * module.
+     * @param level level chosen by user.
+     */
+    private void setLevelNumber(int level) {
+        GuiWindow.level = level;
         levelNumber.setText("0" + level);
         if(mode != null && !mode.equals(modes.Replay.name())) {
             this.eventListener.onEvent(Event.eventOfLevelSetting(level));
         }
         try {
-          LevelReader lr = new LevelReader(level);
-          m =  new Maze(lr);
-          lr.setApplication(this);
+            LevelReader lr = new LevelReader(level);
+            m =  new Maze(lr);
+            lr.setApplication(this);
         } catch (IOException e) {
-          e.printStackTrace();
+            e.printStackTrace();
         }
-      }
+    }
 
-      /**
-       * Countdown for game when players initializes the game.
-       * @return countdown for game
-       */
-      public JLabel getTimer() { return timer;}
+    /**
+     * Countdown for game when players initializes the game.
+     * @return countdown for game
+     */
+    public JLabel getTimer() { return timer;}
 
     /**
      * Current render within this game.
@@ -1128,24 +1163,24 @@ public class GUIWindow extends JFrame {
     public void notifyRecord(SingleMove move, int entityID){
         //TODO
         // Update Single move to move and implement a new parameter to
-        //add the bug's ID (as there is 2)
-      eventListener.onEvent(Event.eventOfBugMove(move));
+        // add the bug's ID (as there is 2)
+        eventListener.onEvent(Event.eventOfBugMove(move));
     }
 
-      /**.
-       *
-       * @param data message to be displayed.
-       */
-      public void display(String data) {
+    /**.
+     *
+     * @param data message to be displayed.
+     */
+    public void display(String data) {
         int result = JOptionPane.showConfirmDialog(null, data, "Alert", JOptionPane.PLAIN_MESSAGE);
-      }
+    }
 
     /**
      * Adds listeners/observers to notify them when users
      * presses a key.
-      * @param propertyChangeListener observer. 
+     * @param propertyChangeListener observer.
      */
     public void addPropertyChangeListener(PropertyChangeListener propertyChangeListener) {
-       propertyEditorSupport.addPropertyChangeListener(propertyChangeListener);
+        propertyEditorSupport.addPropertyChangeListener(propertyChangeListener);
     }
 }
