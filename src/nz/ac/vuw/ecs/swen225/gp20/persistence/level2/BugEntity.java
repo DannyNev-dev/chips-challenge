@@ -57,6 +57,7 @@ public class BugEntity implements Entity, Collectable, PropertyChangeListener {
 	public BugEntity(Point p, int id) {
 		this.position = p;
 		this.ID = id;
+		ImageIcon im = new ImageIcon("src/nz/ac/vuw/ecs/swen225/gp20/persistence/level2/BugImages/" + "bugTileUp1" + ".png");
 	}
 
 	/**
@@ -146,8 +147,6 @@ public class BugEntity implements Entity, Collectable, PropertyChangeListener {
 	 */
 	@Override
 	public void setPosition(Point newCoordinates) {
-		// if a invalid position is passed here it could cause bugs and unexpected
-		// behavour
 		position = newCoordinates;
 	}
 
@@ -249,7 +248,6 @@ public class BugEntity implements Entity, Collectable, PropertyChangeListener {
 		Board b = m.getBoardObject();
 		SingleMove sm = this.randomAdjacentPos(b);
 		m.moveEntity(sm, this); // returns false if game is paused
-
 		// call static application method to notify record and replay
 		gw.notifyRecord(sm, this.ID);
 	}

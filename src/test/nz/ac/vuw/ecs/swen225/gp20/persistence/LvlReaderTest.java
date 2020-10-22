@@ -67,6 +67,12 @@ public class LvlReaderTest {
 			assertEquals(lR.loadTarget(),7);	
 		}
 		
+		/**
+		 * Test 4.
+		 * tests that we can use the set maze method safely
+		 *
+		 * @throws IOException Signals that an I/O exception has occurred.
+		 */
 		@Test
 		void test4() throws IOException {
 			LevelReader lR = new LevelReader(2);
@@ -74,16 +80,24 @@ public class LvlReaderTest {
 			assertTrue(lR.setMaze(m));
 		}
 		
+		/**
+		 * Test 5.
+		 *	tests that we can use the set application method safely
+		 * @throws IOException Signals that an I/O exception has occurred.
+		 */
 		@Test
 		void test5() throws IOException {
 			LevelReader lR = new LevelReader(2);
+			@SuppressWarnings("unused")
 			Maze m = new Maze(lR);
 			GuiWindow gw = new GuiWindow();
 			assertTrue(lR.setApplication(gw));
 		}
+		
 		/**
 		 * Exception test level positively greater test 1.
 		 */
+		
 		@Test
 		void eTest1() {
 			assertThrows(IOException.class, () -> 
@@ -93,6 +107,7 @@ public class LvlReaderTest {
 		/**
 		 * Exception test 2 level negative.
 		 */
+		
 		@Test
 		void eTest2() {
 			assertThrows(IOException.class, () -> 
