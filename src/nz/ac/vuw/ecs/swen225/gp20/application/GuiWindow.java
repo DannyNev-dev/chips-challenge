@@ -932,6 +932,7 @@ public class GuiWindow extends JFrame {
 		replayForwards.setEnabled(true);
 		autoReplay.setEnabled(true);
 		speedChooser.setEnabled(true);
+		saveButton.setEnabled(false);
 
 		fileChooser.setDialogTitle("Open Json File to Replay a match");
 		fileChooser.setFileFilter(fileFilter);
