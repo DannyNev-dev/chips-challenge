@@ -42,6 +42,9 @@ public class LevelReader {
 
 	/** The level num. */
 	final int levelNum;
+	
+	/** number of bug count used for ID**/
+	int bugCount = 1;
 
 	/** The maze obj in json form. */
 	JsonObject mazeObj;
@@ -98,7 +101,7 @@ public class LevelReader {
 
 	/**
 	 * Load player.
-	 *
+	 *	Uses the local json object to load the and create the 
 	 * @return the player
 	 */
 	public Player loadPlayer() {
@@ -128,8 +131,6 @@ public class LevelReader {
 	 *
 	 * @param gw the new application
 	 */
-	// Camila needs to call this after the maze is created or at any point before
-	// the player moves
 	public boolean setApplication(GuiWindow gw) {
 		this.gw = gw;
 		for (BugEntity e : bugs) {
@@ -140,6 +141,7 @@ public class LevelReader {
 	}
 
 	/**
+	 * returns the level number
 	 * @return the levelNum
 	 */
 	public int getLevelNum() {
@@ -168,7 +170,6 @@ public class LevelReader {
 	 */
 	public Tile parseTile(JsonObject jsonObj, int target, Player p) throws RuntimeException {
 
-		int bugCount = 1;
 		Item item = null;
 		Tile tile = null;
 		String type = jsonObj.getString("type");
@@ -247,7 +248,9 @@ public class LevelReader {
 			JsonObject varObj = jsonObj.getJsonObject("item");
 			int x = varObj.getInt("x");
 			int y = varObj.getInt("y");
-			BugEntity bug = new BugEntity(new Point(x, y), bugCount++);
+			BugEntity bug = new BugEntity(new Point(x, y), bugCount);
+			System.out.println(bugCount);
+			bugCount++;
 			tile = new ItemTile(bug);
 			bugs.add(bug);
 			break;

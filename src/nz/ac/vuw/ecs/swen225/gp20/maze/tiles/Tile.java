@@ -5,9 +5,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import nz.ac.vuw.ecs.swen225.gp20.maze.Maze.SpecialEvent;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Entity;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Item;
-import nz.ac.vuw.ecs.swen225.gp20.maze.items.Player;
-
-
 
 /**
  * This abstract class defines the required properties for a tile. 
@@ -123,7 +120,7 @@ public abstract class Tile implements Cloneable {
    * @return the item on this tile
    */
   public Item getItem() {
-    return Item.unmodifiableItem(item);
+    return item.unmodifiableItem(item);
   }
   
   @Override
