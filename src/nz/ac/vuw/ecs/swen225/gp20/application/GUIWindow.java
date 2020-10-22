@@ -580,7 +580,7 @@ public class GuiWindow extends JFrame {
 
       /**
        * Forms a warning message if user clicks exit bottom.
-       * @param evt default event.
+       * @param evt window is closing.
        */
       private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         //stores data locally before this timer gets destroyed on c.paused()
@@ -601,7 +601,7 @@ public class GuiWindow extends JFrame {
 
       /**
        * Forms the window when running the game and allows user to select a level.
-       * @param evt default event
+       * @param evt window open.
        */
       private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         int numSelected;
@@ -794,12 +794,14 @@ public class GuiWindow extends JFrame {
 
       /**
        * Processes users input when the button for saving is pressed.
-       * @param evt save button on game menu is clicked.
+       * @param evt save button on game menu is clicked or CTRL+S.
        */
       private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {
 //GEN-FIRST:event_saveButtonActionPerformed
-        EventListener.getRecord().saveToJson();
-        System.exit(0);
+          if (!mode.equals(modes.Replay.name())) {
+              EventListener.getRecord().saveToJson();
+              System.exit(0);
+          }
       }//GEN-LAST:event_saveButtonActionPerformed
 
       /**
@@ -843,6 +845,10 @@ public class GuiWindow extends JFrame {
 
     }//GEN-LAST:event_speedChooserStateChanged
 
+    /**
+     * Pauses the game and shows a message.
+     * @param evt Click on pause game on the game menu or space key.
+     */
     private void pauseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pauseActionPerformed
         // TODO add your handling code here:
         pausedAtSec = gameCountdown.getCurrentSec();
@@ -852,11 +858,19 @@ public class GuiWindow extends JFrame {
         gameCountdown = new GameTimer(pausedAtMin,pausedAtSec, this);
     }//GEN-LAST:event_pauseActionPerformed
 
+    /**
+     * Exits game without saving nor warnings.
+     * @param evt Click on exit game in the game menu or CTRL+X
+     */
     private void exitWithXActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitWithXActionPerformed
         // TODO add your handling code here:
         System.exit(0);
     }//GEN-LAST:event_exitWithXActionPerformed
 
+    /**
+     * Starts a new game from level 1.
+     * @param evt level is selected form the menu bar or CTRL+1
+     */
     private void levelOneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_levelOneActionPerformed
         // TODO add your handling code here:
         level = 1;
@@ -869,6 +883,10 @@ public class GuiWindow extends JFrame {
         }
     }//GEN-LAST:event_levelOneActionPerformed
 
+    /**
+     * Starts a new game from level 2.
+     * @param evt level is selected form the menu bar or CTRL+2
+     */
     private void levelTwoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_levelTwoActionPerformed
         // TODO add your handling code here:
         level = 2;
@@ -881,6 +899,10 @@ public class GuiWindow extends JFrame {
         }
     }//GEN-LAST:event_levelTwoActionPerformed
 
+    /**
+     * Creates a new game from last unfinished level.
+     * @param evt Click or CTRL+P
+     */
     private void newGameSameLevelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newGameSameLevelActionPerformed
         // TODO add your handling code here:
 
