@@ -122,6 +122,13 @@ class View {
 
 		Point lastP = new Point(lastPosition);
 
+		String specEvent;
+		if (maze.getLastSpecialEvent() == null) {
+			specEvent = "null";
+		} else {
+			specEvent = maze.getLastSpecialEvent().toString();
+		}
+
 		// ANIMATION
 		int delay = 75; // milliseconds
 		ActionListener taskPerformer = new ActionListener() {
@@ -131,80 +138,144 @@ class View {
 				if (count == 5) {
 					return;
 				}
-				int x = p.x - 4;
-				for (int i = 0; i < xSize; i++) {
-					int y = p.y - 4;
-					for (int j = 0; j < ySize; j++) {
-						if (lastP.x == x && lastP.y == y) {
-							playMoveAnimation(count, i, j, x, y, p, moveDirection, true);
-						} else if (p.x == x && p.y == y) {
-							int newPosOldToken = x;
-							switch (moveDirection) {
-							case "Left":
-								newPosOldToken = 0;
-								break;
-							case "Right":
-								newPosOldToken = 1;
-								break;
-							case "Up":
-								newPosOldToken = 2;
-								break;
-							case "Down":
-								newPosOldToken = 3;
-								break;
+				if (specEvent.equals("MOVE_REJECTED")) {
+					int x = p.x - 4;
+					for (int i = 0; i < xSize; i++) {
+						int y = p.y - 4;
+						for (int j = 0; j < ySize; j++) {
+							if (p.x == x && p.y == y && count == 1) {
+								playSound("obstruction");
 							}
-							if((count == 1 && oldToken.get(newPosOldToken).equals("treasureTile")) 
-									|| (count == 1 && oldToken.get(newPosOldToken).equals("redLockedTile"))
-									|| (count == 1 && oldToken.get(newPosOldToken).equals("greenLockedTile"))
-									|| (count == 1 && oldToken.get(newPosOldToken).equals("blueLockedTile"))
-									|| (count == 1 && oldToken.get(newPosOldToken).equals("blueKeyTile"))
-									|| (count == 1 && oldToken.get(newPosOldToken).equals("redKeyTile"))
-									|| (count == 1 && oldToken.get(newPosOldToken).equals("greenKeyTile"))
-									|| (count == 1 && oldToken.get(newPosOldToken).equals("exitLockTile"))
-									|| (count == 1 && oldToken.get(newPosOldToken).equals("exitTile"))
-									) {
-								playSound(oldToken.get(newPosOldToken));
+							if (p.x == x && p.y == y && count < 4) {
+								dispList[i][j].setIcon(
+										new ImageIcon("src/nz/ac/vuw/ecs/swen225/gp20/render/TileFile/chipConfused"
+												+ count + ".png"));
 							}
-							if (count < 3) {
-								dispList[i][j].setIcon(new ImageIcon("src/nz/ac/vuw/ecs/swen225/gp20/render/TileFile/"
-										+ oldToken.get(newPosOldToken) + ".png"));
-							}
-							if (count == 4) {
-								oldToken.clear();
-								oldToken.add(0, board[x][y - 1].getName());
-								oldToken.add(1, board[x][y + 1].getName());
-								oldToken.add(2, board[x - 1][y].getName());
-								oldToken.add(3, board[x + 1][y].getName());
-							}
-							playMoveAnimation(count, i, j, x, y, p, moveDirection, false);
-
-						} else {
-							if (dispList[i][j] != null) {
-
+							if (p.x == x && p.y == y && count == 4) {
 								dispList[i][j].setIcon(new ImageIcon("src/nz/ac/vuw/ecs/swen225/gp20/render/TileFile/"
 										+ board[x][y].getName() + ".png"));
-
 							}
+
+							y++;
 						}
-						y++;
+						x++;
 					}
-					x++;
+					count++;
+
+				} else if (specEvent.equals("CHAP_DIED_BURNT")) {
+					if (count == 1) {
+						playSound("gameOver");
+					}
+					int x = p.x - 4;
+					for (int i = 0; i < xSize; i++) {
+						int y = p.y - 4;
+						for (int j = 0; j < ySize; j++) {
+							if (p.x == x && p.y == y) {
+								dispList[i][j].setIcon(new ImageIcon(
+										"src/nz/ac/vuw/ecs/swen225/gp20/render/TileFile/death" + count + ".png"));
+							}
+							y++;
+						}
+						x++;
+					}
+					count++;
+
+				} else if (specEvent.equals("CHAP_DIED_MURDERED")) {
+					playSound("gameOver");
+					int x = p.x - 4;
+					for (int i = 0; i < xSize; i++) {
+						int y = p.y - 4;
+						for (int j = 0; j < ySize; j++) {
+							if (p.x == x && p.y == y) {
+								dispList[i][j].setIcon(new ImageIcon(
+										"src/nz/ac/vuw/ecs/swen225/gp20/render/TileFile/death" + count + ".png"));
+							}
+							y++;
+						}
+						x++;
+					}
+					count++;
+				} else {
+					System.out.println(specEvent);
+
+					int x = p.x - 4;
+					for (int i = 0; i < xSize; i++) {
+						int y = p.y - 4;
+						for (int j = 0; j < ySize; j++) {
+							int newPosOldToken = x;
+							if (lastP.x == x && lastP.y == y) {
+								playMoveAnimation(count, i, j, x, y, p, moveDirection, true, newPosOldToken);
+							} else if (p.x == x && p.y == y) {
+
+								switch (moveDirection) {
+								case "Left":
+									newPosOldToken = 0;
+									break;
+								case "Right":
+									newPosOldToken = 1;
+									break;
+								case "Up":
+									newPosOldToken = 2;
+									break;
+								case "Down":
+									newPosOldToken = 3;
+									break;
+								}
+								if ((count == 1 && oldToken.get(newPosOldToken).equals("treasureTile"))
+										|| (count == 1 && oldToken.get(newPosOldToken).equals("redLockedTile"))
+										|| (count == 1 && oldToken.get(newPosOldToken).equals("greenLockedTile"))
+										|| (count == 1 && oldToken.get(newPosOldToken).equals("blueLockedTile"))
+										|| (count == 1 && oldToken.get(newPosOldToken).equals("blueKeyTile"))
+										|| (count == 1 && oldToken.get(newPosOldToken).equals("redKeyTile"))
+										|| (count == 1 && oldToken.get(newPosOldToken).equals("greenKeyTile"))
+										|| (count == 1 && oldToken.get(newPosOldToken).equals("exitLockTile"))
+										|| (count == 1 && oldToken.get(newPosOldToken).equals("exitTile"))
+										|| (count == 1 && oldToken.get(newPosOldToken).equals("fireTile"))) {
+									playSound(oldToken.get(newPosOldToken));
+								}
+								if (count < 3) {
+									dispList[i][j]
+											.setIcon(new ImageIcon("src/nz/ac/vuw/ecs/swen225/gp20/render/TileFile/"
+													+ oldToken.get(newPosOldToken) + ".png"));
+								}
+								playMoveAnimation(count, i, j, x, y, p, moveDirection, false, newPosOldToken);
+								if (count == 4) {
+									oldToken.clear();
+									oldToken.add(0, board[x][y - 1].getName());
+									oldToken.add(1, board[x][y + 1].getName());
+									oldToken.add(2, board[x - 1][y].getName());
+									oldToken.add(3, board[x + 1][y].getName());
+								}
+
+							} else {
+								if (dispList[i][j] != null) {
+
+									dispList[i][j]
+											.setIcon(new ImageIcon("src/nz/ac/vuw/ecs/swen225/gp20/render/TileFile/"
+													+ board[x][y].getName() + ".png"));
+
+								}
+							}
+							y++;
+						}
+						x++;
+					}
+
+					count++;
+					BoardPanel.repaint();
 				}
-
-				count++;
-				BoardPanel.repaint();
-
 			}
+
 		};
 		new Timer(delay, taskPerformer).start();
 
 		oldBoard = new Board(maze.getBoard());
 		lastPosition = maze.getPlayerPosition();
-		// BoardPanel.repaint();
 
 	}
 
-	public void playMoveAnimation(int count, int i, int j, int x, int y, Point p, String moveDirection, boolean last) {
+	public void playMoveAnimation(int count, int i, int j, int x, int y, Point p, String moveDirection, boolean last,
+			int newPosOldToken) {
 		if (last) {
 			if (count < 3) {
 				if (board[x][y].getName().equals("infoTile")) {
@@ -222,6 +293,14 @@ class View {
 			}
 		}
 		if (!last) {
+			if ((oldToken.get(newPosOldToken).equals("fireTile") && (count > 1 && count < 4))
+					|| (oldToken.get(newPosOldToken).equals("treasureTile") && (count > 1 && count < 3))) {
+				System.out.println(
+						"CURRENT : " + oldToken.get(newPosOldToken) + "Open" + moveDirection + (count + 1) + ".png");
+				dispList[i][j].setIcon(new ImageIcon("src/nz/ac/vuw/ecs/swen225/gp20/render/TileFile/"
+						+ oldToken.get(newPosOldToken) + "Open" + moveDirection + (count + 1) + ".png"));
+				return;
+			}
 			if (count < 4 && count > 1) {
 				System.out.println("CURRENT : " + board[x][y].getName() + moveDirection + (count + 1) + ".png");
 				dispList[i][j].setIcon(new ImageIcon("src/nz/ac/vuw/ecs/swen225/gp20/render/TileFile/"
@@ -233,40 +312,24 @@ class View {
 
 		}
 	}
-	
+
 	public void playSound(String name) {
-		
+
 		new Thread(new Runnable() {
-			    public void run() {
-			      try {
-			        Clip clip = AudioSystem.getClip();
-			        System.out.println(Render.class);
-			        AudioInputStream inputStream = AudioSystem.getAudioInputStream(
-			        		
-			          Render.class.getResourceAsStream("SoundFile/" + name + ".wav"));
-			        clip.open(inputStream);
-			        clip.start(); 
-			      } catch (Exception e) {
-			        System.err.println(e.getMessage());
-			      }
-			    }
-			  }).start();
-		
-		/*
-		 * SUN LIBRARY
-		 * 
-		String soundFile = "src/nz/ac/vuw/ecs/swen225/gp20/render/SoundFile/" + name + ".wav";
-	    InputStream in;
-		try {
-			in = new FileInputStream(soundFile);
-		    AudioStream audioStream = new AudioStream(in);
-		    AudioPlayer.player.start(audioStream);
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		*/
+			public void run() {
+				try {
+					Clip clip = AudioSystem.getClip();
+					System.out.println("SoundFile/" + name + ".wav");
+					AudioInputStream inputStream = AudioSystem.getAudioInputStream(
+
+							Render.class.getResourceAsStream("SoundFile/" + name + ".wav"));
+					clip.open(inputStream);
+					clip.start();
+				} catch (Exception e) {
+					System.err.println(e.getMessage());
+				}
+			}
+		}).start();
 	}
 
 	public String findDirection(Point p) {

@@ -315,19 +315,23 @@ public class Maze {
   /**
    * Get the position of the player within the board.
    * This is mainly used to optimise the render process
+   * Note that if the player has just been murdered the position where he died
+   * will be retured even though the player is no longer on that tile.
    * @return a point holding a copy of the player's coordinates
    */
   public Point getPlayerPosition() {
-    checkArgument(isPlayerPosValid());
+    checkArgument(lastEvent == SpecialEvent.CHAP_DIED_MURDERED || isPlayerPosValid());
     return new Point(player.getPosition().x, player.getPosition().y);
   }
   
   /**
    * Get a copy of the player in this maze.
+   * Note that if the player has just been murdered it will not be on the board anymore
+   * but it will still be returned and its's position will hold the coordinates of its last tile.
    * @return a clone of the player in this maze
    */
   public Player getPlayer() {
-    checkArgument(isPlayerPosValid());
+    checkArgument(lastEvent == SpecialEvent.CHAP_DIED_MURDERED || isPlayerPosValid());
     return player.clone();
   }
   
