@@ -91,6 +91,8 @@ class View {
 	private BoardPanel BoardPanel;
 	private Point lastPosition = null;
 	private ArrayList<String> oldToken = new ArrayList<String>();
+	private Point lastPoint = new Point(-100, -100);
+	private boolean updateChip = false;
 
 	/**
 	 * Constructor for View
@@ -116,6 +118,11 @@ class View {
 	void refresh(Maze maze) {
 
 		Point p = maze.getPlayerPosition();
+		if(!lastPoint.equals(p)) {
+			System.out.println("TRUE");
+			updateChip = true;
+			lastPoint = new Point(p.x, p.y);
+		}
 		String moveDirection = findDirection(p);
 		board = maze.getBoard();
 		// BoardPanel.removeAll();
@@ -196,16 +203,14 @@ class View {
 					}
 					count++;
 				} else {
-					System.out.println(specEvent);
-
 					int x = p.x - 4;
 					for (int i = 0; i < xSize; i++) {
 						int y = p.y - 4;
 						for (int j = 0; j < ySize; j++) {
 							int newPosOldToken = x;
-							if (lastP.x == x && lastP.y == y) {
+							if (lastP.x == x && lastP.y == y && updateChip) {
 								playMoveAnimation(count, i, j, x, y, p, moveDirection, true, newPosOldToken);
-							} else if (p.x == x && p.y == y) {
+							} else if (p.x == x && p.y == y && updateChip) {
 
 								switch (moveDirection) {
 								case "Left":
@@ -230,8 +235,7 @@ class View {
 										|| (count == 1 && oldToken.get(newPosOldToken).equals("greenKeyTile"))
 										|| (count == 1 && oldToken.get(newPosOldToken).equals("exitLockTile"))
 										|| (count == 1 && oldToken.get(newPosOldToken).equals("exitTile"))
-										|| (count == 1 && oldToken.get(newPosOldToken).equals("fireTile"))
-										|| (count == 1 && oldToken.get(newPosOldToken).equals("waterBucketTile"))) {
+										|| (count == 1 && oldToken.get(newPosOldToken).equals("fireTile"))) {
 									playSound(oldToken.get(newPosOldToken));
 								}
 								if (count < 3) {
