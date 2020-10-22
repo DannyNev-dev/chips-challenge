@@ -235,7 +235,7 @@ public class BugEntity implements Entity, Collectable, PropertyChangeListener {
 		m.moveEntity(sm, this); // returns false if game is paused
 		// call static application method to notify record and replay
 		// GUIWindow.notifyRecorder(sm,name); //name to identify this as bug move
-		//gw.notifyRecord(sm, this.ID);
+		gw.notifyRecord(sm, this.ID);
 	}
 	
 	/**
