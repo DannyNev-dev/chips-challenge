@@ -144,7 +144,7 @@ class View {
 						int y = p.y - 4;
 						for (int j = 0; j < ySize; j++) {
 							if (p.x == x && p.y == y && count == 1) {
-								playSound("obstruction");
+								playSound("exitTile");
 							}
 							if (p.x == x && p.y == y && count < 4) {
 								System.out.println("SEEBS2");
