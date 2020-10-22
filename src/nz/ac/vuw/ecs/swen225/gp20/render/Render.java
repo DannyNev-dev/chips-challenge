@@ -147,7 +147,6 @@ class View {
 								playSound("obstruction");
 							}
 							if (p.x == x && p.y == y && count < 4) {
-								System.out.println("SEEBS2");
 								dispList[i][j].setIcon(
 										new ImageIcon("src/nz/ac/vuw/ecs/swen225/gp20/render/TileFile/chipConfused"
 												+ count + ".png"));
@@ -163,7 +162,42 @@ class View {
 					}
 					count++;
 
+				} else if (specEvent.equals("CHAP_DIED_BURNT")) {
+					if (count == 1) {
+						playSound("gameOver");
+					}
+					int x = p.x - 4;
+					for (int i = 0; i < xSize; i++) {
+						int y = p.y - 4;
+						for (int j = 0; j < ySize; j++) {
+							if (p.x == x && p.y == y) {
+								dispList[i][j].setIcon(new ImageIcon(
+										"src/nz/ac/vuw/ecs/swen225/gp20/render/TileFile/death" + count + ".png"));
+							}
+							y++;
+						}
+						x++;
+					}
+					count++;
+
+				} else if (specEvent.equals("CHAP_DIED_MURDERED")) {
+					playSound("gameOver");
+					int x = p.x - 4;
+					for (int i = 0; i < xSize; i++) {
+						int y = p.y - 4;
+						for (int j = 0; j < ySize; j++) {
+							if (p.x == x && p.y == y) {
+								dispList[i][j].setIcon(new ImageIcon(
+										"src/nz/ac/vuw/ecs/swen225/gp20/render/TileFile/death" + count + ".png"));
+							}
+							y++;
+						}
+						x++;
+					}
+					count++;
 				} else {
+					System.out.println(specEvent);
+
 					int x = p.x - 4;
 					for (int i = 0; i < xSize; i++) {
 						int y = p.y - 4;
@@ -195,7 +229,8 @@ class View {
 										|| (count == 1 && oldToken.get(newPosOldToken).equals("redKeyTile"))
 										|| (count == 1 && oldToken.get(newPosOldToken).equals("greenKeyTile"))
 										|| (count == 1 && oldToken.get(newPosOldToken).equals("exitLockTile"))
-										|| (count == 1 && oldToken.get(newPosOldToken).equals("exitTile"))) {
+										|| (count == 1 && oldToken.get(newPosOldToken).equals("exitTile"))
+										|| (count == 1 && oldToken.get(newPosOldToken).equals("fireTile"))) {
 									playSound(oldToken.get(newPosOldToken));
 								}
 								if (count < 3) {
@@ -236,7 +271,6 @@ class View {
 
 		oldBoard = new Board(maze.getBoard());
 		lastPosition = maze.getPlayerPosition();
-		// BoardPanel.repaint();
 
 	}
 
