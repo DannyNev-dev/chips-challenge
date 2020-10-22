@@ -54,6 +54,17 @@ public abstract class Tile implements Cloneable {
    */
   public abstract boolean isAccessible(Entity entity);
   
+  /**
+   * Get the item in this tile.
+   * @return the item on this tile
+   */
+  public Item getItem() {
+    /*
+    if(item instanceof Entity) {
+      return ((Object)item).clone();
+    }*/
+    return item;
+  }
   
   /**
    * Check if this item in the tile is linked with an action.
@@ -149,23 +160,4 @@ public abstract class Tile implements Cloneable {
     result = prime * result + ((item == null) ? 0 : item.hashCode());
     return result;
   }
-  
- 
-  
-  /*
-   * Obtain the Collectable item at this tile and removes it from here.
-   * This method should only be invoked when there is an item to pick up.
-   * Hence if the method executes correctly the return value is different form null.
-   * 
-   * @return the item which have just been removed from this tile
-   */
-  /*
-  public Collectable pickupItem() {
-    Preconditions.checkState(containsItem(), "There is no item to pick up in this tile");
-    Collectable collected = item;
-    item = null;
-    return collected;
-  }
-  */
-
 }

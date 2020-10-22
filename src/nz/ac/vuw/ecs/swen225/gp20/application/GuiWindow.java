@@ -26,9 +26,10 @@ import java.beans.PropertyEditorSupport;
 import java.io.*;
 
 /**
- * . @author camilalis 300504575. from Master.
+ *Main class of the application module. Creates the 
+ *graphical user interface for the game Chip vs Chap
  *
- *
+ *@author camilalis 300504575. from Master
  */
 public class GuiWindow extends JFrame {
 
@@ -193,16 +194,16 @@ public class GuiWindow extends JFrame {
     javax.swing.GroupLayout boardCanvasLayout = new javax.swing.GroupLayout(boardCanvas);
     boardCanvas.setLayout(boardCanvasLayout);
     boardCanvasLayout.setHorizontalGroup(boardCanvasLayout
-        .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-        .addGap(0, 450, Short.MAX_VALUE));
-    boardCanvasLayout.setVerticalGroup(boardCanvasLayout
-        .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGap(0, 450, 
+            Short.MAX_VALUE));
+    boardCanvasLayout.setVerticalGroup(boardCanvasLayout.createParallelGroup(
+        javax.swing.GroupLayout.Alignment.LEADING)
         .addGap(0, 450, Short.MAX_VALUE));
 
     levelAndTimer.setBackground(new java.awt.Color(102, 102, 102));
-    levelAndTimer.setBorder(new javax.swing.border
-        .SoftBevelBorder(javax.swing.border.BevelBorder.RAISED, null, null,null, new java.awt
-            .Color(102, 102, 102)));
+    levelAndTimer.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border
+        .BevelBorder.RAISED, null, null,
+        null, new java.awt.Color(102, 102, 102)));
 
     levelText.setBackground(new java.awt.Color(0, 0, 0));
     levelText.setFont(new java.awt.Font("Arial Narrow", 1, 48)); // NOI18N
@@ -214,8 +215,8 @@ public class GuiWindow extends JFrame {
     levelNumber.setFont(new java.awt.Font("Arial Narrow", 1, 80)); // NOI18N
     levelNumber.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
     levelNumber.setToolTipText("");
-    levelNumber.setBorder(javax.swing.BorderFactory
-        .createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+    levelNumber.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border
+        .BevelBorder.RAISED));
     levelNumber.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
     timerText.setFont(new java.awt.Font("Arial Narrow", 1, 48)); // NOI18N
@@ -227,14 +228,15 @@ public class GuiWindow extends JFrame {
     timer.setBackground(new java.awt.Color(204, 204, 204));
     timer.setFont(new java.awt.Font("Arial Rounded MT Bold", 1, 48)); // NOI18N
     timer.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-    timer.setBorder(javax.swing.BorderFactory
-        .createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+    timer.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border
+        .BevelBorder.RAISED));
     timer.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
     chipsLeft.setBackground(new java.awt.Color(204, 204, 204));
     chipsLeft.setFont(new java.awt.Font("Arial Rounded MT Bold", 1, 48)); // NOI18N
     chipsLeft.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-    chipsLeft.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+    chipsLeft.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border
+        .BevelBorder.RAISED));
     chipsLeft.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
     chipsleftText2.setFont(new java.awt.Font("Arial Narrow", 1, 48)); // NOI18N
@@ -247,37 +249,45 @@ public class GuiWindow extends JFrame {
     levelAndTimer.setLayout(levelAndTimerLayout);
     levelAndTimerLayout.setHorizontalGroup(levelAndTimerLayout
         .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-        .addGroup(levelAndTimerLayout.createSequentialGroup().addGap(49, 49, 49).addGroup(levelAndTimerLayout
+        .addGroup(levelAndTimerLayout.createSequentialGroup().addGap(49, 49, 49)
+            .addGroup(levelAndTimerLayout
             .createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
             .addComponent(levelNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 170,
                 javax.swing.GroupLayout.PREFERRED_SIZE)
             .addComponent(timerText, javax.swing.GroupLayout.PREFERRED_SIZE, 175,
                 javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addComponent(timer, javax.swing.GroupLayout.PREFERRED_SIZE, 169, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(timer, javax.swing.GroupLayout.PREFERRED_SIZE, 169, 
+                javax.swing.GroupLayout.PREFERRED_SIZE)
             .addComponent(chipsleftText2, javax.swing.GroupLayout.PREFERRED_SIZE, 175,
                 javax.swing.GroupLayout.PREFERRED_SIZE)
             .addComponent(chipsLeft, javax.swing.GroupLayout.PREFERRED_SIZE, 169,
                 javax.swing.GroupLayout.PREFERRED_SIZE))
             .addContainerGap(68, Short.MAX_VALUE))
-        .addComponent(levelText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE,
+        .addComponent(levelText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing
+            .GroupLayout.DEFAULT_SIZE,
             Short.MAX_VALUE));
     levelAndTimerLayout.setVerticalGroup(levelAndTimerLayout
         .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
         .addGroup(levelAndTimerLayout.createSequentialGroup()
-            .addComponent(levelText, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(levelText, javax.swing.GroupLayout.PREFERRED_SIZE, 60, 
+                javax.swing.GroupLayout.PREFERRED_SIZE)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
             .addComponent(levelNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 66,
                 javax.swing.GroupLayout.PREFERRED_SIZE)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-            .addComponent(timerText, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE,
+            .addComponent(timerText, javax.swing.GroupLayout.PREFERRED_SIZE, 53, 
+                javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 
+                javax.swing.GroupLayout.DEFAULT_SIZE,
                 Short.MAX_VALUE)
-            .addComponent(timer, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(timer, javax.swing.GroupLayout.PREFERRED_SIZE, 72, 
+                javax.swing.GroupLayout.PREFERRED_SIZE)
             .addGap(18, 18, 18)
             .addComponent(chipsleftText2, javax.swing.GroupLayout.PREFERRED_SIZE, 53,
                 javax.swing.GroupLayout.PREFERRED_SIZE)
             .addGap(18, 18, 18)
-            .addComponent(chipsLeft, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(chipsLeft, javax.swing.GroupLayout.PREFERRED_SIZE, 72, 
+                javax.swing.GroupLayout.PREFERRED_SIZE)
             .addGap(32, 32, 32)));
 
     timerText.getAccessibleContext().setAccessibleName("time");
@@ -328,7 +338,8 @@ public class GuiWindow extends JFrame {
     changeSpeedText.setAutoscrolls(true);
 
     inventoryPanel.setBackground(new java.awt.Color(102, 102, 102));
-    inventoryPanel.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+    inventoryPanel.setBorder(javax.swing.BorderFactory.createBevelBorder(javax
+        .swing.border.BevelBorder.RAISED));
     inventoryPanel.setForeground(new java.awt.Color(102, 102, 102));
 
     inventoryText.setFont(new java.awt.Font("Lucida Grande", 1, 18)); // NOI18N
@@ -337,54 +348,71 @@ public class GuiWindow extends JFrame {
     inventoryText.setText("I N V E N T O R Y");
     inventoryText.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
-    item0.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+    item0.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border
+        .BevelBorder.RAISED));
 
-    item1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+    item1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border
+        .BevelBorder.RAISED));
 
-    item2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+    item2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border
+        .BevelBorder.RAISED));
 
-    item3.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+    item3.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border
+        .BevelBorder.RAISED));
 
-    item4.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+    item4.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border
+        .BevelBorder.RAISED));
 
-    item5.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+    item5.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border
+        .BevelBorder.RAISED));
 
-    item6.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+    item6.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border
+        .BevelBorder.RAISED));
 
-    item7.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+    item7.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border
+        .BevelBorder.RAISED));
 
     javax.swing.GroupLayout inventoryPanelLayout = new javax.swing.GroupLayout(inventoryPanel);
     inventoryPanel.setLayout(inventoryPanelLayout);
     inventoryPanelLayout.setHorizontalGroup(inventoryPanelLayout
         .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
         .addGroup(inventoryPanelLayout.createSequentialGroup()
-            .addGroup(inventoryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(inventoryPanelLayout.createParallelGroup(javax.swing.GroupLayout
+                .Alignment.LEADING)
                 .addGroup(inventoryPanelLayout.createSequentialGroup().addContainerGap()
-                    .addGroup(inventoryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(inventoryPanelLayout.createParallelGroup(javax.swing
+                        .GroupLayout.Alignment.TRAILING)
                         .addComponent(item0, javax.swing.GroupLayout.PREFERRED_SIZE, 66,
                             javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(item4, javax.swing.GroupLayout.PREFERRED_SIZE, 66,
                             javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                    .addGroup(inventoryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(inventoryPanelLayout.createParallelGroup(javax.swing
+                        .GroupLayout.Alignment.LEADING)
                         .addGroup(inventoryPanelLayout.createSequentialGroup()
                             .addComponent(item5, javax.swing.GroupLayout.PREFERRED_SIZE, 66,
                                 javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(item6, javax.swing.GroupLayout.PREFERRED_SIZE, 66,
                                 javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(item7,
-                                javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement
+                                .RELATED).addComponent(item7,
+                                javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing
+                                .GroupLayout.PREFERRED_SIZE))
                         .addGroup(inventoryPanelLayout.createSequentialGroup()
                             .addComponent(item1, javax.swing.GroupLayout.PREFERRED_SIZE, 66,
                                 javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(item2, javax.swing.GroupLayout.PREFERRED_SIZE, 66,
                                 javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(item3,
-                                javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGroup(inventoryPanelLayout.createSequentialGroup().addGap(14, 14, 14).addComponent(inventoryText,
-                    javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(item3,
+                                javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout
+                                .PREFERRED_SIZE))))
+                .addGroup(inventoryPanelLayout.createSequentialGroup().addGap(14, 14, 14)
+                    .addComponent(inventoryText,
+                    javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout
+                    .PREFERRED_SIZE)))
             .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
     inventoryPanelLayout.setVerticalGroup(inventoryPanelLayout
         .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -392,16 +420,23 @@ public class GuiWindow extends JFrame {
             .addComponent(inventoryText, javax.swing.GroupLayout.PREFERRED_SIZE, 40,
                 javax.swing.GroupLayout.PREFERRED_SIZE)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-            .addGroup(inventoryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+            .addGroup(inventoryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment
+                .LEADING, false)
                 .addComponent(item1, javax.swing.GroupLayout.DEFAULT_SIZE, 62, Short.MAX_VALUE)
                 .addComponent(item2, javax.swing.GroupLayout.DEFAULT_SIZE, 62, Short.MAX_VALUE)
-                .addComponent(item3, javax.swing.GroupLayout.DEFAULT_SIZE, 62, Short.MAX_VALUE).addComponent(item0,
-                    javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(item3, javax.swing.GroupLayout.DEFAULT_SIZE, 62, Short.MAX_VALUE)
+                .addComponent(item0,
+                    javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout
+                    .DEFAULT_SIZE, Short.MAX_VALUE))
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-            .addGroup(inventoryPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(item4, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addComponent(item5, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addComponent(item6, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(inventoryPanelLayout.createParallelGroup(javax.swing.GroupLayout
+                .Alignment.LEADING)
+                .addComponent(item4, javax.swing.GroupLayout.PREFERRED_SIZE, 62, 
+                    javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(item5, javax.swing.GroupLayout.PREFERRED_SIZE, 62, 
+                    javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(item6, javax.swing.GroupLayout.PREFERRED_SIZE, 62, 
+                    javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addComponent(item7, javax.swing.GroupLayout.PREFERRED_SIZE, 62,
                     javax.swing.GroupLayout.PREFERRED_SIZE))
             .addContainerGap(37, Short.MAX_VALUE)));
@@ -414,44 +449,61 @@ public class GuiWindow extends JFrame {
 
     javax.swing.GroupLayout gameCanvasLayout = new javax.swing.GroupLayout(gameCanvas);
     gameCanvas.setLayout(gameCanvasLayout);
-    gameCanvasLayout.setHorizontalGroup(gameCanvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+    gameCanvasLayout.setHorizontalGroup(gameCanvasLayout.createParallelGroup(javax.swing
+        .GroupLayout.Alignment.LEADING)
         .addGroup(gameCanvasLayout.createSequentialGroup().addGroup(gameCanvasLayout
             .createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(gameCanvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(gameCanvasLayout.createSequentialGroup().addGap(57, 57, 57).addComponent(boardCanvas,
-                    javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE,
+            .addGroup(gameCanvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment
+                .LEADING)
+                .addGroup(gameCanvasLayout.createSequentialGroup().addGap(57, 57, 57)
+                    .addComponent(boardCanvas,
+                    javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout
+                    .DEFAULT_SIZE,
                     javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGroup(gameCanvasLayout.createSequentialGroup().addGap(141, 141, 141).addComponent(inventoryText1,
-                    javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(gameCanvasLayout.createSequentialGroup().addGap(141, 141, 141)
+                    .addComponent(inventoryText1,
+                    javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout
+                    .PREFERRED_SIZE))
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING,
                     gameCanvasLayout.createSequentialGroup().addGap(70, 70, 70)
-                        .addGroup(gameCanvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(gameCanvasLayout.createParallelGroup(javax.swing.GroupLayout
+                            .Alignment.LEADING, false)
                             .addComponent(replayForwards, javax.swing.GroupLayout.DEFAULT_SIZE,
                                 javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(autoReplay, javax.swing.GroupLayout.DEFAULT_SIZE, 437, Short.MAX_VALUE))))
-            .addGroup(gameCanvasLayout.createSequentialGroup().addGap(206, 206, 206).addComponent(changeSpeedText,
-                javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(autoReplay, javax.swing.GroupLayout.DEFAULT_SIZE,
+                                437, Short.MAX_VALUE))))
+            .addGroup(gameCanvasLayout.createSequentialGroup().addGap(206, 206, 206)
+                .addComponent(changeSpeedText,
+                javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout
+                .PREFERRED_SIZE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING,
-                gameCanvasLayout.createSequentialGroup().addContainerGap().addComponent(speedChooser,
-                    javax.swing.GroupLayout.PREFERRED_SIZE, 437, javax.swing.GroupLayout.PREFERRED_SIZE)))
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 160, Short.MAX_VALUE)
-            .addGroup(gameCanvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                gameCanvasLayout.createSequentialGroup().addContainerGap().addComponent(
+                    speedChooser,
+                    javax.swing.GroupLayout.PREFERRED_SIZE, 437, javax.swing.GroupLayout
+                    .PREFERRED_SIZE)))
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 160, 
+                Short.MAX_VALUE)
+            .addGroup(gameCanvasLayout.createParallelGroup(javax.swing.GroupLayout
+                .Alignment.LEADING)
                 .addComponent(levelAndTimer, javax.swing.GroupLayout.PREFERRED_SIZE,
-                    javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addComponent(inventoryPanel, javax.swing.GroupLayout.PREFERRED_SIZE,
-                    javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout
+                    .PREFERRED_SIZE).addComponent(inventoryPanel, javax.swing.GroupLayout
+                        .PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, 
+                        javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGap(107, 107, 107)));
-    gameCanvasLayout.setVerticalGroup(gameCanvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+    gameCanvasLayout.setVerticalGroup(gameCanvasLayout.createParallelGroup(
+        javax.swing.GroupLayout.Alignment.LEADING)
         .addGroup(gameCanvasLayout.createSequentialGroup().addGap(34, 34, 34)
-            .addGroup(gameCanvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(levelAndTimer, javax.swing.GroupLayout.PREFERRED_SIZE, 456,
-                    javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(gameCanvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment
+                .LEADING).addComponent(levelAndTimer, javax.swing.GroupLayout.PREFERRED_SIZE,
+                    456, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING,
-                    gameCanvasLayout.createSequentialGroup().addGap(6, 6, 6).addComponent(boardCanvas,
-                        javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE,
-                        javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    gameCanvasLayout.createSequentialGroup().addGap(6, 6, 6).addComponent(
+                        boardCanvas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing
+                        .GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
             .addGap(18, 18, 18)
-            .addGroup(gameCanvasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(gameCanvasLayout.createParallelGroup(javax.swing.GroupLayout
+                .Alignment.LEADING)
                 .addGroup(gameCanvasLayout.createSequentialGroup()
                     .addComponent(inventoryText1, javax.swing.GroupLayout.PREFERRED_SIZE, 40,
                         javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -463,11 +515,14 @@ public class GuiWindow extends JFrame {
                         javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                     .addComponent(changeSpeedText, javax.swing.GroupLayout.PREFERRED_SIZE, 44,
-                        javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(speedChooser,
-                        javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        javax.swing.GroupLayout.PREFERRED_SIZE).addPreferredGap(javax.swing
+                            .LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(speedChooser,
+                        javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing
+                        .GroupLayout.PREFERRED_SIZE))
                 .addComponent(inventoryPanel, javax.swing.GroupLayout.PREFERRED_SIZE,
-                    javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing
+                    .GroupLayout.PREFERRED_SIZE))
             .addContainerGap(12, Short.MAX_VALUE)));
 
     Pause.setText("Game");
@@ -482,7 +537,8 @@ public class GuiWindow extends JFrame {
     Pause.add(pause);
 
     exitWithX.setAccelerator(
-        javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_X, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_X, 
+            java.awt.event.InputEvent.CTRL_DOWN_MASK));
     exitWithX.setText("Exit Game");
     exitWithX.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -492,7 +548,8 @@ public class GuiWindow extends JFrame {
     Pause.add(exitWithX);
 
     jMenuItem3.setAccelerator(
-        javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_R, 
+            java.awt.event.InputEvent.CTRL_DOWN_MASK));
     jMenuItem3.setText("Resume Game");
     jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -502,7 +559,8 @@ public class GuiWindow extends JFrame {
     Pause.add(jMenuItem3);
 
     newGameSameLevel.setAccelerator(
-        javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_P, 
+            java.awt.event.InputEvent.CTRL_DOWN_MASK));
     newGameSameLevel.setText("New Game");
     newGameSameLevel.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -516,7 +574,8 @@ public class GuiWindow extends JFrame {
     fileMenu.setText("File");
 
     saveButton.setAccelerator(
-        javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, 
+            java.awt.event.InputEvent.CTRL_DOWN_MASK));
     saveButton.setText("Save Game");
     saveButton.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -552,7 +611,8 @@ public class GuiWindow extends JFrame {
     levelsMenu.setText("Levels");
 
     levelOne.setAccelerator(
-        javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_1, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_1, 
+            java.awt.event.InputEvent.CTRL_DOWN_MASK));
     levelOne.setText("Leve 1");
     levelOne.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -562,7 +622,8 @@ public class GuiWindow extends JFrame {
     levelsMenu.add(levelOne);
 
     levelTwo.setAccelerator(
-        javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_2, java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_2, 
+            java.awt.event.InputEvent.CTRL_DOWN_MASK));
     levelTwo.setText("Level 2");
     levelTwo.addActionListener(new java.awt.event.ActionListener() {
       public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -578,10 +639,13 @@ public class GuiWindow extends JFrame {
     javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
     getContentPane().setLayout(layout);
     layout.setHorizontalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-        .addGroup(layout.createSequentialGroup().addComponent(gameCanvas, javax.swing.GroupLayout.DEFAULT_SIZE,
-            javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE).addGap(6, 6, 6)));
-    layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addComponent(
-        gameCanvas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE));
+        .addGroup(layout.createSequentialGroup().addComponent(gameCanvas, 
+            javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE,
+            Short.MAX_VALUE).addGap(6, 6, 6)));
+    layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout
+        .Alignment.LEADING).addComponent(
+        gameCanvas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE,
+        Short.MAX_VALUE));
 
     pack();
   }
@@ -592,7 +656,8 @@ public class GuiWindow extends JFrame {
   private void formWindowWon() {
     gameCountdown.pause();
     if (level == 1) {
-      int confirm = JOptionPane.showConfirmDialog(null, "Congratulations! You have won\nDo you want to play level 2?",
+      int confirm = JOptionPane.showConfirmDialog(null, "Congratulations! You have won\n"
+          + "Do you want to play level 2?",
           "Game Won", JOptionPane.WARNING_MESSAGE);
       if (confirm == JOptionPane.OK_OPTION) {
         level = 2;
@@ -621,11 +686,13 @@ public class GuiWindow extends JFrame {
       message = message + m.getLastSpecialEvent().name().toLowerCase().replace("_", " ")
           + ".\nDo you want to play this level again?";
     }
-    int confirm = JOptionPane.showConfirmDialog(null, message, "Game Over", JOptionPane.YES_NO_OPTION);
+    int confirm = JOptionPane.showConfirmDialog(null, message, "Game Over", 
+        JOptionPane.YES_NO_OPTION);
     if (confirm == JOptionPane.YES_OPTION) {
       newGame(level);
     } else if (confirm == JOptionPane.NO_OPTION) {
-      int confirm2 = JOptionPane.showConfirmDialog(null, "Do you want to play another level?", "Game Over",
+      int confirm2 = JOptionPane.showConfirmDialog(null, "Do you want to play another level?",
+          "Game Over",
           JOptionPane.YES_NO_OPTION);
       if (confirm2 == JOptionPane.YES_OPTION) {
         formWindowOpened(evtOpen);
@@ -646,7 +713,8 @@ public class GuiWindow extends JFrame {
     pausedAtSec = gameCountdown.getCurrentSec();
     gameCountdown.pause();
     int confirm = JOptionPane.showConfirmDialog(null,
-        "Are you sure you want to leave the game?\n You will lose all your progress if\n you leave without saving",
+        "Are you sure you want to leave the game?\n You will lose all your progress if\n"
+        + "you leave without saving",
         "Leave Game?", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
     if (confirm == JOptionPane.OK_OPTION) {
       // closes all windows
@@ -675,7 +743,8 @@ public class GuiWindow extends JFrame {
     levelSelected.add(three);
     // Default option, level one
     one.setSelected(true);
-    final JComponent[] inputs = new JComponent[] { new JLabel("Choose a level to play"), one, two, three, };
+    final JComponent[] inputs = new JComponent[] { 
+        new JLabel("Choose a level to play"), one, two, three, };
     int result = JOptionPane.showConfirmDialog(null, inputs, "Welcome", JOptionPane.PLAIN_MESSAGE);
     if (result == JOptionPane.OK_OPTION) {
       if (one.isSelected()) {
@@ -734,6 +803,7 @@ public class GuiWindow extends JFrame {
     if (m.getStatus() != Maze.GameState.PLAYING) {
       return false;
     }
+    
     boolean isValidMove = m.movePlayer(mv);
 
     render.updateRender();
@@ -753,6 +823,7 @@ public class GuiWindow extends JFrame {
       formWindowLost(evtOpen);
     }
     transferFocus();
+    
     return isValidMove;
   }
 
@@ -785,8 +856,60 @@ public class GuiWindow extends JFrame {
   }
 
   /**
-   * Processes users input when the button for autoReplay is pressed.
+   * Processes users input when the button for saving is pressed.
    * 
+   * @param evt save button on game menu is clicked or CTRL+S.
+   */
+  private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {
+    if (!mode.equals(modes.Replay.name())) {
+      EventListener.getRecord().saveToJson();
+      System.exit(0);
+    } else {
+      display("You are not allowed to save while Replay mode is on.");
+    }
+  }
+
+  /**
+   * Activated when user clicks on Replay. Uploads JsonFile and parsers level.
+   *
+   * @param evt rReplay is clicked.
+   */
+  private void replayButtonActionPerformed(java.awt.event.ActionEvent evt) {
+    pausedAtMin = gameCountdown.getCurrentMin();
+    pausedAtSec = gameCountdown.getCurrentSec();
+    gameCountdown.pause();
+    JsonFileFilter fileFilter = new JsonFileFilter();
+
+    fileChooser.setDialogTitle("Open Json File to Replay a match");
+    fileChooser.setFileFilter(fileFilter);
+
+    int returnVal = fileChooser.showOpenDialog(this);
+    if (returnVal == JFileChooser.APPROVE_OPTION) {
+      timer.setText("-:- -"); // Timer is not applicable during replay mode
+      // Allow user to use buttons for Replay mode
+      replayForwards.setEnabled(true);
+      autoReplay.setEnabled(true);
+      speedChooser.setEnabled(true);
+      saveButton.setEnabled(false);
+
+      File file = fileChooser.getSelectedFile();
+      mode = modes.Replay.name();
+      System.out.println("Selected game record: " + file.getAbsolutePath());
+      this.eventIterator = EventListener.getRecord()
+          .getIteratorByFile(file.getAbsolutePath(), this.replaySpeed);
+      replaySetLevel();
+    } else {
+      System.out.println("File access cancelled by user.");
+      // Resume the app timer, return to current game
+      mode = modes.Run.name(); // Game is back to running mode
+      // resume timer
+      gameCountdown = new GameTimer(pausedAtMin, pausedAtSec, this);
+    }
+  }
+
+  /**
+   * Processes users input when the button for autoReplay is pressed.
+   *
    * @param evt autoReplay button clicked.
    */
   private void autoReplayActionPerformed(java.awt.event.ActionEvent evt) {
@@ -810,7 +933,8 @@ public class GuiWindow extends JFrame {
           forwordable.handleMovement(mv);
           mv = null;
         } else {
-          System.err.println("Auto-Replay expects a movement but event emitted is: " + ev.getType());
+          System.err.println("Auto-Replay expects a movement but event emitted is: " 
+              + ev.getType());
         }
         int latency = (int) it.getLatency();
         System.out.println("Auto-Replay latency updated to: " + latency);
@@ -828,7 +952,7 @@ public class GuiWindow extends JFrame {
 
   /**
    * Processes users input when the button for moving forwards is pressed.
-   * 
+   *
    * @param evt '>' button clicked.
    */
   private void replayForwardsActionPerformed(java.awt.event.ActionEvent evt) {
@@ -846,46 +970,8 @@ public class GuiWindow extends JFrame {
   }
 
   /**
-   * Processes users input when the button for saving is pressed.
-   * 
-   * @param evt save button on game menu is clicked or CTRL+S.
-   */
-  private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {
-    if (!mode.equals(modes.Replay.name())) {
-      EventListener.getRecord().saveToJson();
-      System.exit(0);
-    } else {
-      display("You are not allowed to save while Replay mode is on.");
-    }
-  }
-
-  /**
-   * Processes users input when the button for displaying rules is pressed.
-   * 
-   * @param evt rules and instructions button clicked on the game menu.
-   */
-  private void rulesLegendActionPerformed(java.awt.event.ActionEvent evt) {
-    pausedAtMin = gameCountdown.getCurrentMin();
-    pausedAtSec = gameCountdown.getCurrentSec();
-    gameCountdown.pause();
-    display(" ~ Use the arrows on your key board to move Chap around the board.\n"
-        + " ~ To win the game make sure you collect all the chips on \n"
-        + "  the board within 2 minutes and go to the blue tile.\n"
-        + " ~ Open doors by collecting keys of the same color.\n"
-        + " ~ On level 2 do not let the bug reach Chap and be careful\n"
-        + "with the special tiles! Some items withing the board\n" + "will help you with those ;)\n"
-        + " ~ If you want to see all your moves play Replay mode.\n"
-        + "Use the \">\" button to replay forwards step by step (Default).\n"
-        + "or set AutoReplay and adjust to your desired speed.\n"
-        + "You can also save the game and resume later by going to \"File\" and\n" + "click on \"Save\"");
-    if (mode.equals(modes.Run.name())) {
-      gameCountdown = new GameTimer(pausedAtMin, pausedAtSec, this);
-    }
-  }
-
-  /**
    * Controls what happens when the speed chooser from Replay mode is changed.
-   * 
+   *
    * @param evt speed changed from bar.
    */
   private void speedChooserStateChanged(javax.swing.event.ChangeEvent evt) {
@@ -896,7 +982,6 @@ public class GuiWindow extends JFrame {
       // used in auto-replay.
       this.eventIterator.setSpeed(this.replaySpeed);
     }
-
   }
 
   /**
@@ -910,15 +995,6 @@ public class GuiWindow extends JFrame {
     gameCountdown.pause();
     display("GAME PAUSED");
     gameCountdown = new GameTimer(pausedAtMin, pausedAtSec, this);
-  }
-
-  /**
-   * Exits game without saving nor warnings.
-   * 
-   * @param evt Click on exit game in the game menu or CTRL+X
-   */
-  private void exitWithXActionPerformed(java.awt.event.ActionEvent evt) {
-    System.exit(0);
   }
 
   /**
@@ -936,7 +1012,7 @@ public class GuiWindow extends JFrame {
           GuiWindow.getWindows()[i].dispose();
         }
       }
-    }else {
+    } else {
       display("Replay mode ON. \nCannot set a new level.");
     }
   }
@@ -955,15 +1031,15 @@ public class GuiWindow extends JFrame {
         for (int i = 0; i < GuiWindow.getWindows().length - 1; i++) {
           GuiWindow.getWindows()[i].dispose();
         }
+      } else {
+        display("Replay mode on. \nCannot set a new level.");
       }
-    }else {
-      display("Replay mode on. \nCannot set a new level.");
     }
   }
 
   /**
    * Resumes unfinished games.
-   * 
+   *
    * @param evt Click or CTRL+R.
    */
   private void resumeGameActionPerformed(java.awt.event.ActionEvent evt) {
@@ -972,17 +1048,17 @@ public class GuiWindow extends JFrame {
 
   /**
    * Creates a new game from last unfinished level.
-   * 
+   *
    * @param evt Click or CTRL+P
    */
   private void newGameSameLevelActionPerformed(java.awt.event.ActionEvent evt) {
     gameCountdown.pause(); // old timer is stopped
     new GuiWindow().setVisible(true);
-    //Game always starts from Run mode
+    // Game always starts from Run mode
     mode = modes.Run.name();
-    //Makes sure there is nly one window open at the time
-    //since game has a countdown I found it pointless to have
-    //mode than one window open.
+    // Makes sure there is nly one window open at the time
+    // since game has a countdown I found it pointless to have
+    // mode than one window open.
     if (GuiWindow.getWindows().length > 1) {
       for (int i = 0; i < GuiWindow.getWindows().length - 1; i++) {
         GuiWindow.getWindows()[i].dispose();
@@ -991,84 +1067,41 @@ public class GuiWindow extends JFrame {
   }
 
   /**
-   * Activated when user clicks on Replay. Uploads JsonFile and parsers level.
-   * 
-   * @param evt
+   * Exits game without saving nor warnings.
+   *
+   * @param evt Click on exit game in the game menu or CTRL+X
    */
-  private void replayButtonActionPerformed(java.awt.event.ActionEvent evt) {
-    pausedAtMin = gameCountdown.getCurrentMin();
-    pausedAtSec = gameCountdown.getCurrentSec();
-    gameCountdown.pause();
-    JsonFileFilter fileFilter = new JsonFileFilter();
-
-    fileChooser.setDialogTitle("Open Json File to Replay a match");
-    fileChooser.setFileFilter(fileFilter);
-
-    int returnVal = fileChooser.showOpenDialog(this);
-    if (returnVal == JFileChooser.APPROVE_OPTION) {
-      timer.setText("-:- -"); // Timer is not applicable during replay mode
-      // Allow user to use buttons for Replay mode
-      replayForwards.setEnabled(true);
-      autoReplay.setEnabled(true);
-      speedChooser.setEnabled(true);
-      saveButton.setEnabled(false);
-
-      File file = fileChooser.getSelectedFile();
-      mode = modes.Replay.name();
-      System.out.println("Selected game record: " + file.getAbsolutePath());
-      this.eventIterator = EventListener.getRecord().getIteratorByFile(file.getAbsolutePath(), this.replaySpeed);
-      replaySetLevel();
-    } else {
-      System.out.println("File access cancelled by user.");
-      // Resume the app timer, return to current game
-      mode = modes.Run.name(); // Game is back to running mode
-      gameCountdown = new GameTimer(pausedAtMin, pausedAtSec, this); // resume timer
-    }
-  }// GEN-LAST:event_replayButtonActionPerformed
+  private void exitWithXActionPerformed(java.awt.event.ActionEvent evt) {
+    System.exit(0);
+  }
 
   private void speedChooserAncestorAdded(javax.swing.event.AncestorEvent evt) {
 
   }
 
   /**
-   * .
-   * 
-   * @param args the command line arguments
+   * Processes users input when the button for displaying rules is pressed.
+   *
+   * @param evt rules and instructions button clicked on the game menu.
    */
-  public static void main(String[] args) {
-    /* Set the Nimbus look and feel */
-    // <editor-fold defaultstate="collapsed" desc=" Look and feel setting code
-    // (optional) ">
-    /*
-     * If Nimbus (introduced in Java SE 6) is not available, stay with the default
-     * look and feel. For details see
-     * http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
-     */
-    try {
-      for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-        if ("Nimbus".equals(info.getName())) {
-          javax.swing.UIManager.setLookAndFeel(info.getClassName());
-          break;
-        }
-      }
-    } catch (ClassNotFoundException ex) {
-      java.util.logging.Logger.getLogger(GuiWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-    } catch (InstantiationException ex) {
-      java.util.logging.Logger.getLogger(GuiWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-    } catch (IllegalAccessException ex) {
-      java.util.logging.Logger.getLogger(GuiWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-    } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-      java.util.logging.Logger.getLogger(GuiWindow.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+  private void rulesLegendActionPerformed(java.awt.event.ActionEvent evt) {
+    pausedAtMin = gameCountdown.getCurrentMin();
+    pausedAtSec = gameCountdown.getCurrentSec();
+    gameCountdown.pause();
+    display(" ~ Use the arrows on your key board to move Chap around the board.\n"
+        + " ~ To win the game make sure you collect all the chips on \n"
+        + "  the board within 2 minutes and go to the blue tile.\n"
+        + " ~ Open doors by collecting keys of the same color.\n"
+        + " ~ On level 2 do not let the bug reach Chap and be careful\n"
+        + "with the special tiles! Some items withing the board\n" + "will help you with those ;)\n"
+        + " ~ If you want to see all your moves play Replay mode.\n"
+        + "Use the \">\" button to replay forwards step by step (Default).\n"
+        + "or set AutoReplay and adjust to your desired speed.\n"
+        + "You can also save the game and resume later by going to \"File\" and\n" 
+        + "click on \"Save\"");
+    if (mode.equals(modes.Run.name())) {
+      gameCountdown = new GameTimer(pausedAtMin, pausedAtSec, this);
     }
-    // </editor-fold>
-    // </editor-fold>
-
-    /* Create and display the form */
-    java.awt.EventQueue.invokeLater(new Runnable() {
-      public void run() {
-        new GuiWindow().setVisible(true);
-      }
-    });
   }
 
   /**
@@ -1078,9 +1111,11 @@ public class GuiWindow extends JFrame {
     for (int i = 0; i < inventoryItems.length; i++) {
       if (i < m.getPlayerInventory().size()) {
         inventoryItems[i] = new ImageIcon(
-            "src/nz/ac/vuw/ecs/swen225/gp20/render/TileFile/" + m.getPlayerInventory().get(i).getName() + "Tile.png");
+            "src/nz/ac/vuw/ecs/swen225/gp20/render/TileFile/" + m.getPlayerInventory()
+            .get(i).getName() + "Tile.png");
         // set the size
-        inventoryItems[i].setImage(inventoryItems[i].getImage().getScaledInstance(66, 62, Image.SCALE_DEFAULT));
+        inventoryItems[i].setImage(inventoryItems[i].getImage()
+            .getScaledInstance(66, 62, Image.SCALE_DEFAULT));
         inventoryLabels[i].setIcon(inventoryItems[i]);
         // inventoryLabels[i].setToolTipText(m.getPlayerInventory().get(i).getName());
       } else {
@@ -1092,7 +1127,7 @@ public class GuiWindow extends JFrame {
 
   /**
    * If the player is on top of the info tile application shows a pop up message.
-   * 
+   *
    * @param information hint to help player.
    */
   private void popUpInfo(String information) {
@@ -1139,7 +1174,7 @@ public class GuiWindow extends JFrame {
   /**
    * Displays the level on the GUI by receiving the information from the maze
    * module.
-   * 
+   *
    * @param level level chosen by user.
    */
   private void setLevelNumber(int level) {
@@ -1160,14 +1195,15 @@ public class GuiWindow extends JFrame {
 
   /**
    * Writes text file where the number of the last level played is stored.
-   * 
-   * @param level
+   *
+   * @param level last unfinished level.
    */
   private void writeLevelFile(String level) {
     File old = new File("src/nz/ac/vuw/ecs/swen225/gp20/application/data/level.txt");
     old.delete();
     try {
-      FileWriter writer = new FileWriter("src/nz/ac/vuw/ecs/swen225/gp20/application/data/level.txt", true);
+      FileWriter writer = new FileWriter("src/nz/ac/vuw/ecs/swen225/" 
+          + "gp20/application/data/level.txt", true);
       writer.write(level);
       writer.close();
     } catch (IOException e) {
@@ -1181,7 +1217,8 @@ public class GuiWindow extends JFrame {
   private int readLevelFile() {
     int lastLevel = -1;
     try {
-      FileReader reader = new FileReader("src/nz/ac/vuw/ecs/swen225/gp20/application/data/level.txt");
+      FileReader reader = new FileReader("src/nz/ac/vuw/ecs/swen225/" 
+          + "gp20/application/data/level.txt");
       BufferedReader bufferedReader = new BufferedReader(reader);
 
       int line;
@@ -1197,14 +1234,14 @@ public class GuiWindow extends JFrame {
     if (lastLevel == 1 || lastLevel == 2) {
       return lastLevel;
     } else {
-      display("Opps! You have not played this game\n " + "before. \nLet's start from level one");
+      display("Opps! You have not played this game\n before. \nLet's start from level one");
       return 1;
     }
   }
 
   /**
    * Countdown for game when players initializes the game.
-   * 
+   *
    * @return countdown for game
    */
   public JLabel getTimer() {
@@ -1213,7 +1250,7 @@ public class GuiWindow extends JFrame {
 
   /**
    * Current render within this game.
-   * 
+   *
    * @return board of current game.
    */
   public Render getRender() {
@@ -1222,7 +1259,7 @@ public class GuiWindow extends JFrame {
 
   /**
    * Event of window opening.
-   * 
+   *
    * @return event when GUI Window opens.
    */
   public WindowEvent getOpenEvt() {
@@ -1231,7 +1268,7 @@ public class GuiWindow extends JFrame {
 
   /**
    * Notifies record and replay module where the bugs move.
-   * 
+   *
    * @param move     direction of bug.
    * @param entityID bug reference.
    */
@@ -1255,5 +1292,33 @@ public class GuiWindow extends JFrame {
    */
   public void addPropertyChangeListener(PropertyChangeListener propertyChangeListener) {
     propertyEditorSupport.addPropertyChangeListener(propertyChangeListener);
+  }
+
+  /**
+   * .
+   *
+   * @param args the command line arguments
+   */
+  public static void main(String[] args) {
+    try {
+      for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager
+          .getInstalledLookAndFeels()) {
+        if ("Nimbus".equals(info.getName())) {
+          javax.swing.UIManager.setLookAndFeel(info.getClassName());
+          break;
+        }
+      }
+    } catch (ClassNotFoundException | InstantiationException | UnsupportedLookAndFeelException
+        | IllegalAccessException ex) {
+      java.util.logging.Logger.getLogger(GuiWindow.class.getName())
+           .log(java.util.logging.Level.SEVERE, null, ex);
+    }
+
+    /* Create and display the form */
+    java.awt.EventQueue.invokeLater(new Runnable() {
+      public void run() {
+        new GuiWindow().setVisible(true);
+      }
+    });
   }
 }
