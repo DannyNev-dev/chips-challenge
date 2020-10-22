@@ -459,7 +459,7 @@
 			},
 			{
 				"type": "Tile",
-				"item": "none"				
+				"item": "medicine"				
 			},
 			{
 				"type": "Tile",
@@ -594,7 +594,7 @@
 			},		
 			{
 				"type": "Tile",
-				"item": "none"				
+				"item": "poison"				
 			},
 			{
 				"type": "Tile",

@@ -45,13 +45,13 @@ public class LevelReader {
 
 	/** The maze obj in json form. */
 	JsonObject mazeObj;
-	
-	/**  List of the bugs added to the level*. */
+
+	/** List of the bugs added to the level*. */
 	public ArrayList<BugEntity> bugs = new ArrayList<BugEntity>();
-	
-	/**  Reference to the games maze class*. */
-	public Maze maze;	//maybe protected
-	
+
+	/** Reference to the games maze class*. */
+	public Maze maze; // maybe protected
+
 	/** The gw. */
 	public GuiWindow gw;
 
@@ -108,44 +108,48 @@ public class LevelReader {
 		Player p = new Player(new Point(x, y));
 		return p;
 	}
-	
+
 	/**
 	 * Sets the maze. and gives the bugs references
 	 *
 	 * @param m the new maze
 	 */
-	public void setMaze(Maze m) {
+	public boolean setMaze(Maze m) {
 		this.maze = m;
-		//after the board is made we want to begin the bugs movements
-		for(BugEntity e: bugs) {
+		// after the board is made we want to begin the bugs movements
+		for (BugEntity e : bugs) {
 			e.setMaze(maze);
 		}
+		return true;
 	}
-	
+
 	/**
 	 * Sets the application. and gives the bugs references
 	 *
 	 * @param gw the new application
 	 */
-	//Camila needs to call this after the maze is created or at any point before the player moves
-	public void setApplication(GuiWindow gw) {
+	// Camila needs to call this after the maze is created or at any point before
+	// the player moves
+	public boolean setApplication(GuiWindow gw) {
 		this.gw = gw;
-		for(BugEntity e: bugs) {
+		for (BugEntity e : bugs) {
 			e.setApplication(gw);
 		}
+		return true;
 	}
-	
+
 	/**
 	 * @return the levelNum
 	 */
 	public int getLevelNum() {
 		return levelNum;
 	}
-	
+
 	/**
 	 * Load target.
 	 *
-	 * @return int target is the number of chips (treasures) that need to be collected
+	 * @return int target is the number of chips (treasures) that need to be
+	 *         collected
 	 */
 	public int loadTarget() {
 		return mazeObj.getInt("target");
@@ -156,12 +160,13 @@ public class LevelReader {
 	 *
 	 * @param jsonObj the json obj
 	 * @param target  the target
-	 * @param p the player
+	 * @param p       the player
 	 * @return Tile the tile created from the json object
-	 * @throws RuntimeException exception thrown when the json format for items/tiles is incorrect
+	 * @throws RuntimeException exception thrown when the json format for
+	 *                          items/tiles is incorrect
 	 */
 	public Tile parseTile(JsonObject jsonObj, int target, Player p) throws RuntimeException {
-		
+
 		int bugCount = 1;
 		Item item = null;
 		Tile tile = null;
@@ -193,8 +198,14 @@ public class LevelReader {
 			case "player":
 				item = p;
 				break;
+			case "poison":
+				item = new Harmful(DangerType.POISON);
+				break;
 			case "fire":
 				item = new Harmful(DangerType.FIRE);
+				break;
+			case "medicine":
+				item = new Remedy(Type.MEDICINE);
 				break;
 			case "waterbucket":
 				item = new Remedy(Type.BUCKET);
@@ -231,11 +242,11 @@ public class LevelReader {
 			tile = new InfoTile(jsonObj.getString("item"), null);
 			break;
 		case "Bug":
-			//get item to get cords
+			// get item to get cords
 			JsonObject varObj = jsonObj.getJsonObject("item");
 			int x = varObj.getInt("x");
 			int y = varObj.getInt("y");
-			BugEntity bug = new BugEntity(new Point(x,y),bugCount++);
+			BugEntity bug = new BugEntity(new Point(x, y), bugCount++);
 			tile = new ItemTile(bug);
 			bugs.add(bug);
 			break;
@@ -251,15 +262,15 @@ public class LevelReader {
 	 * @param jList  list of the json objects
 	 * @param target the number of treasure on the map
 	 * @param p      The player
-	 * @return the tile[][]	returns a 2D array of tiles that is the board
+	 * @return the tile[][] returns a 2D array of tiles that is the board
 	 */
 	public Tile[][] makeBoard(JsonArray jList, int target, Player p) {
-		int length = jList.size();	//17
+		int length = jList.size(); // 17
 		// initialize board
 		Tile[][] board = new Tile[length][jList.getJsonObject(0).getJsonArray("row").size()];
 		for (int i = 0; i < length; i++) {
 			JsonObject jsonObj = jList.getJsonObject(i);
-			JsonArray internalList = jsonObj.getJsonArray("row");	//21
+			JsonArray internalList = jsonObj.getJsonArray("row"); // 21
 			for (int j = 0; j < internalList.size(); j++) {
 				JsonObject internalJObj = internalList.getJsonObject(j);
 				board[i][j] = parseTile(internalJObj, target, p); // Parse each tile from the row array into the board
@@ -268,5 +279,5 @@ public class LevelReader {
 		}
 		return board;
 	}
-	
+
 }
