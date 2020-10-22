@@ -46,6 +46,22 @@ public interface Entity extends Item, Cloneable {
     throw new UnsupportedOperationException("This entity cannot drop an item");
   }
   
+  /**
+   * Get this entity.
+   * @return this
+   */
+  public default Entity getEntity() {
+    throw new UnsupportedOperationException("Required for plugin");
+  }
+ 
+  /**
+   * Get the path for this entity data.
+   * @param prefix location of generic data folder
+   */
+  public default void getFile(String prefix) {
+    throw new UnsupportedOperationException("This entity cannot drop an item");
+  }
+  
   @Override
   public default boolean hasAction() {
     return true;
