@@ -16,6 +16,8 @@ import nz.ac.vuw.ecs.swen225.gp20.maze.items.Key;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Player;
 import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.ItemTile;
 import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.Tile;
+import nz.ac.vuw.ecs.swen225.gp20.persistence.LevelReader;
+
 import org.junit.Assume;
 import org.junit.jupiter.api.Test;
 
@@ -114,6 +116,24 @@ class MazeTest {
     
     assertFalse(board.getTile(playerPos).containsItemType(Player.class));  
     
+  }
+  
+  @Test
+  void mazeConstructors() {
+    try {
+      Maze m1 = new Maze(1);
+      LevelReader loader = new LevelReader(1);
+      Maze m2 = new Maze(loader);
+      
+      //assertTrue(m1.getBoardObject().equals(m2.getBoardObject()));
+      
+      
+    } catch (IOException e) {
+      Assume.assumeTrue("Test can't run without the definition of level one", false);
+    } catch (Exception e) {
+      Assume.assumeTrue("The Maze package couldn't be tested due to an error "
+          + "while loading the data from the persistence package", false);
+    }
   }
   
   

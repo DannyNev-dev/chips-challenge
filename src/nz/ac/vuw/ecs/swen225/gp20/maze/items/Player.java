@@ -8,8 +8,8 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import nz.ac.vuw.ecs.swen225.gp20.maze.Move;
 import nz.ac.vuw.ecs.swen225.gp20.maze.Maze.SpecialEvent;
+import nz.ac.vuw.ecs.swen225.gp20.maze.Move;
 
 
 /**

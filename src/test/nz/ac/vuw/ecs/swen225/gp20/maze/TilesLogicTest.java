@@ -169,16 +169,16 @@ public class TilesLogicTest {
     //it could still move into the poison, of course it would then cause the player to die
     assertTrue(poison.isAccessible(player));
     
-    Assume.assumeTrue(new Remedy(Type.BUCKET).equals(new Remedy(Type.BUCKET)));
+    Assume.assumeTrue(new Remedy(Type.MEDICINE).equals(new Remedy(Type.MEDICINE)));
     //Pick up the medicine
     medicine.applyAction(player);
-    Assume.assumeTrue(player.getInventory().contains(new Remedy(Type.BUCKET)));
+    Assume.assumeTrue(player.getInventory().contains(new Remedy(Type.MEDICINE)));
     //The players should now be different
     Assume.assumeFalse(player.equals(twin));
     
-    assertEquals(SpecialEvent.CHAP_DIED_BURNT, poison.applyAction(twin));
+    assertEquals(SpecialEvent.CHAP_DIED_POISONED, poison.applyAction(twin));
     
-    assertEquals(SpecialEvent.FIRE_EXTINGUISHED, poison.applyAction(player));
+    assertEquals(SpecialEvent.POISONED_CURED, poison.applyAction(player));
     
     //Check that the medicine didn't affect whether the player can access the poison tile
     assertTrue(poison.isAccessible(player));

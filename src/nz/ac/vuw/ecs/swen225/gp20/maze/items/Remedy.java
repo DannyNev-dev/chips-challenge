@@ -31,7 +31,10 @@ public class Remedy implements Collectable {
   private final Type remedyType;
   
   
-  
+  /**
+   * Create a cure again harmful items.
+   * @param remedyType type of the cure
+   */
   public Remedy(Type remedyType) {
     super();
     this.remedyType = remedyType;

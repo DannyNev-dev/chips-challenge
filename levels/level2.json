@@ -1,5 +1,5 @@
 {		
-	"player":{"x":14,"y":8},	
+	"player":{"x":8,"y":14},	
 	"target":6,	
 	"board":[
 		{"row":[
@@ -372,7 +372,7 @@
 			},
 			{
 				"type": "Bug",
-				"item": {"x":11,"y":5}
+				"item": {"x":4,"y":10}
 			},
 			{
 				"type": "Tile",
@@ -763,7 +763,7 @@
 			},
 			{
 				"type": "Bug",
-				"item": {"x":8,"y":10}
+				"item": {"x":9,"y":7}
 			},
 			{
 				"type": "Tile",

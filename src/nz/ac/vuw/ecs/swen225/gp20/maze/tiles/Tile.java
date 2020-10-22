@@ -89,7 +89,7 @@ public abstract class Tile implements Cloneable {
    * @return true if this tile contains the specified element
    */
   public boolean contains(Item itemToCheck) {
-    return item.equals(itemToCheck);
+    return item != null && item.equals(itemToCheck);
   }
   
   /**

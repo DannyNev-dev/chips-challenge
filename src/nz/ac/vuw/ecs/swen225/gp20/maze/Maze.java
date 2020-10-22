@@ -140,6 +140,21 @@ public class Maze {
     assert (isPlayerPosValid());
     
   }
+  
+  /**
+   * Create a new maze given an already created loader.
+   * @param loader object used to obtain the data
+   */ 
+  public Maze(LevelReader loader) {
+    checkArgument(loader != null, "The loader must be well defined");
+    this.player = loader.loadPlayer();
+    this.board = new Board(loader.loadBoard());
+    this.target = loader.loadTarget();
+    this.level = loader.getLevelNum();
+    loader.setMaze(this);
+    assert (isPlayerPosValid());
+    
+  }
 
   /**
    * Move the player from it's current position to a different tile in the board.
@@ -155,6 +170,8 @@ public class Maze {
       
       player.setOrientation(move.getLastDirection());
       successful = true;
+    } else {
+      lastEvent = SpecialEvent.MOVE_REJECTED;
     }
     
     //Check that there the player position matches and that there is exactly one player on the board
@@ -196,7 +213,6 @@ public class Maze {
     
     //Check if entity can enter the new tile
     if (!newTile.isAccessible(movingEntity)) {
-      lastEvent = SpecialEvent.MOVE_REJECTED;
       return false;
     }
     
