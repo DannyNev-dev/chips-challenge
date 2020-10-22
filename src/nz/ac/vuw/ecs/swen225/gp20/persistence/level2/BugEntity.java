@@ -90,14 +90,15 @@ public class BugEntity implements Entity, Collectable, PropertyChangeListener {
 	
 	
 	/**
-	 * Gets the file.
-	 *
-	 * @param prefix the prefix for the image
-	 * @return an image 
-	 */
-	public ImageIcon getFile(String prefix) {
-		return new ImageIcon("src/nz/ac/vuw/ecs/swen225/gp20/persistence/level2/BugImages/" + prefix + ".png");
-	}
+     * Gets the file.
+     *
+     * @param prefix the prefix for the image
+     * @return an image 
+     */
+	@Override
+    public String getFile(String prefix) {
+        return "src/nz/ac/vuw/ecs/swen225/gp20/persistence/level2/BugImages/" + prefix + ".png";
+    }
 	
 	/**
 	 * Gets the name.
@@ -108,7 +109,17 @@ public class BugEntity implements Entity, Collectable, PropertyChangeListener {
 	public String getName() {
 		return name;
 	}
-
+	
+	/**
+	 * Gets the entity.
+	 *
+	 * @return this entity
+	 */
+	@Override
+    public Entity getEntity() {
+        return this;
+    }
+	
 	/**
 	 * Gets the inventory if i had one.
 	 *
