@@ -10,6 +10,7 @@ import nz.ac.vuw.ecs.swen225.gp20.maze.Maze;
 import nz.ac.vuw.ecs.swen225.gp20.maze.Move;
 import nz.ac.vuw.ecs.swen225.gp20.maze.SingleMove;
 import nz.ac.vuw.ecs.swen225.gp20.persistence.LevelReader;
+import nz.ac.vuw.ecs.swen225.gp20.persistence.level2.BugEntity;
 import nz.ac.vuw.ecs.swen225.gp20.recnplay.Event;
 import nz.ac.vuw.ecs.swen225.gp20.recnplay.EventIterator;
 import nz.ac.vuw.ecs.swen225.gp20.recnplay.EventListener;
@@ -24,6 +25,9 @@ import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyEditorSupport;
 import java.io.*;
+import java.io.IOException;
+import java.util.HashMap;
+
 
 /**
  *Main class of the application module. Creates the 
@@ -568,7 +572,6 @@ public class GuiWindow extends JFrame {
       }
     });
     Pause.add(newGameSameLevel);
-
     jMenuBar1.add(Pause);
 
     fileMenu.setText("File");
@@ -649,6 +652,212 @@ public class GuiWindow extends JFrame {
 
     pack();
   }
+      /**
+       * Processes users input to move Chap around the board.
+       * @param evt arrow key released.
+       */
+      private void keyReleasedSetMove(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_keyReleasedSetMove
+          SingleMove singleMove = null;
+          canMove = canMove+1;
+          if( mode != null && !mode.equals("Replay") && canMove %2 == 0) {
+              requestFocus();
+              if (evt.getKeyCode() == KeyEvent.VK_LEFT) {
+                  singleMove = new SingleMove(Move.Direction.LEFT);
+              } else if (evt.getKeyCode() == KeyEvent.VK_DOWN) {
+                  singleMove = new SingleMove(Move.Direction.DOWN);
+              } else if (evt.getKeyCode() == KeyEvent.VK_RIGHT) {
+                  singleMove = new SingleMove(Move.Direction.RIGHT);
+              } else if (evt.getKeyCode() == KeyEvent.VK_UP) {
+                  singleMove = new SingleMove(Move.Direction.UP);
+              } else {
+                  return;
+              }
+              //Only updates event listener if move is valid.
+              if(handleMovement(singleMove)) {
+                  eventListener.onEvent(Event.eventOfChapMove(singleMove));
+              }
+          }
+          //Bug moves regardless Chaps move is valid or not.
+          propertyEditorSupport.firePropertyChange();
+          render.updateRender();
+          if(m.getStatus() == Maze.GameState.GAME_LOST){
+              formWindowLost(evtOpen);
+          }
+      }//GEN-LAST:event_keyReleasedSetMove
+
+      /**
+       * Processes users input when the button for autoReplay is pressed.
+       * @param evt autoReplay button clicked.
+       */
+      private void autoReplayActionPerformed(java.awt.event.ActionEvent evt) {
+
+              replayForwards.setEnabled(false);
+              EventIterator it = this.eventIterator;
+              GuiWindow forwordable = this;
+              Maze mz = this.m;
+
+              ActionListener taskPerformer = new ActionListener() {
+                  public void actionPerformed(ActionEvent evt) {
+                      if (!it.hasNext()) {
+                          ((Timer) evt.getSource()).stop();
+                          System.out.println("Auto-Replay stopped iteration");
+                          return;
+                      }
+                      Event ev = it.next();
+                      SingleMove mv = null;
+                      System.out.println("Auto-Replay event: " + ev.getType());
+                      switch(ev.getType()){
+                      case ChapMove:
+                    	  mv = ev.getMove();
+                          if (mv != null) {
+                              System.out.println("Auto-Replay ChapMove: " + mv.getLastDirection());
+                              forwordable.handleMovement(mv);
+                              mv = null;
+                          } else {
+                              System.err.println("Auto-Replay ChapMove has no movement to replay ");
+                          }
+                          break;
+                      case BugMove:
+                    	  mv = ev.getMove();
+                          if (mv != null) {
+                              System.out.println("Auto-Replay BugMove: " + mv.getLastDirection() + "BugId: " + ev.getBugId());
+	                    	  int bugId = ev.getBugId();
+	                    	  BugEntity bug = forwordable.getBug(bugId);
+	                    	  mz.moveEntity(mv, bug);
+                          } else {
+                              System.err.println("Auto-Replay BugMove has no movement to replay ");
+                          }
+                          break;
+                      default:
+                    	  System.err.println("Auto-Replay reads unexpected event: " + ev.getType());
+                    	  break;  
+                      }
+                      int latency = (int) it.getLatency();
+                      System.out.println("Auto-Replay latency updated to: " + latency);
+                      //FayLu: Theoretically the speed might be adjusted during the auto-replay
+                      ((Timer) evt.getSource()).setDelay(latency);
+                  }
+              };
+              // When auto-replay is triggered the real-time speed value is used
+              it.setSpeed(this.replaySpeed);
+              int latency = (int) it.getLatency();
+              System.out.println("Auto-Replay latency initialized to: " + latency);
+              new Timer(latency, taskPerformer).start();
+
+      }//GEN-LAST:event_autoReplayActionPerformed
+
+      /**
+       * Processes users input when the button for moving forwards is pressed.
+       * @param evt '>' button clicked.
+       */
+      private void replayForwardsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_forwardsActionPerformed
+    	  
+    	  EventIterator it = this.eventIterator;
+          GuiWindow forwordable = this;
+          Maze mz = this.m;
+          
+          if (!it.hasNext()) {
+              ((Timer) evt.getSource()).stop();
+              System.out.println("Auto-Replay stopped iteration");
+              return;
+          }
+          Event ev = it.next();
+          SingleMove mv = null;
+          System.out.println("Auto-Replay event: " + ev.getType());
+          switch(ev.getType()){
+          case ChapMove:
+        	  mv = ev.getMove();
+              if (mv != null) {
+                  System.out.println("Auto-Replay ChapMove: " + mv.getLastDirection());
+                  forwordable.handleMovement(mv);
+                  mv = null;
+              } else {
+                  System.err.println("Auto-Replay ChapMove has no movement to replay ");
+              }
+              break;
+          case BugMove:
+        	  mv = ev.getMove();
+              if (mv != null) {
+                  System.out.println("Auto-Replay BugMove: " + mv.getLastDirection() + "BugId: " + ev.getBugId());
+            	  int bugId = ev.getBugId();
+            	  BugEntity bug = forwordable.getBug(bugId);
+            	  mz.moveEntity(mv, bug);
+              } else {
+                  System.err.println("Auto-Replay BugMove has no movement to replay ");
+              }
+              break;
+          default:
+        	  System.err.println("Auto-Replay reads unexpected event: " + ev.getType());
+        	  break;  
+          }
+//          if (this.eventIterator.hasNext() && mv == null) {
+//              mv = this.eventIterator.next().getMove();
+//          }
+//          if (mv != null) {
+//              System.out.println("Replay movement: " + mv.getLastDirection());
+//              this.handleMovement(mv);
+//          }else {
+//              System.out.println("Replay finished the event iteration");
+//          }
+
+      }//GEN-LAST:event_forwardsActionPerformed
+
+      /**
+       * Processes users input when the button for saving is pressed.
+       * @param evt save button on game menu is clicked or CTRL+S.
+       */
+      private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {
+//GEN-FIRST:event_saveButtonActionPerformed
+          if (!mode.equals(modes.Replay.name())) {
+              EventListener.getRecord().saveToJson();
+              System.exit(0);
+          }else{
+              display("You are not allowed to save while Replay mode is on.");
+          }
+      }//GEN-LAST:event_saveButtonActionPerformed
+
+      /**
+       * Processes users input when the button for displaying rules is pressed.
+       * @param evt rules and instructions button clicked on the game menu.
+       */
+      private void rulesLegendActionPerformed(java.awt.event.ActionEvent evt) {
+//GEN-FIRST:event_rulesLegendActionPerformed
+        pausedAtMin = gameCountdown.getCurrentMin();
+        pausedAtSec = gameCountdown.getCurrentSec();
+        gameCountdown.pause();
+        display(" ~ Use the arrows on your key board to move Chap around the board.\n"
+            +" ~ To win the game make sure you collect all the chips on \n"
+            +"  the board within 2 minutes and go to the blue tile.\n"
+            +" ~ Open doors by collecting keys of the same color.\n"
+            +" ~ On level 2 do not let the bug reach Chap and be careful\n"
+                + "with the special tiles! Some items withing the board\n"
+            + "will help you with those ;)"
+            +" ~ If you want to see all your moves play Replay mode.\n"
+            + "Use the \">\" button to replay forwards step by step (Default).\n"
+                + "or set AutoReplay and adjust to your desired speed.\n"
+            +"You can also save the game and resume later by going to \"File\" and\n"
+            +"click on \"Save\"");
+        if( mode.equals(modes.Run.name())) {
+            gameCountdown = new GameTimer(pausedAtMin, pausedAtSec,this);
+        }
+      }//GEN-LAST:event_rulesLegendActionPerformed
+
+    /**
+     * Controls what happens when the speed chooser from Replay mode is changed.
+     * @param evt speed changed from bar.
+     */
+    private void speedChooserStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_speedChooserStateChanged
+        // TODO add your handling code here:
+        	this.replaySpeed = speedChooser.getValue();
+        if (this.eventIterator != null) {
+        	// FayLu: User might adjust speed during auto-replay.
+        	// If the slider changes, update new speed seed value to iterator and it will be used in auto-replay.
+        	this.eventIterator.setSpeed(this.replaySpeed);
+        }
+    }
+
+
+    
 
   /**
    * Forms a warning message if user wins game bottom.
@@ -970,21 +1179,6 @@ public class GuiWindow extends JFrame {
   }
 
   /**
-   * Controls what happens when the speed chooser from Replay mode is changed.
-   *
-   * @param evt speed changed from bar.
-   */
-  private void speedChooserStateChanged(javax.swing.event.ChangeEvent evt) {
-    this.replaySpeed = speedChooser.getValue();
-    if (this.eventIterator != null) {
-      // FayLu: User might adjust speed during auto-replay.
-      // If the slider changes, update new speed seed value to iterator and it will be
-      // used in auto-replay.
-      this.eventIterator.setSpeed(this.replaySpeed);
-    }
-  }
-
-  /**
    * Pauses the game and shows a message.
    * 
    * @param evt Click on pause game on the game menu or space key.
@@ -1036,6 +1230,92 @@ public class GuiWindow extends JFrame {
       }
     }
   }
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenu Pause;
+    private javax.swing.JButton autoReplay;
+    private javax.swing.JPanel boardCanvas;
+    private javax.swing.JLabel changeSpeedText;
+    private javax.swing.JLabel chipsLeft;
+    private javax.swing.JLabel chipsleftText2;
+    private javax.swing.JMenuItem exitWithX;
+    private javax.swing.JMenu fileMenu;
+    private javax.swing.JPanel gameCanvas;
+    private javax.swing.JMenu help;
+    private javax.swing.JPanel inventoryPanel;
+    private javax.swing.JLabel inventoryText;
+    private javax.swing.JLabel inventoryText1;
+    private javax.swing.JLabel item0;
+    private javax.swing.JLabel item1;
+    private javax.swing.JLabel item2;
+    private javax.swing.JLabel item3;
+    private javax.swing.JLabel item4;
+    private javax.swing.JLabel item5;
+    private javax.swing.JLabel item6;
+    private javax.swing.JLabel item7;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JPanel levelAndTimer;
+    private javax.swing.JLabel levelNumber;
+    private javax.swing.JMenuItem levelOne;
+    private javax.swing.JLabel levelText;
+    private javax.swing.JMenuItem levelTwo;
+    private javax.swing.JMenu levelsMenu;
+    private javax.swing.JMenuItem newGameSameLevel;
+    private javax.swing.JMenuItem pause;
+    private javax.swing.JMenuItem replayButton;
+    private javax.swing.JButton replayForwards;
+    private javax.swing.JMenuItem rulesLegend;
+    private javax.swing.JMenuItem saveButton;
+    private javax.swing.JSlider speedChooser;
+    private javax.swing.JLabel timer;
+    private javax.swing.JLabel timerText;
+    // End of variables declaration//GEN-END:variables
+      // Game variables
+    private final JFileChooser fileChooser = new JFileChooser();
+    private ImageIcon[] numberImg = new ImageIcon[10];
+    private String mode;
+    private static int level = -1;
+    private enum modes { Run, Load, Save, Replay}
+    private GameTimer gameCountdown;
+    private Render render;
+    private Maze m;
+    private EventListener eventListener;
+    private int pausedAtMin;
+    private int pausedAtSec;
+    private EventIterator eventIterator;
+    private ImageIcon[] inventoryItems = new ImageIcon[8];
+    private JLabel[] inventoryLabels = new JLabel[8];
+    private int replaySpeed;
+    private java.awt.event.WindowEvent evtOpen;
+    private PropertyEditorSupport propertyEditorSupport= new PropertyEditorSupport();
+    private int canMove = 1;
+    
+    private HashMap<Integer, BugEntity> bugMap = new HashMap<Integer, BugEntity>();
+    
+    public void addBug(int bugId, BugEntity bug) {
+    	this.bugMap.put(bugId, bug);
+    }
+    
+    public BugEntity getBug(int bugId) {
+    	return this.bugMap.get(bugId);
+    }
+
+    /**
+     * Initialices the images and JPanels honding them to display Chap's inventory.
+     */
+    private void displayInventory(){
+        for (int i = 0; i < inventoryItems.length; i++) {
+            if(i<m.getPlayerInventory().size()) {
+                inventoryItems[i] = new ImageIcon("src/nz/ac/vuw/ecs/swen225/gp20/render/TileFile/" + m.getPlayerInventory().get(i).getName() + "Tile.png");
+                //set the size
+                inventoryItems[i].setImage(inventoryItems[i].getImage().getScaledInstance(66, 62, Image.SCALE_DEFAULT));
+                inventoryLabels[i].setIcon(inventoryItems[i]);
+                // inventoryLabels[i].setToolTipText(m.getPlayerInventory().get(i).getName());
+            } else {
+                inventoryLabels[i].setIcon(null);
+            }
+
 
   /**
    * Resumes unfinished games.
@@ -1171,7 +1451,40 @@ public class GuiWindow extends JFrame {
     }
   }
 
-  /**
+    /**
+     * Countdown for game when players initializes the game.
+     * @return countdown for game
+     */
+    public JLabel getTimer() { return timer;}
+
+    /**
+     * Current render within this game.
+     * @return board of current game.
+     */
+    public Render getRender() { return render;}
+
+    /**
+     * Event of window opening.
+     * @return event when GUI Window opens.
+     */
+    public WindowEvent getOpenEvt(){ return evtOpen;}
+
+    /**
+     * Notifies record and replay module where the bugs move.
+     * @param move direction of bug.
+     * @param entityID bug reference.
+     */
+    public void notifyRecord(SingleMove move, int entityId){
+        //TODO
+        // Update Single move to move and implement a new parameter to
+        // add the bug's ID (as there are 2)
+    	//@TODO: Need to check if game is not continuing (maze.mode?), don't emit event.
+    	if(mode != null && !mode.equals(modes.Replay.name())) {
+    		eventListener.onEvent(Event.eventOfBugMove(move, entityId));
+    	}
+    }
+
+      /**
    * Displays the level on the GUI by receiving the information from the maze
    * module.
    *
@@ -1183,7 +1496,7 @@ public class GuiWindow extends JFrame {
     writeLevelFile(level + "");
     if (mode != null && !mode.equals(modes.Replay.name())) {
       this.eventListener.onEvent(Event.eventOfLevelSetting(level));
-    }
+
     try {
       LevelReader lr = new LevelReader(level);
       m = new Maze(lr);
