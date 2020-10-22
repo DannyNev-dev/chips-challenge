@@ -120,7 +120,6 @@ class View {
 
 		Point p = maze.getPlayerPosition();
 		if (!lastPoint.equals(p)) {
-			System.out.println("TRUE");
 			updateChip = true;
 			lastPoint = new Point(p.x, p.y);
 		}
@@ -257,7 +256,6 @@ class View {
 								if (dispList[i][j] != null) {
 									if (board[x][y].getName().equals("bugTile")) {
 										Entity bug = (Entity) board[x][y].getItem();
-										System.out.println("hi");
 										dispList[i][j].setIcon(new ImageIcon(bug.getFile(board[x][y].getName())));
 									} else {
 										dispList[i][j]
@@ -289,11 +287,9 @@ class View {
 		if (last) {
 			if (count < 3) {
 				if (board[x][y].getName().equals("infoTile")) {
-					System.out.println("LAST INFO: " + "chipInfoTile" + moveDirection + count + ".png");
 					dispList[i][j].setIcon(new ImageIcon("src/nz/ac/vuw/ecs/swen225/gp20/render/TileFile/chipInfoTile"
 							+ moveDirection + count + ".png"));
 				} else {
-					System.out.println("LAST: " + board[x][y].getName());
 					if (moveDirection == null) {
 						dispList[i][j].setIcon(new ImageIcon("src/nz/ac/vuw/ecs/swen225/gp20/render/TileFile/chipTile.png"));
 					} else {
@@ -309,14 +305,11 @@ class View {
 		if (!last) {
 			if ((oldToken.get(newPosOldToken).equals("fireTile") && (count > 1 && count < 4))
 					|| (oldToken.get(newPosOldToken).equals("treasureTile") && (count > 1 && count < 3))) {
-				System.out.println(
-						"CURRENT : " + oldToken.get(newPosOldToken) + "Open" + moveDirection + (count + 1) + ".png");
 				dispList[i][j].setIcon(new ImageIcon("src/nz/ac/vuw/ecs/swen225/gp20/render/TileFile/"
 						+ oldToken.get(newPosOldToken) + "Open" + moveDirection + (count + 1) + ".png"));
 				return;
 			}
 			if (count < 4 && count > 1) {
-				System.out.println("CURRENT : " + board[x][y].getName() + moveDirection + (count + 1) + ".png");
 				dispList[i][j].setIcon(new ImageIcon("src/nz/ac/vuw/ecs/swen225/gp20/render/TileFile/"
 						+ board[x][y].getName() + moveDirection + (count + 1) + ".png"));
 			} else if (count == 4) {
@@ -333,7 +326,6 @@ class View {
 			public void run() {
 				try {
 					Clip clip = AudioSystem.getClip();
-					System.out.println("SoundFile/" + name + ".wav");
 					AudioInputStream inputStream = AudioSystem.getAudioInputStream(
 
 							Render.class.getResourceAsStream("SoundFile/" + name + ".wav"));
@@ -406,7 +398,6 @@ class View {
 						oldToken.add(1, board[x][y + 1].getName());
 						oldToken.add(2, board[x - 1][y].getName());
 						oldToken.add(3, board[x + 1][y].getName());
-						System.out.println(oldToken);
 					}
 
 					DispTile t = new DispTile();
