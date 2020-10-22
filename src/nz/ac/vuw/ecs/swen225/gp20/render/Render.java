@@ -118,7 +118,7 @@ class View {
 	void refresh(Maze maze) {
 
 		Point p = maze.getPlayerPosition();
-		if(!lastPoint.equals(p)) {
+		if (!lastPoint.equals(p)) {
 			System.out.println("TRUE");
 			updateChip = true;
 			lastPoint = new Point(p.x, p.y);
