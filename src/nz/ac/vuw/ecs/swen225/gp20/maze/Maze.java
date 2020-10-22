@@ -11,6 +11,7 @@ import java.util.List;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Collectable;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Entity;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Player;
+import nz.ac.vuw.ecs.swen225.gp20.maze.items.Treasure;
 import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.ExitTile;
 import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.InfoTile;
 import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.Tile;
@@ -138,6 +139,7 @@ public class Maze {
     this.level = level;
     loader.setMaze(this);
     assert (isPlayerPosValid());
+    assert (areChipCollectedMatching());
     
   }
   
@@ -153,6 +155,7 @@ public class Maze {
     this.level = loader.getLevelNum();
     loader.setMaze(this);
     assert (isPlayerPosValid());
+    assert (areChipCollectedMatching());
     
   }
 
@@ -186,15 +189,13 @@ public class Maze {
    * @param movingEntity who needs to be moved
    * @return whether the move was successful
    */
-  public boolean moveEntity(Move move, Entity movingEntity) {
-    if (status != GameState.PLAYING) {
-      //TODO remove when application checks the game status
-      return false;
-    }
-    
+  public boolean moveEntity(Move move, Entity movingEntity) {    
+    checkState(status == GameState.PLAYING, "Moves can't be applied unless the game is active");
+    checkState(areChipCollectedMatching(), 
+        "The game status is invalid, the number of treasures left in the board do not match");
     checkArgument(move != null, "A well initialized move is required");
     checkArgument(isEntityPosValid(movingEntity));
-    checkState(status == GameState.PLAYING, "Moves can't be applied unless the game is active");
+    
 
     lastEvent = null; //Reset any special events from the last movement
     info = null;
@@ -234,6 +235,9 @@ public class Maze {
     //Note that if the entity will die in this move the movement will still be valid
     updateStatus();
     
+    assert (isEntityPosValid(movingEntity));
+    assert (areChipCollectedMatching());
+    
     return true;
   }
   
@@ -248,10 +252,9 @@ public class Maze {
    * @return number of chips which are left in the board
    */
   public int getChipsLeft() {
+    checkState(areChipCollectedMatching());
+    
     int remainingChips = target - player.getChipsCollected();
-    assert remainingChips >= 0 : "The chips that still have to be collected can't be negative";
-    assert remainingChips <= target : 
-      "The chips to be collected can't more than the initial number of chips";
     return remainingChips;
   }
   
@@ -423,6 +426,12 @@ public class Maze {
           + ") doesn't match its actual position in the board");
     }
     
+    //This check will cover several situation including if the player will ever stand on a wall
+    if (!board.getTile(entityPos).isAccessible(entity)) {
+      throw new RuntimeException(entity.getName() 
+          + " is not allowed to stand on this tile");
+    }
+    
     return true;
   }
   
@@ -432,5 +441,26 @@ public class Maze {
    */
   private boolean isThereOnlyOnePlayer() {
     return board.countItems(Player.class) == 1;
+  }
+  
+  /**
+   * Check whether the chips which the player declares to have collected match the board status.
+   * Hence, if they are the same the number of treasures removed from the board since the start 
+   * of the game.
+   */
+  private boolean areChipCollectedMatching() {
+    int chipsOnBoard = board.countItems(Treasure.class);
+    if (chipsOnBoard < 0) {
+      throw new RuntimeException("The chips that still have to be collected can't be negative");
+      
+    } else if (player.getChipsCollected() < 0) {
+      throw new RuntimeException("The chips collected by the player can't be negative");
+      
+    } else if (chipsOnBoard != (target - player.getChipsCollected())) {
+      throw new RuntimeException(
+          "The number of treasures which have been collected from the board does not match"
+          + "the number of treasures the player decleare to have collected");
+    }
+    return  true;
   }
 }

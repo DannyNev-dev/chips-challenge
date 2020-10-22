@@ -24,15 +24,20 @@ public class Treasure implements Collectable {
   }
 
   @Override
-  public SpecialEvent applyAction(Entity entity) {
-    //TODO player will never been in the exact tile as it can contain at most one item
-    //Preconditions.checkState(, "Item can't be collected unless the player is in the same tile");
-    
+  public SpecialEvent applyAction(Entity entity) {    
     checkNotNull(entity, "An entity needs to be initialized before doing an action");
     checkArgument(entity instanceof Player, "Only a player can pickup a key");
     
     //Casting is used to avoid the need of an additional method
-    ((Player) entity).collectChip();
+    //Yet the precondition above ensures that the entity will have to be a player
+    Player player = (Player) entity;
+    int numChipsBefore = player.getChipsCollected();
+    
+    
+    player.collectChip();
+    
+    assert (player.getChipsCollected() == numChipsBefore + 1);
+    
     return SpecialEvent.TREASURE_PICKED_UP;
   }
 
