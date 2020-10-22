@@ -91,8 +91,6 @@ class View {
 	private BoardPanel BoardPanel;
 	private Point lastPosition = null;
 	private ArrayList<String> oldToken = new ArrayList<String>();
-	private Point lastPoint = new Point(-100, -100);
-	private boolean updateChip = false;
 
 	/**
 	 * Constructor for View
@@ -118,11 +116,6 @@ class View {
 	void refresh(Maze maze) {
 
 		Point p = maze.getPlayerPosition();
-		if(!lastPoint.equals(p)) {
-			System.out.println("TRUE");
-			updateChip = true;
-			lastPoint = new Point(p.x, p.y);
-		}
 		String moveDirection = findDirection(p);
 		board = maze.getBoard();
 		// BoardPanel.removeAll();
@@ -203,14 +196,16 @@ class View {
 					}
 					count++;
 				} else {
+					System.out.println(specEvent);
+
 					int x = p.x - 4;
 					for (int i = 0; i < xSize; i++) {
 						int y = p.y - 4;
 						for (int j = 0; j < ySize; j++) {
 							int newPosOldToken = x;
-							if (lastP.x == x && lastP.y == y && updateChip) {
+							if (lastP.x == x && lastP.y == y) {
 								playMoveAnimation(count, i, j, x, y, p, moveDirection, true, newPosOldToken);
-							} else if (p.x == x && p.y == y && updateChip) {
+							} else if (p.x == x && p.y == y) {
 
 								switch (moveDirection) {
 								case "Left":
