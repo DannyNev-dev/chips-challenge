@@ -26,7 +26,9 @@ import java.beans.PropertyEditorSupport;
 import java.io.*;
 
 /**
- * @author camilalis 300504575. from Master.
+ * . @author camilalis 300504575. from Master.
+ *
+ *
  */
 public class GuiWindow extends JFrame {
 
@@ -712,6 +714,8 @@ public class GuiWindow extends JFrame {
     boardCanvas.setVisible(false);
     render = new Render(m);
     boardCanvas = render.getView();
+    render.updateRender();
+    setVisible(false);
     gameCanvas.add(boardCanvas);
     boardCanvas.setLocation(70, 35);
     validate();
@@ -786,7 +790,6 @@ public class GuiWindow extends JFrame {
    * @param evt autoReplay button clicked.
    */
   private void autoReplayActionPerformed(java.awt.event.ActionEvent evt) {
-    // TODO add your handling code here:
     replayForwards.setEnabled(false);
     EventIterator it = this.eventIterator;
     GuiWindow forwordable = this;
@@ -829,7 +832,6 @@ public class GuiWindow extends JFrame {
    * @param evt '>' button clicked.
    */
   private void replayForwardsActionPerformed(java.awt.event.ActionEvent evt) {
-
     SingleMove mv = null;
     if (this.eventIterator.hasNext() && mv == null) {
       mv = this.eventIterator.next().getMove();
@@ -887,7 +889,6 @@ public class GuiWindow extends JFrame {
    * @param evt speed changed from bar.
    */
   private void speedChooserStateChanged(javax.swing.event.ChangeEvent evt) {
-    // TODO add your handling code here:
     this.replaySpeed = speedChooser.getValue();
     if (this.eventIterator != null) {
       // FayLu: User might adjust speed during auto-replay.
@@ -904,7 +905,6 @@ public class GuiWindow extends JFrame {
    * @param evt Click on pause game on the game menu or space key.
    */
   private void pauseActionPerformed(java.awt.event.ActionEvent evt) {
-    // TODO add your handling code here:
     pausedAtSec = gameCountdown.getCurrentSec();
     pausedAtMin = gameCountdown.getCurrentMin();
     gameCountdown.pause();
@@ -918,7 +918,6 @@ public class GuiWindow extends JFrame {
    * @param evt Click on exit game in the game menu or CTRL+X
    */
   private void exitWithXActionPerformed(java.awt.event.ActionEvent evt) {
-    // TODO add your handling code here:
     System.exit(0);
   }
 
@@ -928,7 +927,6 @@ public class GuiWindow extends JFrame {
    * @param evt level is selected form the menu bar or CTRL+1
    */
   private void levelOneActionPerformed(java.awt.event.ActionEvent evt) {
-    // TODO add your handling code here:
     if (mode != null && !mode.equals(modes.Replay.name())) {
       level = 1;
       gameCountdown.pause();
@@ -938,7 +936,7 @@ public class GuiWindow extends JFrame {
           GuiWindow.getWindows()[i].dispose();
         }
       }
-    }else{
+    }else {
       display("Replay mode ON. \nCannot set a new level.");
     }
   }
@@ -949,7 +947,6 @@ public class GuiWindow extends JFrame {
    * @param evt level is selected form the menu bar or CTRL+2
    */
   private void levelTwoActionPerformed(java.awt.event.ActionEvent evt) {
-    // TODO add your handling code here:
     if (mode != null && !mode.equals(modes.Replay.name())) {
       level = 2;
       gameCountdown.pause();
@@ -979,8 +976,10 @@ public class GuiWindow extends JFrame {
    * @param evt Click or CTRL+P
    */
   private void newGameSameLevelActionPerformed(java.awt.event.ActionEvent evt) {
-    mode = modes.Run.name();
+    gameCountdown.pause(); // old timer is stopped
     new GuiWindow().setVisible(true);
+    //Game always starts from Run mode
+    mode = modes.Run.name();
     //Makes sure there is nly one window open at the time
     //since game has a countdown I found it pointless to have
     //mode than one window open.
@@ -1002,19 +1001,18 @@ public class GuiWindow extends JFrame {
     gameCountdown.pause();
     JsonFileFilter fileFilter = new JsonFileFilter();
 
-
-    timer.setText("-:- -"); // Timer is not applicable during replay mode
-    // Allow user to use buttons for Replay mode
-    replayForwards.setEnabled(true);
-    autoReplay.setEnabled(true);
-    speedChooser.setEnabled(true);
-    saveButton.setEnabled(false);
-
     fileChooser.setDialogTitle("Open Json File to Replay a match");
     fileChooser.setFileFilter(fileFilter);
 
     int returnVal = fileChooser.showOpenDialog(this);
     if (returnVal == JFileChooser.APPROVE_OPTION) {
+      timer.setText("-:- -"); // Timer is not applicable during replay mode
+      // Allow user to use buttons for Replay mode
+      replayForwards.setEnabled(true);
+      autoReplay.setEnabled(true);
+      speedChooser.setEnabled(true);
+      saveButton.setEnabled(false);
+
       File file = fileChooser.getSelectedFile();
       mode = modes.Replay.name();
       System.out.println("Selected game record: " + file.getAbsolutePath());
@@ -1252,7 +1250,7 @@ public class GuiWindow extends JFrame {
 
   /**
    * Adds listeners/observers to notify them when users presses a key.
-   * 
+   *
    * @param propertyChangeListener observer.
    */
   public void addPropertyChangeListener(PropertyChangeListener propertyChangeListener) {
