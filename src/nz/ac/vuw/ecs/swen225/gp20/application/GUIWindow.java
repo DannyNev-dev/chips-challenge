@@ -801,6 +801,8 @@ public class GuiWindow extends JFrame {
           if (!mode.equals(modes.Replay.name())) {
               EventListener.getRecord().saveToJson();
               System.exit(0);
+          }else{
+              display("You are not allowed to save while Replay mode is on.");
           }
       }//GEN-LAST:event_saveButtonActionPerformed
 

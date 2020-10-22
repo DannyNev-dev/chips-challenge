@@ -37,11 +37,10 @@ public class GameTimer {
     @Override
     public void run() {
       currentSec--;
-      if currentSec == 0 && currentMin > 0){ //Decreases seconds only if minute is above 0.
+      if( currentSec == 0 && currentMin > 0){ //Decreases seconds only if minute is above 0.
         currentSec = 59;
         currentMin--;
-      }
-      else if(timeOut()) {
+      } else if(timeOut()) {
         timer.cancel();
         guiWindow.formWindowLost(guiWindow.getOpenEvt());
       }
