@@ -77,6 +77,7 @@ public class LvlReaderTest {
 		@Test
 		void test5() throws IOException {
 			LevelReader lR = new LevelReader(2);
+			@SuppressWarnings("unused")
 			Maze m = new Maze(lR);
 			GuiWindow gw = new GuiWindow();
 			assertTrue(lR.setApplication(gw));
