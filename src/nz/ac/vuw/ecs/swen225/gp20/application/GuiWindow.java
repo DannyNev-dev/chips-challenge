@@ -24,9 +24,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyEditorSupport;
-import java.io.File;
-import java.io.IOException;
-
+import java.io.*;
 
 
 /**.
@@ -113,7 +111,7 @@ public class GuiWindow extends JFrame {
             public void windowOpened(java.awt.event.WindowEvent evt) {
                 evtOpen = evt;
                 mode = modes.Run.name();
-                if( level!=-1){
+                if(level != -1) {
                     newGame(level);
                 }else {
                     formWindowOpened(evt);
@@ -607,7 +605,7 @@ public class GuiWindow extends JFrame {
         int numSelected;
         JRadioButton one = new JRadioButton("1");
         JRadioButton two = new JRadioButton("2");
-        JRadioButton three = new JRadioButton("Resume old game");
+        JRadioButton three = new JRadioButton("Resume last unfinished level ");
         mode = modes.Run.name();
         //Group the radio buttons.
         ButtonGroup levelSelected = new ButtonGroup();
@@ -629,7 +627,7 @@ public class GuiWindow extends JFrame {
           }else if( two.isSelected()){
             numSelected = 2;
           } else if (three.isSelected()){
-            return;
+            numSelected = readLevelFile();
             }else{
             //Here user has clicked OK without choosing option
             evt.getWindow().dispose();
@@ -725,7 +723,6 @@ public class GuiWindow extends JFrame {
           }
           //Bug moves regardless Chaps move is valid or not.
           propertyEditorSupport.firePropertyChange();
-          render.updateRender();
           if(m.getStatus() == Maze.GameState.GAME_LOST){
               formWindowLost(evtOpen);
           }
@@ -821,7 +818,7 @@ public class GuiWindow extends JFrame {
             +" ~ Open doors by collecting keys of the same color.\n"
             +" ~ On level 2 do not let the bug reach Chap and be careful\n"
                 + "with the special tiles! Some items withing the board\n"
-            + "will help you with those ;)"
+            + "will help you with those ;)\n"
             +" ~ If you want to see all your moves play Replay mode.\n"
             + "Use the \">\" button to replay forwards step by step (Default).\n"
                 + "or set AutoReplay and adjust to your desired speed.\n"
@@ -907,7 +904,7 @@ public class GuiWindow extends JFrame {
      */
     private void newGameSameLevelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newGameSameLevelActionPerformed
         // TODO add your handling code here:
-
+        new GuiWindow().setVisible(true);
         if(GuiWindow.getWindows().length > 1){
             for(int i = 0; i < GuiWindow.getWindows().length-1; i++){
                 GuiWindow.getWindows()[i].dispose();
@@ -1125,6 +1122,7 @@ public class GuiWindow extends JFrame {
     private void setLevelNumber(int level) {
         GuiWindow.level = level;
         levelNumber.setText("0" + level);
+        writeLevelFile(level + "");
         if(mode != null && !mode.equals(modes.Replay.name())) {
             this.eventListener.onEvent(Event.eventOfLevelSetting(level));
         }
@@ -1137,6 +1135,49 @@ public class GuiWindow extends JFrame {
         }
     }
 
+    /**
+     * Writes text file where the number of the last level played is stored.
+     * @param level
+     */
+    private void writeLevelFile(String level){
+        File old = new File("src/nz/ac/vuw/ecs/swen225/gp20/application/data/level.txt");
+        old.delete();
+            try {
+                FileWriter writer = new FileWriter("src/nz/ac/vuw/ecs/swen225/gp20/application/data/level.txt", true);
+                writer.write(level);
+                writer.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+    }
+
+    /**
+     * Reads text file where the number of the last level played was stored.
+     */
+    private int readLevelFile(){
+        int lastLevel = -1;
+        try {
+            FileReader reader = new FileReader("src/nz/ac/vuw/ecs/swen225/gp20/application/data/level.txt");
+            BufferedReader bufferedReader = new BufferedReader(reader);
+
+            int line;
+
+            line = Integer.parseInt(bufferedReader.readLine());
+                System.out.println(line);
+                lastLevel = line;
+                reader.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if( lastLevel == 1 || lastLevel == 2) {
+            return lastLevel;
+        }else {
+            display("Opps! You have not played this game\n "
+                    + "before. \nLet's start from level one");
+            return 1;
+        }
+    }
     /**
      * Countdown for game when players initializes the game.
      * @return countdown for game
@@ -1161,9 +1202,6 @@ public class GuiWindow extends JFrame {
      * @param entityID bug reference.
      */
     public void notifyRecord(SingleMove move, int entityID){
-        //TODO
-        // Update Single move to move and implement a new parameter to
-        // add the bug's ID (as there is 2)
         eventListener.onEvent(Event.eventOfBugMove(move));
     }
 
