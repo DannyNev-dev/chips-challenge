@@ -22,6 +22,7 @@ public class EventListener implements Plugin {
 	@Override
 	public void onEvent(Event e) {
 		// All event listener instances update the same record instance
+		
 		EventListener.record.update(e);
 	}
 	

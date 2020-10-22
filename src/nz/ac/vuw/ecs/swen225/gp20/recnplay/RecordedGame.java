@@ -24,9 +24,13 @@ public class RecordedGame {
 		this();
 		this.level = level;
 		// initiate list of Event object 
-		this.actions = new ArrayList<Event>();
+		this.clearActions();
 	}
 	
+	private void clearActions() {
+		System.out.println("RecordedGame: clear actions");
+		this.actions = new ArrayList<Event>();
+	}
 	
 	/**
 	 * Set actions with given parameter.
@@ -67,6 +71,7 @@ public class RecordedGame {
 	public void addAction(Event event) {
 		if (event.getType().equals(Event.Type.SetLevel)) {
 			setLevel(event.getLevel());
+			clearActions();
 		}else {
 			if (getLevel() < 0) {
 				throw new IllegalArgumentException("Level shall be set prior to other events");
