@@ -2,7 +2,6 @@ package nz.ac.vuw.ecs.swen225.gp20.maze;
 
 import java.awt.Point;
 import java.util.List;
-import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.Tile;
 
 /**
  * Groups the behaviour required by all type of movements.

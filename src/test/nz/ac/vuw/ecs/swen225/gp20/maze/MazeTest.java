@@ -27,8 +27,9 @@ class MazeTest {
   void movePlayerTest() {
     //MazeWrapper mazeWrapper = new MazeWrapper(5, new Point(1, 1));
     Maze maze = mazeSample();
+    Point start = new Point(8, 8);
     //Check player is in the initial position
-    Assume.assumeTrue(maze.getBoardObject().getTile(new Point(8, 8)).containsItemType(Player.class));
+    Assume.assumeTrue(maze.getBoardObject().getTile(start).containsItemType(Player.class));
     
     maze.movePlayer(new SingleMove(Direction.DOWN));
     //Check new position
@@ -44,8 +45,9 @@ class MazeTest {
   @Test
   void consecutiveMovesPlayerTest() {
     Maze maze = mazeSample();
+    Point start = new Point(8, 8);
     //Check player is in the initial position
-    Assume.assumeTrue(maze.getBoardObject().getTile(new Point(8, 8)).containsItemType(Player.class));
+    Assume.assumeTrue(maze.getBoardObject().getTile(start).containsItemType(Player.class));
     
     maze.movePlayer(new SingleMove(Move.Direction.UP));
     maze.movePlayer(new SingleMove(Move.Direction.RIGHT));
@@ -91,10 +93,13 @@ class MazeTest {
   @Test
   void invalidNullMove() {
     try {
-      Maze maze = mazeSample();
+      LevelReader loader = new LevelReader(1);
+      Maze maze = new Maze(loader);
     
       maze.movePlayer(new SingleMove(null));
       
+    } catch (IOException e) {
+      Assume.assumeTrue("Test can't run without the definition of level one", false);
     } catch (IllegalArgumentException e) {
       assertEquals("The direction of a move can't be undefiened", e.getMessage());
     }
@@ -118,24 +123,6 @@ class MazeTest {
     
   }
   
-  @Test
-  void mazeConstructors() {
-    try {
-      Maze m1 = new Maze(1);
-      LevelReader loader = new LevelReader(1);
-      Maze m2 = new Maze(loader);
-      
-      //assertTrue(m1.getBoardObject().equals(m2.getBoardObject()));
-      
-      
-    } catch (IOException e) {
-      Assume.assumeTrue("Test can't run without the definition of level one", false);
-    } catch (Exception e) {
-      Assume.assumeTrue("The Maze package couldn't be tested due to an error "
-          + "while loading the data from the persistence package", false);
-    }
-  }
-  
   
   
   
@@ -145,6 +132,7 @@ class MazeTest {
   
   /**
    * Create a new level one maze and catches IOException.
+   * @return a new maze for level one
    */
   protected static Maze mazeSample() {
     try {

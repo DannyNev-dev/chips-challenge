@@ -21,6 +21,8 @@ public class ExitLock implements Item {
   
   /**
    * Create a new exit lock.
+   * It Behaves like a wall time for Chap as long as there are still treasures to collect. 
+   * Once all treasures have been collected, Chap can pass through the lock
    * @param target the number of chips required to open this lock
    */
   public ExitLock(int target) {

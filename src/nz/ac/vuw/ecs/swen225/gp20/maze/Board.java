@@ -3,7 +3,6 @@ package nz.ac.vuw.ecs.swen225.gp20.maze;
 import static com.google.common.base.Preconditions.checkArgument;
 
 import java.awt.Point;
-
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Item;
 import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.Tile;
 
@@ -26,9 +25,6 @@ public class Board implements Cloneable {
    * How many rows does the board have.
    */
   public final int height;
-  
-  
-  
   
   /**
    * Create a new board.

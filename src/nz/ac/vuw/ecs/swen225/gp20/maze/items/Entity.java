@@ -3,8 +3,6 @@ package nz.ac.vuw.ecs.swen225.gp20.maze.items;
 import java.awt.Point;
 import java.util.List;
 
-import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.Tile;
-
 /**
  * An item which has the ability to move around.
  * @author Emanuel Evans (ID: 300472656)

@@ -10,14 +10,6 @@ package nz.ac.vuw.ecs.swen225.gp20.maze.items;
  */
 public interface Collectable extends Item {
 
-  /*
-   * Collect this item.
-   * 
-   * @param player who collects it
-   * @return whether the item was successfully picked up
-   */
-  //public SpecialEvent pickup(Player player);
-
   /**
    * Check if this item can be added to the player inventory.
    * By default Collectable can be collected
