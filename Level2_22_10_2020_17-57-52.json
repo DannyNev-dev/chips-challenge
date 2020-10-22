@@ -1,1 +1,0 @@
-{"level":2,"actions":[{"type":"SetLevel","move":null,"level":2,"chapDies":false},{"type":"ChapMove","move":{"lastDirection":"UP"},"level":0,"chapDies":false},{"type":"ChapMove","move":{"lastDirection":"DOWN"},"level":0,"chapDies":false}]}
