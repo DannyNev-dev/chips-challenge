@@ -172,7 +172,6 @@ public class GuiWindow extends JFrame {
       public void windowClosing(java.awt.event.WindowEvent evt) {
         formWindowClosing(evt);
       }
-
       public void windowOpened(java.awt.event.WindowEvent evt) {
         evtOpen = evt;
         mode = modes.Run.name();
@@ -653,157 +652,74 @@ public class GuiWindow extends JFrame {
     pack();
   }
 
-      /**
-       * Processes users input when the button for autoReplay is pressed.
-       * @param evt autoReplay button clicked.
-       */
-      private void autoReplayActionPerformed(java.awt.event.ActionEvent evt) {
-
-              replayForwards.setEnabled(false);
-              EventIterator it = this.eventIterator;
-              GuiWindow forwordable = this;
-              Maze mz = this.m;
-
-              ActionListener taskPerformer = new ActionListener() {
-                  public void actionPerformed(ActionEvent evt) {
-                      if (!it.hasNext()) {
-                          ((Timer) evt.getSource()).stop();
-                          System.out.println("Auto-Replay stopped iteration");
-                          return;
-                      }
-                      Event ev = it.next();
-                      SingleMove mv = null;
-                      System.out.println("Auto-Replay event: " + ev.getType());
-                      switch(ev.getType()){
-                      case ChapMove:
-                    	  mv = ev.getMove();
-                          if (mv != null) {
-                              System.out.println("Auto-Replay ChapMove: " + mv.getLastDirection());
-                              forwordable.handleMovement(mv);
-                              mv = null;
-                          } else {
-                              System.err.println("Auto-Replay ChapMove has no movement to replay ");
-                          }
-                          break;
-                      case BugMove:
-                    	  mv = ev.getMove();
-                          if (mv != null) {
-                              System.out.println("Auto-Replay BugMove: " + mv.getLastDirection() + "BugId: " + ev.getBugId());
-	                    	  int bugId = ev.getBugId();
-	                    	  BugEntity bug = forwordable.getBug(bugId);
-	                    	  mz.moveEntity(mv, bug);
-                          } else {
-                              System.err.println("Auto-Replay BugMove has no movement to replay ");
-                          }
-                          break;
-                      default:
-                    	  System.err.println("Auto-Replay reads unexpected event: " + ev.getType());
-                    	  break;  
-                      }
-                      int latency = (int) it.getLatency();
-                      System.out.println("Auto-Replay latency updated to: " + latency);
-                      //FayLu: Theoretically the speed might be adjusted during the auto-replay
-                      ((Timer) evt.getSource()).setDelay(latency);
-                  }
-              };
-              // When auto-replay is triggered the real-time speed value is used
-              it.setSpeed(this.replaySpeed);
-              int latency = (int) it.getLatency();
-              System.out.println("Auto-Replay latency initialized to: " + latency);
-              new Timer(latency, taskPerformer).start();
-
-      }//GEN-LAST:event_autoReplayActionPerformed
-
-      /**
-       * Processes users input when the button for moving forwards is pressed.
-       * @param evt '>' button clicked.
-       */
-      private void replayForwardsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_forwardsActionPerformed
-    	  
-    	  EventIterator it = this.eventIterator;
-          GuiWindow forwordable = this;
-          Maze mz = this.m;
-          
-          if (!it.hasNext()) {
-              System.out.println("Replay stopped iteration");
-              return;
-          }
-          Event ev = it.next();
-          SingleMove mv = null;
-          System.out.println("Replay event: " + ev.getType());
-          switch(ev.getType()){
-          case ChapMove:
-        	  mv = ev.getMove();
-              if (mv != null) {
-                  System.out.println("Replay ChapMove: " + mv.getLastDirection());
-                  forwordable.handleMovement(mv);
-                  mv = null;
-              } else {
-                  System.err.println("Replay ChapMove has no movement to replay ");
-              }
-              break;
-          case BugMove:
-        	  mv = ev.getMove();
-              if (mv != null) {
-                  System.out.println("Replay BugMove: " + mv.getLastDirection() + "BugId: " + ev.getBugId());
-            	  int bugId = ev.getBugId();
-            	  BugEntity bug = forwordable.getBug(bugId);
-            	  mz.moveEntity(mv, bug);
-              } else {
-                  System.err.println("Replay BugMove has no movement to replay ");
-              }
-              break;
-          default:
-        	  System.err.println("Replay reads unexpected event: " + ev.getType());
-        	  break;  
-          }
-
-      }//GEN-LAST:event_forwardsActionPerformed
-
-
-
-      /**
-       * Processes users input when the button for displaying rules is pressed.
-       * @param evt rules and instructions button clicked on the game menu.
-       */
-      private void rulesLegendActionPerformed(java.awt.event.ActionEvent evt) {
-//GEN-FIRST:event_rulesLegendActionPerformed
-        pausedAtMin = gameCountdown.getCurrentMin();
-        pausedAtSec = gameCountdown.getCurrentSec();
-        gameCountdown.pause();
-        display(" ~ Use the arrows on your key board to move Chap around the board.\n"
-            +" ~ To win the game make sure you collect all the chips on \n"
-            +"  the board within 2 minutes and go to the blue tile.\n"
-            +" ~ Open doors by collecting keys of the same color.\n"
-            +" ~ On level 2 do not let the bug reach Chap and be careful\n"
-                + "with the special tiles! Some items withing the board\n"
-            + "will help you with those ;)"
-            +" ~ If you want to see all your moves play Replay mode.\n"
-            + "Use the \">\" button to replay forwards step by step (Default).\n"
-                + "or set AutoReplay and adjust to your desired speed.\n"
-            +"You can also save the game and resume later by going to \"File\" and\n"
-            +"click on \"Save\"");
-        if( mode.equals(modes.Run.name())) {
-            gameCountdown = new GameTimer(pausedAtMin, pausedAtSec,this);
-        }
-      }//GEN-LAST:event_rulesLegendActionPerformed
-
-    /**
-     * Controls what happens when the speed chooser from Replay mode is changed.
-     * @param evt speed changed from bar.
-     */
-    private void speedChooserStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_speedChooserStateChanged
-        // TODO add your handling code here:
-        	this.replaySpeed = speedChooser.getValue();
-        if (this.eventIterator != null) {
-        	// FayLu: User might adjust speed during auto-replay.
-        	// If the slider changes, update new speed seed value to iterator and it will be used in auto-replay.
-        	this.eventIterator.setSpeed(this.replaySpeed);
-        }
+  /**
+   * Creates a game by creating a new timer and passes the information to the
+   * other modules too.
+   *
+   * @param level to be played.
+   */
+  private void newGame(int level) {
+    // New timer for every game (2 minutes long)
+    if (gameCountdown != null) {
+      gameCountdown.pause();
     }
+    gameCountdown = new GameTimer(1, 59, this);
+    mode = modes.Run.name();
+    // Updates level number with the input received by player and
+    // informs other modules.
+    setLevelNumber(level);
+    displayInventory();
+    boardCanvas.setVisible(false);
+    render = new Render(m);
+    boardCanvas = render.getView();
+    render.updateRender();
+    setVisible(false);
+    gameCanvas.add(boardCanvas);
+    boardCanvas.setLocation(70, 35);
+    validate();
+    repaint();
+    setVisible(true);
+    setChipsLeft();
+  }
 
-
-    
+  /**
+   * Forms the window when running the game and allows user to select a level.
+   *
+   * @param evt window open.
+   */
+  private void formWindowOpened(java.awt.event.WindowEvent evt) {
+    int numSelected;
+    JRadioButton one = new JRadioButton("1");
+    JRadioButton two = new JRadioButton("2");
+    JRadioButton three = new JRadioButton("Resume last unfinished level ");
+    mode = modes.Run.name();
+    // Group the radio buttons.
+    ButtonGroup levelSelected = new ButtonGroup();
+    levelSelected.add(one);
+    levelSelected.add(two);
+    levelSelected.add(three);
+    // Default option, level one
+    one.setSelected(true);
+    final JComponent[] inputs = new JComponent[] {
+            new JLabel("Choose a level to play"), one, two, three, };
+    int result = JOptionPane.showConfirmDialog(null, inputs, "Welcome", JOptionPane.PLAIN_MESSAGE);
+    if (result == JOptionPane.OK_OPTION) {
+      if (one.isSelected()) {
+        numSelected = 1;
+      } else if (two.isSelected()) {
+        numSelected = 2;
+      } else if (three.isSelected()) {
+        numSelected = readLevelFile();
+      } else {
+        // Here user has clicked OK without choosing option
+        System.exit(0);
+        return;
+      }
+      newGame(numSelected);
+    } else {
+      System.exit(0); // changed to prevent bug when closing
+    }
+  }
 
   /**
    * Forms a warning message if user wins game bottom.
@@ -878,74 +794,6 @@ public class GuiWindow extends JFrame {
       // new timer continues from where it was left of.
       gameCountdown = new GameTimer(pausedAtMin, pausedAtSec, this);
     }
-  }
-
-  /**
-   * Forms the window when running the game and allows user to select a level.
-   * 
-   * @param evt window open.
-   */
-  private void formWindowOpened(java.awt.event.WindowEvent evt) {
-    int numSelected;
-    JRadioButton one = new JRadioButton("1");
-    JRadioButton two = new JRadioButton("2");
-    JRadioButton three = new JRadioButton("Resume last unfinished level ");
-    mode = modes.Run.name();
-    // Group the radio buttons.
-    ButtonGroup levelSelected = new ButtonGroup();
-    levelSelected.add(one);
-    levelSelected.add(two);
-    levelSelected.add(three);
-    // Default option, level one
-    one.setSelected(true);
-    final JComponent[] inputs = new JComponent[] { 
-        new JLabel("Choose a level to play"), one, two, three, };
-    int result = JOptionPane.showConfirmDialog(null, inputs, "Welcome", JOptionPane.PLAIN_MESSAGE);
-    if (result == JOptionPane.OK_OPTION) {
-      if (one.isSelected()) {
-        numSelected = 1;
-      } else if (two.isSelected()) {
-        numSelected = 2;
-      } else if (three.isSelected()) {
-        numSelected = readLevelFile();
-      } else {
-        // Here user has clicked OK without choosing option
-        evt.getWindow().dispose();
-        return;
-      }
-      newGame(numSelected);
-    } else {
-      evt.getWindow().dispose(); // changed to prevent bug when closing
-    }
-  }
-
-  /**
-   * Creates a game by creating a new timer and passes the information to the
-   * other modules too.
-   * 
-   * @param level to be played.
-   */
-  private void newGame(int level) {
-    // New timer for every game (2 minutes long)
-    if (gameCountdown != null) {
-      gameCountdown.pause();
-    }
-    gameCountdown = new GameTimer(1, 59, this);
-    mode = modes.Run.name();
-    // Updates level number with the input received by player and
-    // informs other modules.
-    setLevelNumber(level);
-    boardCanvas.setVisible(false);
-    render = new Render(m);
-    boardCanvas = render.getView();
-    render.updateRender();
-    setVisible(false);
-    gameCanvas.add(boardCanvas);
-    boardCanvas.setLocation(70, 35);
-    validate();
-    repaint();
-    setVisible(true);
-    setChipsLeft();
   }
 
   /**
@@ -1063,6 +911,126 @@ public class GuiWindow extends JFrame {
   }
 
   /**
+   * Processes users input when the button for autoReplay is pressed.
+   * @param evt autoReplay button clicked.
+   */
+  private void autoReplayActionPerformed(java.awt.event.ActionEvent evt) {
+
+    replayForwards.setEnabled(false);
+    EventIterator it = this.eventIterator;
+    GuiWindow forwordable = this;
+    Maze mz = this.m;
+
+    ActionListener taskPerformer = new ActionListener() {
+      public void actionPerformed(ActionEvent evt) {
+        if (!it.hasNext()) {
+          ((Timer) evt.getSource()).stop();
+          System.out.println("Auto-Replay stopped iteration");
+          return;
+        }
+        Event ev = it.next();
+        SingleMove mv = null;
+        System.out.println("Auto-Replay event: " + ev.getType());
+        switch(ev.getType()){
+          case ChapMove:
+            mv = ev.getMove();
+            if (mv != null) {
+              System.out.println("Auto-Replay ChapMove: " + mv.getLastDirection());
+              forwordable.handleMovement(mv);
+              mv = null;
+            } else {
+              System.err.println("Auto-Replay ChapMove has no movement to replay ");
+            }
+            break;
+          case BugMove:
+            mv = ev.getMove();
+            if (mv != null) {
+              System.out.println("Auto-Replay BugMove: " + mv.getLastDirection() + "BugId: " + ev.getBugId());
+              int bugId = ev.getBugId();
+              BugEntity bug = forwordable.getBug(bugId);
+              mz.moveEntity(mv, bug);
+            } else {
+              System.err.println("Auto-Replay BugMove has no movement to replay ");
+            }
+            break;
+          default:
+            System.err.println("Auto-Replay reads unexpected event: " + ev.getType());
+            break;
+        }
+        int latency = (int) it.getLatency();
+        System.out.println("Auto-Replay latency updated to: " + latency);
+        //FayLu: Theoretically the speed might be adjusted during the auto-replay
+        ((Timer) evt.getSource()).setDelay(latency);
+      }
+    };
+    // When auto-replay is triggered the real-time speed value is used
+    it.setSpeed(this.replaySpeed);
+    int latency = (int) it.getLatency();
+    System.out.println("Auto-Replay latency initialized to: " + latency);
+    new Timer(latency, taskPerformer).start();
+
+  }
+
+  /**
+   * Processes users input when the button for moving forwards is pressed.
+   * @param evt '>' button clicked.
+   */
+  private void replayForwardsActionPerformed(java.awt.event.ActionEvent evt) {
+
+    EventIterator it = this.eventIterator;
+    GuiWindow forwordable = this;
+    Maze mz = this.m;
+
+    if (!it.hasNext()) {
+      System.out.println("Replay stopped iteration");
+      return;
+    }
+    Event ev = it.next();
+    SingleMove mv = null;
+    System.out.println("Replay event: " + ev.getType());
+    switch(ev.getType()){
+      case ChapMove:
+        mv = ev.getMove();
+        if (mv != null) {
+          System.out.println("Replay ChapMove: " + mv.getLastDirection());
+          forwordable.handleMovement(mv);
+          mv = null;
+        } else {
+          System.err.println("Replay ChapMove has no movement to replay ");
+        }
+        break;
+      case BugMove:
+        mv = ev.getMove();
+        if (mv != null) {
+          System.out.println("Replay BugMove: " + mv.getLastDirection() + "BugId: " + ev.getBugId());
+          int bugId = ev.getBugId();
+          BugEntity bug = forwordable.getBug(bugId);
+          mz.moveEntity(mv, bug);
+        } else {
+          System.err.println("Replay BugMove has no movement to replay ");
+        }
+        break;
+      default:
+        System.err.println("Replay reads unexpected event: " + ev.getType());
+        break;
+    }
+
+  }
+
+  /**
+   * Controls what happens when the speed chooser from Replay mode is changed.
+   * @param evt speed changed from bar.
+   */
+  private void speedChooserStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_speedChooserStateChanged
+    this.replaySpeed = speedChooser.getValue();
+    if (this.eventIterator != null) {
+      // FayLu: User might adjust speed during auto-replay.
+      // If the slider changes, update new speed seed value to iterator and it will be used in auto-replay.
+      this.eventIterator.setSpeed(this.replaySpeed);
+    }
+  }
+
+  /**
    * Pauses the game and shows a message.
    * 
    * @param evt Click on pause game on the game menu or space key.
@@ -1072,7 +1040,9 @@ public class GuiWindow extends JFrame {
     pausedAtMin = gameCountdown.getCurrentMin();
     gameCountdown.pause();
     display("GAME PAUSED");
-    gameCountdown = new GameTimer(pausedAtMin, pausedAtSec, this);
+    if (mode != null && mode.equals(modes.Run.name())) {
+      gameCountdown = new GameTimer(pausedAtMin, pausedAtSec, this);
+    }
   }
 
   /**
@@ -1115,17 +1085,6 @@ public class GuiWindow extends JFrame {
     }
   }
 
-    
-    private HashMap<Integer, BugEntity> bugMap = new HashMap<Integer, BugEntity>();
-    
-    public void addBug(int bugId, BugEntity bug) {
-    	this.bugMap.put(bugId, bug);
-    }
-    
-    public BugEntity getBug(int bugId) {
-    	return this.bugMap.get(bugId);
-    }
-
   /**
    * Resumes unfinished games.
    *
@@ -1147,7 +1106,7 @@ public class GuiWindow extends JFrame {
     mode = modes.Run.name();
     // Makes sure there is nly one window open at the time
     // since game has a countdown I found it pointless to have
-    // mode than one window open.
+    // more than one window open.
     if (GuiWindow.getWindows().length > 1) {
       for (int i = 0; i < GuiWindow.getWindows().length - 1; i++) {
         GuiWindow.getWindows()[i].dispose();
@@ -1163,11 +1122,41 @@ public class GuiWindow extends JFrame {
   private void exitWithXActionPerformed(java.awt.event.ActionEvent evt) {
     System.exit(0);
   }
-
-  private void speedChooserAncestorAdded(javax.swing.event.AncestorEvent evt) {
-
+    
+  private HashMap<Integer, BugEntity> bugMap = new HashMap<Integer, BugEntity>();
+    
+  public void addBug(int bugId, BugEntity bug) {
+    bugMap.put(bugId, bug);
+  }
+    
+  public BugEntity getBug(int bugId) {
+    return bugMap.get(bugId);
   }
 
+  /**
+   * Processes users input when the button for displaying rules is pressed.
+   * @param evt rules and instructions button clicked on the game menu.
+   */
+  private void rulesLegendActionPerformed(java.awt.event.ActionEvent evt) {
+    pausedAtMin = gameCountdown.getCurrentMin();
+    pausedAtSec = gameCountdown.getCurrentSec();
+    gameCountdown.pause();
+    display(" ~ Use the arrows on your key board to move Chap around the board.\n"
+            +" ~ To win the game make sure you collect all the chips on \n"
+            +"  the board within 2 minutes and go to the blue tile.\n"
+            +" ~ Open doors by collecting keys of the same color.\n"
+            +" ~ On level 2 do not let the bug reach Chap and be careful\n"
+            + "with the special tiles! Some items withing the board\n"
+            + "will help you with those ;)"
+            +" ~ If you want to see all your moves play Replay mode.\n"
+            + "Use the \">\" button to replay forwards step by step (Default).\n"
+            + "or set AutoReplay and adjust to your desired speed.\n"
+            +"You can also save the game and resume later by going to \"File\" and\n"
+            +"click on \"Save\"");
+    if( mode.equals(modes.Run.name())) {
+      gameCountdown = new GameTimer(pausedAtMin, pausedAtSec,this);
+    }
+  }
 
   /**
    * Initialices the images and JPanels honding them to display Chap's inventory.
@@ -1201,7 +1190,9 @@ public class GuiWindow extends JFrame {
       pausedAtSec = gameCountdown.getCurrentSec();
       gameCountdown.pause();
       display(information);
-      gameCountdown = new GameTimer(pausedAtMin, pausedAtSec, this);
+      if (mode !=null && mode.equals(modes.Run.name())) {
+        gameCountdown = new GameTimer(pausedAtMin, pausedAtSec, this);
+      }
     }
   }
 
@@ -1279,6 +1270,7 @@ public class GuiWindow extends JFrame {
 
   /**
    * Reads text file where the number of the last level played was stored.
+   *
    */
   private int readLevelFile() {
     int lastLevel = -1;
@@ -1340,13 +1332,12 @@ public class GuiWindow extends JFrame {
    */
   public void notifyRecord(SingleMove move, int entityID) {
 	  if(mode != null && !mode.equals(modes.Replay.name())) {
-		  //@TODO: Need to check if game is not continuing (maze.mode?), don't emit event.
 		  eventListener.onEvent(Event.eventOfBugMove(move, entityID));
 	  }
   }
 
   /**
-   * .
+   * Opens a JOption panel displaying a message.
    *
    * @param data message to be displayed.
    */
@@ -1362,6 +1353,12 @@ public class GuiWindow extends JFrame {
   public void addPropertyChangeListener(PropertyChangeListener propertyChangeListener) {
     propertyEditorSupport.addPropertyChangeListener(propertyChangeListener);
   }
+
+  /**
+   * Ancestor for speed bar
+   * @param evt modification at speed bar
+   */
+  private void speedChooserAncestorAdded (javax.swing.event.AncestorEvent evt) {}
 
   /**
    * .
