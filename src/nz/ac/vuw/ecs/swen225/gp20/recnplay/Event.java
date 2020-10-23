@@ -6,7 +6,7 @@ import nz.ac.vuw.ecs.swen225.gp20.maze.SingleMove;
  * A class which will be instantiated into specific instance 
  * and will be stored in game history for future replay use
  * such as Move object which is created in Application module.
- * @author YanLu
+ * @author YanLu (300520177)
  */
 public class Event {
 	
@@ -48,6 +48,7 @@ public class Event {
 	 * @param type of the Event
 	 * @param level of the Event
 	 * @param move of the Event
+	 * @param bugId of the event 
 	 * @param chapDies of the Event
 	 */
 	public Event(Type type, int level, SingleMove move, int bugId) {
@@ -78,8 +79,9 @@ public class Event {
     
     /**
     * Construct event when a move of bug occurs.
-     * @param move object created by computing
+     * @param move object created by computing     
      * @return event of BugMove
+     * @param bugId 
      */
     public static Event eventOfBugMove(SingleMove move, int bugId) {
     	return new Event(Type.BugMove, 0, move, bugId);   	
@@ -96,7 +98,7 @@ public class Event {
 
 	/**
 	 * Set level with given information.
-	 * @param a given level
+	 * @param level given level
 	 */
 	public void setLevel(int level) {
 		this.level = level;
@@ -112,7 +114,7 @@ public class Event {
 	
 	/**
 	 * Set type with given information.
-	 * @param a given type
+	 * @param type given type
 	 */
 	public void setType(Type type) {
 		this.type = type;
@@ -128,16 +130,24 @@ public class Event {
 	
 	/**
 	 * Set move with given information.
-	 * @param a given move object
+	 * @param move given move object
 	 */
 	public void setMove(SingleMove move) {
 		this.move = move;
 	}
 	
+	/**
+	 * Get the current Move object.
+	 * @return current bug ID
+	 */
 	public int getBugId() {
 		return bugId;
 	}
 
+	/**
+	 * Set bug ID with given information.
+	 * @param bugId given ID
+	 */
 	public void setBugId(int bugId) {
 		this.bugId = bugId;
 	}

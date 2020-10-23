@@ -5,7 +5,7 @@ import java.util.List;
 
 /**
  * A class for storing key information of a game which the user wants to save.
- * @author YanLu
+ * @author YanLu (300520177)
  *
  */
 public class RecordedGame {
