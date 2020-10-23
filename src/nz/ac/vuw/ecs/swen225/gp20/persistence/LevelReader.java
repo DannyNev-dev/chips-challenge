@@ -44,7 +44,7 @@ public class LevelReader {
 	final int levelNum;
 	
 	/** number of bug count used for ID**/
-	int bugCount = 1;
+	public int bugCount = 1;
 
 	/** The maze obj in json form. */
 	JsonObject mazeObj;
