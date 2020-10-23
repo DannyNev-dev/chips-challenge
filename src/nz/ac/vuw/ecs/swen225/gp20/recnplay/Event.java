@@ -81,7 +81,7 @@ public class Event {
     * Construct event when a move of bug occurs.
      * @param move object created by computing     
      * @return event of BugMove
-     * @param bugId 
+     * @param bugId ID of bug
      */
     public static Event eventOfBugMove(SingleMove move, int bugId) {
     	return new Event(Type.BugMove, 0, move, bugId);   	
