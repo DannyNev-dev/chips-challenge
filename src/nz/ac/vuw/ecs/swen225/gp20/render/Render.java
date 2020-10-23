@@ -168,7 +168,6 @@ class View {
 						x++;
 					}
 					count++;
-
 				} else if (specEvent.equals("CHAP_DIED_BURNT")) {
 					if (count == 1) {
 						playSound("gameOver");
@@ -186,7 +185,6 @@ class View {
 						x++;
 					}
 					count++;
-
 				} else if (specEvent.equals("CHAP_DIED_MURDERED")) {
 					playSound("gameOver");
 					int x = p.x - 4;
@@ -235,7 +233,9 @@ class View {
 										|| (count == 1 && oldToken.get(newPosOldToken).equals("greenKeyTile"))
 										|| (count == 1 && oldToken.get(newPosOldToken).equals("exitLockTile"))
 										|| (count == 1 && oldToken.get(newPosOldToken).equals("exitTile"))
-										|| (count == 1 && oldToken.get(newPosOldToken).equals("fireTile"))) {
+										|| (count == 1 && oldToken.get(newPosOldToken).equals("fireTile"))
+										|| (count == 1 && oldToken.get(newPosOldToken).equals("waterBucketTile"))
+										|| (count == 1 && oldToken.get(newPosOldToken).equals("medicineTile"))) {
 									playSound(oldToken.get(newPosOldToken));
 								}
 								if (count < 3) {
@@ -279,9 +279,24 @@ class View {
 
 		oldBoard = new Board(maze.getBoard());
 		lastPosition = maze.getPlayerPosition();
-
 	}
-
+	
+	/**
+	 * Facilitates the animation for player movements
+	 * 
+	 * @param count - Passes the count from the timer so specific animations can be carried out
+	 * @param i - Location (i) in the for loop to reference dispList which is the view
+	 * @param j - Location (j) in the for loop to reference dispList which is the view
+	 * @param x - Location (x) in the for loop to reference the board (maze class)
+	 * @param y - Location (y) in the for loop to reference the board (maze class)
+	 * @param p - Houses the point of the player
+	 * @param moveDirection - Provides the movement direction of the player
+	 * @param last - Advises whether animation needs to occur on the cell the player currently is in or the
+	 * 					last cell the player was in.
+	 * @param newPosOldToken - Passes the location in oldToken that houses the previous tile that the player was on
+	 * 							used for animation
+	 * 
+	 */
 	public void playMoveAnimation(int count, int i, int j, int x, int y, Point p, String moveDirection, boolean last,
 			int newPosOldToken) {
 		if (last) {
@@ -320,8 +335,13 @@ class View {
 		}
 	}
 
+	/**
+	 * Plays the sound effect corresponding to the tile
+	 * 
+	 * @param name - Name of tile so the correct sound can be played
+	 */
+	
 	public void playSound(String name) {
-
 		new Thread(new Runnable() {
 			public void run() {
 				try {
@@ -332,12 +352,18 @@ class View {
 					clip.open(inputStream);
 					clip.start();
 				} catch (Exception e) {
-					System.err.println(e.getMessage());
+					System.err.println("Error in play sound: " + e.getMessage());
 				}
 			}
 		}).start();
 	}
-
+	
+	/**
+	 *  Finds the direction of the player movement
+	 *  
+	 * @param p - takes the new point of player to be used in calculation
+	 * @return - the direction in string form
+	 */
 	public String findDirection(Point p) {
 		if (lastPosition.x > p.x) {
 			return "Up";
