@@ -1006,6 +1006,10 @@ public class GuiWindow extends JFrame {
     new Timer(latency, taskPerformer).start();
 
   }
+  
+  public boolean inRunMode() {
+	  return mode != null && mode.equals(modes.Run.name());
+  }
 
   /**
    * Processes users input when the button for moving forwards is pressed.
