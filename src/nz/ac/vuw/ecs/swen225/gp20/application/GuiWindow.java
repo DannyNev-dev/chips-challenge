@@ -33,7 +33,7 @@ import java.util.HashMap;
  *Main class of the application module. Creates the 
  *graphical user interface for the game Chip vs Chap
  *
- *@author camilalis 300504575. from Master
+ *@author Camila Lis 300504575. from Master
  */
 public class GuiWindow extends JFrame {
 
@@ -81,18 +81,22 @@ public class GuiWindow extends JFrame {
   private ImageIcon[] numberImg = new ImageIcon[10];
   private String mode;
   private static int level = -1;
-
   private enum modes {
     Run, Replay
   }
-
   private GameTimer gameCountdown;
   private Render render;
   private Maze m;
+
+  //For Record and Replay module updates.
+  private EventIterator eventIterator;
   private EventListener eventListener;
+  private HashMap<Integer, BugEntity> bugMap = new HashMap<Integer, BugEntity>();
+
+  //Local variables to store the time where a match is paused.
   private int pausedAtMin;
   private int pausedAtSec;
-  private EventIterator eventIterator;
+
   private ImageIcon[] inventoryItems = new ImageIcon[8];
   private JLabel[] inventoryLabels = new JLabel[8];
   private int replaySpeed;
@@ -101,7 +105,7 @@ public class GuiWindow extends JFrame {
   private int canMove = 1;
 
   /**
-   * . Creates new Window
+   * . Creates new Gui Window
    */
   public GuiWindow() {
     initComponents();
@@ -123,6 +127,7 @@ public class GuiWindow extends JFrame {
 
   /**
    * This method is called from within the constructor to initialize the form.
+   * Net Beans Form
    */
   @SuppressWarnings("unchecked")
   private void initComponents() {
@@ -681,14 +686,18 @@ public class GuiWindow extends JFrame {
     if (gameCountdown != null) {
       gameCountdown.pause();
     }
-    gameCountdown = new GameTimer(1, 59, this);
+    int minute = 1;
+    int second = 59;
+    gameCountdown = new GameTimer(minute, second, this);
     mode = modes.Run.name();
     // Updates level number with the input received by player and
     // informs other modules.
     setLevelNumber(level);
     displayInventory();
+    //Gray square on Window at the start is not visible anymore.
     boardCanvas.setVisible(false);
     render = new Render(m);
+    //Updates boardCanvas to display board from Render Module
     boardCanvas = render.getView();
     render.updateRender();
     setVisible(false);
@@ -697,6 +706,7 @@ public class GuiWindow extends JFrame {
     validate();
     repaint();
     setVisible(true);
+    //Shows number of Chips are left on the board.
     setChipsLeft();
   }
 
@@ -718,6 +728,7 @@ public class GuiWindow extends JFrame {
     levelSelected.add(three);
     // Default option, level one
     one.setSelected(true);
+    //Allows user to select a level.
     final JComponent[] inputs = new JComponent[] {
             new JLabel("Choose a level to play"), one, two, three, };
     int result = JOptionPane.showConfirmDialog(null, inputs, "Welcome", JOptionPane.PLAIN_MESSAGE);
@@ -729,10 +740,10 @@ public class GuiWindow extends JFrame {
       } else if (three.isSelected()) {
         numSelected = readLevelFile();
       } else {
-        // Here user has clicked OK without choosing option
         System.exit(0);
         return;
       }
+      //Sends input level to update game.
       newGameUpdate(numSelected);
     } else {
       System.exit(0); // changed to prevent bug when closing
@@ -836,9 +847,12 @@ public class GuiWindow extends JFrame {
     validate();
     repaint();
     setVisible(true);
+    //Info is displayed when player steps on the info tile.
     popUpInfo(m.getInfo());
     displayInventory();
 
+    //Terminates the method here if game is lost or won
+    //This prevents problems with the bugEntity
     if(checkGameStatus()){
       transferFocus();
       return isValidMove;
@@ -873,6 +887,9 @@ public class GuiWindow extends JFrame {
    */
   private void keyReleasedSetMove(java.awt.event.KeyEvent evt) {
     SingleMove singleMove = null;
+
+    //Counts to know whether or not allow move to give render more time
+    //to show the animations. player only moves on even count number.
     canMove = canMove + 1;
     if (mode != null && !mode.equals("Replay") && canMove % 2 == 0) {
       requestFocus();
@@ -887,7 +904,8 @@ public class GuiWindow extends JFrame {
       } else {
         return;
       }
-      // Only updates event listener if move is valid.
+      // Only updates event listener if move is valid to have a
+      // clean Json file when saving.
       if (handleMovement(singleMove)) {
         eventListener.onEvent(Event.eventOfChapMove(singleMove));
       }
@@ -900,7 +918,7 @@ public class GuiWindow extends JFrame {
    * @param evt save button on game menu is clicked or CTRL+S.
    */
   private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {
-    if (!mode.equals(modes.Replay.name())) {
+    if (inRunMode()) {
       EventListener.getRecord().saveToJson();
       System.exit(0);
     } else {
@@ -933,12 +951,10 @@ public class GuiWindow extends JFrame {
 
       File file = fileChooser.getSelectedFile();
       mode = modes.Replay.name();
-      //System.out.println("Selected game record: " + file.getAbsolutePath());
       this.eventIterator = EventListener.getRecord()
           .getIteratorByFile(file.getAbsolutePath(), this.replaySpeed);
       replaySetLevel();
     } else {
-      //System.out.println("File access cancelled by user.");
       // Resume the app timer, return to current game
       mode = modes.Run.name(); // Game is back to running mode
       // resume timer
@@ -961,17 +977,14 @@ public class GuiWindow extends JFrame {
       public void actionPerformed(ActionEvent evt) {
         if (!it.hasNext()) {
           ((Timer) evt.getSource()).stop();
-          //System.out.println("Auto-Replay stopped iteration");
           return;
         }
         Event ev = it.next();
         SingleMove mv = null;
-        //System.out.println("Auto-Replay event: " + ev.getType());
         switch(ev.getType()){
           case ChapMove:
             mv = ev.getMove();
             if (mv != null) {
-              //System.out.println("Auto-Replay ChapMove: " + mv.getLastDirection());
               forwordable.handleMovement(mv);
               mv = null;
             } else {
@@ -981,7 +994,6 @@ public class GuiWindow extends JFrame {
           case BugMove:
             mv = ev.getMove();
             if (mv != null) {
-              //System.out.println("Auto-Replay BugMove: " + mv.getLastDirection() + "BugId: " + ev.getBugId());
               int bugId = ev.getBugId();
               BugEntity bug = forwordable.getBug(bugId);
               mz.moveEntity(mv, bug);
@@ -994,7 +1006,6 @@ public class GuiWindow extends JFrame {
             break;
         }
         int latency = (int) it.getLatency();
-        //System.out.println("Auto-Replay latency updated to: " + latency);
         //FayLu: Theoretically the speed might be adjusted during the auto-replay
         ((Timer) evt.getSource()).setDelay(latency);
       }
@@ -1002,11 +1013,14 @@ public class GuiWindow extends JFrame {
     // When auto-replay is triggered the real-time speed value is used
     it.setSpeed(this.replaySpeed);
     int latency = (int) it.getLatency();
-    //System.out.println("Auto-Replay latency initialized to: " + latency);
     new Timer(latency, taskPerformer).start();
 
   }
-  
+
+  /**
+   * Checks current mode.
+   * @return true if is on run / playing mode.
+   */
   public boolean inRunMode() {
 	  return mode != null && mode.equals(modes.Run.name());
   }
@@ -1022,17 +1036,14 @@ public class GuiWindow extends JFrame {
     Maze mz = this.m;
 
     if (!it.hasNext()) {
-     // System.out.println("Replay stopped iteration");
       return;
     }
     Event ev = it.next();
     SingleMove mv = null;
-    //System.out.println("Replay event: " + ev.getType());
     switch(ev.getType()){
       case ChapMove:
         mv = ev.getMove();
         if (mv != null) {
-          //System.out.println("Replay ChapMove: " + mv.getLastDirection());
           forwordable.handleMovement(mv);
           mv = null;
         } else {
@@ -1042,7 +1053,6 @@ public class GuiWindow extends JFrame {
       case BugMove:
         mv = ev.getMove();
         if (mv != null) {
-          //System.out.println("Replay BugMove: " + mv.getLastDirection() + "BugId: " + ev.getBugId());
           int bugId = ev.getBugId();
           BugEntity bug = forwordable.getBug(bugId);
           mz.moveEntity(mv, bug);
@@ -1080,7 +1090,7 @@ public class GuiWindow extends JFrame {
     pausedAtMin = gameCountdown.getCurrentMin();
     gameCountdown.pause();
     display("GAME PAUSED");
-    if (mode != null && mode.equals(modes.Run.name())) {
+    if (inRunMode()) {
       gameCountdown = new GameTimer(pausedAtMin, pausedAtSec, this);
     }
   }
@@ -1091,7 +1101,7 @@ public class GuiWindow extends JFrame {
    * @param evt level is selected form the menu bar or CTRL+1
    */
   private void levelOneActionPerformed(java.awt.event.ActionEvent evt) {
-    if (mode != null && !mode.equals(modes.Replay.name())) {
+    if (inRunMode()) {
       level = 1;
       newGame();
     } else {
@@ -1105,7 +1115,7 @@ public class GuiWindow extends JFrame {
    * @param evt level is selected form the menu bar or CTRL+2
    */
   private void levelTwoActionPerformed(java.awt.event.ActionEvent evt) {
-    if (mode != null && !mode.equals(modes.Replay.name())) {
+    if (inRunMode()) {
       level = 2;
       newGame();
       } else {
@@ -1139,13 +1149,22 @@ public class GuiWindow extends JFrame {
   private void exitWithXActionPerformed(java.awt.event.ActionEvent evt) {
     System.exit(0);
   }
-    
-  private HashMap<Integer, BugEntity> bugMap = new HashMap<Integer, BugEntity>();
-    
+
+  /**
+   * Adds bugs to a hash map to be able to identify which one
+   * is which when the game is saved on a Json file.
+    * @param bugId number that identifies a bug.
+   * @param bug Bug object to be added.
+   */
   public void addBug(int bugId, BugEntity bug) {
     bugMap.put(bugId, bug);
   }
-    
+
+  /**
+   * Finds a given bug on the maze.
+   * @param bugId number that identifies the bug.
+   * @return Bug object within the game.
+   */
   public BugEntity getBug(int bugId) {
     return bugMap.get(bugId);
   }
@@ -1170,7 +1189,7 @@ public class GuiWindow extends JFrame {
             + "or set AutoReplay and adjust to your desired speed.\n"
             +"You can also save the game and resume later by going to \"File\" and\n"
             +"click on \"Save\"");
-    if( mode.equals(modes.Run.name())) {
+    if (inRunMode()) {
       gameCountdown = new GameTimer(pausedAtMin, pausedAtSec,this);
     }
   }
@@ -1207,14 +1226,14 @@ public class GuiWindow extends JFrame {
       pausedAtSec = gameCountdown.getCurrentSec();
       gameCountdown.pause();
       display(information);
-      if (mode !=null && mode.equals(modes.Run.name())) {
+      if (inRunMode()) {
         gameCountdown = new GameTimer(pausedAtMin, pausedAtSec, this);
       }
     }
   }
 
   /**
-   * Displays the number of treausures left on the board.
+   * Displays the number of treasures left on the board.
    */
   private void setChipsLeft() {
     int chips = m.target - m.getChipsLeft();
@@ -1225,13 +1244,12 @@ public class GuiWindow extends JFrame {
    * Allocates the level for the replay mode.
    */
   private void replaySetLevel() {
-    if (mode != null && mode.equals(modes.Replay.name())) {
+    if (!inRunMode()) {
       if (this.eventIterator == null) {
         System.err.println("Please select the saved game to replay from File menu");
         return;
       }
       Event evt = this.eventIterator.next();
-      //System.out.println("Replay saved game in level: " + evt.getLevel());
       this.setLevelNumber(evt.getLevel());
       boardCanvas.setVisible(false);
       render = new Render(m);
@@ -1254,7 +1272,7 @@ public class GuiWindow extends JFrame {
     GuiWindow.level = level;
     levelNumber.setText("0" + level);
     writeLevelFile(level + "");
-    if (mode != null && !mode.equals(modes.Replay.name())) {
+    if (inRunMode()) {
       this.eventListener.onEvent(Event.eventOfLevelSetting(level));
     }
     try {
@@ -1274,6 +1292,7 @@ public class GuiWindow extends JFrame {
    */
   private void writeLevelFile(String level) {
     File old = new File("src/nz/ac/vuw/ecs/swen225/gp20/application/data/level.txt");
+    //Overwrites old file to only have to parse one number next time it is read.
     old.delete();
     try {
       FileWriter writer = new FileWriter("src/nz/ac/vuw/ecs/swen225/" 
@@ -1347,7 +1366,7 @@ public class GuiWindow extends JFrame {
    * @param entityID bug reference.
    */
   public void notifyRecord(SingleMove move, int entityID) {
-	  if(mode != null && !mode.equals(modes.Replay.name())) {
+	  if(inRunMode()) {
 		  eventListener.onEvent(Event.eventOfBugMove(move, entityID));
 	  }
   }
