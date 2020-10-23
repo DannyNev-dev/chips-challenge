@@ -12,7 +12,7 @@ import java.lang.reflect.Proxy;
  * @author Emanuel Evans (ID: 300472656)
  *
  */
-public interface Item { // extends Cloneable {
+public interface Item {
 
   /**
    * Identify whether this item can allow the player to move into it. When that
@@ -54,8 +54,7 @@ public interface Item { // extends Cloneable {
     if (!this.hasAction()) {
       throw new UnsupportedOperationException("This item does not have an action!");
     }
-    // This exception prevents bugs if hasActions gets overridden but not this
-    // method
+    // This exception prevents bugs if hasActions gets overridden but not this method
     throw new UnsupportedOperationException("This item's action has not yet been implemented");
   }
 
@@ -94,15 +93,4 @@ public interface Item { // extends Cloneable {
       handler
     );
   }
-
-  /*
-   * Get a reference to this item which will not affect the original object. NOTE:
-   * by deault it just returns a copy of the refrence to this item because most
-   * items are immutable.
-   * 
-   * @return a copy of this item
-   */
-  /*
-   * public default Item clone() { return this; }
-   */
 }

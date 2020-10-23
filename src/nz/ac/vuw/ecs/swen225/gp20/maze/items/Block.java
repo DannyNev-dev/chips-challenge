@@ -6,6 +6,7 @@ import static nz.ac.vuw.ecs.swen225.gp20.maze.Maze.SpecialEvent;
 
 /**
  * Create door objects which entity can pass across if they have collected the right key.
+ * this unlocks the door. After unlocking the door, the locked door turns into a free tile. 
  * 
  * @author Emanuel Evans (ID: 300472656)
  *

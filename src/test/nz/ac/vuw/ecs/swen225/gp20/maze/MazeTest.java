@@ -12,9 +12,7 @@ import nz.ac.vuw.ecs.swen225.gp20.maze.Maze;
 import nz.ac.vuw.ecs.swen225.gp20.maze.Move;
 import nz.ac.vuw.ecs.swen225.gp20.maze.Move.Direction;
 import nz.ac.vuw.ecs.swen225.gp20.maze.SingleMove;
-import nz.ac.vuw.ecs.swen225.gp20.maze.items.Key;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Player;
-import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.ItemTile;
 import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.Tile;
 import nz.ac.vuw.ecs.swen225.gp20.persistence.LevelReader;
 
@@ -123,6 +121,24 @@ class MazeTest {
     
   }
   
+  
+  /**
+   * Move player without updating the board.
+   */
+  @Test
+  void invalidPlayerPosition() {
+    Maze maze = mazeSample();
+    Tile[][] board = maze.getBoard();
+    
+    Player newPlayer = new Player(new Point(5, 0));
+    board[9][0].replaceItem(newPlayer);
+    newPlayer.collectChip();
+    
+    //Check that the changes on the board were not applied to the maze
+    //This because the board should have been cloned
+    assertTrue(maze.movePlayer(new SingleMove(Direction.DOWN)));
+    
+  }
   
   
   

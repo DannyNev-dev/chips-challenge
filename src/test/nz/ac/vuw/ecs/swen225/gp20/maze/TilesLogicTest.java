@@ -8,9 +8,11 @@ import java.awt.Point;
 
 import nz.ac.vuw.ecs.swen225.gp20.maze.Maze.SpecialEvent;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Block;
+import nz.ac.vuw.ecs.swen225.gp20.maze.items.Entity;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.ExitLock;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Harmful;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Harmful.DangerType;
+import nz.ac.vuw.ecs.swen225.gp20.maze.items.Item;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Key;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Key.Colour;
 import nz.ac.vuw.ecs.swen225.gp20.maze.items.Player;
@@ -229,6 +231,127 @@ public class TilesLogicTest {
     
     assertTrue(p1.equals(p2));
     assertTrue(p1.hashCode() == p2.hashCode());
+  }
+  
+  @Test
+  void diffrentRemedy() {
+    Remedy medicine = new Remedy(Type.MEDICINE);
+    Remedy waterBucket = new Remedy(Type.BUCKET);
+    
+    assertFalse(medicine.equals(waterBucket));
+    assertFalse(medicine.hashCode() == waterBucket.hashCode());
+    
+  }
+  
+  /**
+   * This test is used to ensure all actions are marked as unsupported 
+   * Until they are overridden by a concrete type. This characteristics
+   * Facilitate the addition of additional Entities.
+   */
+  @Test
+  void entityDefaultTest() {
+    Entity newType = new Player(new Point(2, 2));
+    
+    try {
+      newType.getEntity();
+      //Ignore test, feature must have been implemented
+      Assume.assumeFalse(true);
+    } catch (UnsupportedOperationException e) {
+      assertTrue(true);
+    }
+    
+    try {
+      newType.getFile("test");
+      //Ignore test, feature must have been implemented
+      Assume.assumeFalse(true); 
+    } catch (UnsupportedOperationException e) {
+      assertTrue(true);
+    }
+  }
+  
+  @Test
+  void unmodifiablePlayerTest() {
+    Entity original = new Player(new Point(2, 2));
+    Entity unmodifiable = (Entity) original.unmodifiableItem(original);
+    
+    try {
+      unmodifiable.dropCollectable(new Key(Colour.BLUE));
+      assertTrue(false);
+      
+    } catch (UnsupportedOperationException e) {
+      assertTrue(true);
+    }
+  }
+  
+  /**
+   * Test the default characteristics of an not accessible item.
+   */
+  @Test
+  void createNewItem() {
+    Item myItem = new Item() {
+      @Override
+      public boolean isAccessible(Entity entity) {
+        return false;
+      }
+
+      @Override
+      public String getName() {
+        return "myNewItem";
+      }
+    };
+    
+    assertFalse(myItem.isCollectable());
+    assertFalse(myItem.hasAction());
+    try {
+      myItem.applyAction(new Player(new Point(2, 2)));
+    } catch (UnsupportedOperationException e) {
+      assertTrue(true);
+    }
+  }
+  
+  /**
+   * Test the default characteristics of an accessible item with an action.
+   * This test ensures that if hasAction is overridden but applyAction is not
+   * an exception will be thrown
+   */
+  @Test
+  void createNewItemAction() {
+    Item myItem = new Item() {
+      @Override
+      public boolean isAccessible(Entity entity) {
+        return true;
+      }
+
+      @Override
+      public String getName() {
+        return "myNewItem";
+      }
+      
+      @Override
+      public boolean hasAction() {
+        return true;
+      }
+    };
+    
+    assertTrue(myItem.hasAction());
+    try {
+      myItem.applyAction(new Player(new Point(2, 2)));
+    } catch (UnsupportedOperationException e) {
+      assertTrue(true);
+    }
+  }
+  
+  /**
+   * Test the creation of an unmodifiable item.
+   * However items by default are immutable so there are no
+   * method from the interface which will be disabled
+   */
+  @Test
+  void unmodifiableItemTest() {
+    Item original = new Key(Colour.BLUE);
+    Item unmodifiable = original.unmodifiableItem(original);
+    
+    assertTrue(unmodifiable.getName().equals(original.getName()));
   }
 
 }

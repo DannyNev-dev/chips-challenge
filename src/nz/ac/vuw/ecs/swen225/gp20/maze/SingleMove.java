@@ -25,7 +25,7 @@ public class SingleMove implements Move {
 
   /**
    * Construct a new move made of a single step.
-   * @param direction where is this move going to
+   * @param direction where is this move going to. It cannot be null.
    */
   public SingleMove(Direction direction) {
     this();

@@ -18,7 +18,8 @@ import nz.ac.vuw.ecs.swen225.gp20.maze.tiles.Tile;
 import nz.ac.vuw.ecs.swen225.gp20.persistence.LevelReader;
 
 /**
- * This class manages the logic for the maze.
+ * This class manages the logic for the game.
+ * It controls what actions are allowed to change the state of those objects
  * 
  * @author Emanuel Evans
  *
@@ -127,7 +128,7 @@ public class Maze {
   
   /**
    * Create a new maze given a level.
-   * @param level of the maze
+   * @param level of the maze this cannot be negative
    * @throws IOException if no object has that level
    */
   public Maze(int level) throws IOException {
@@ -145,7 +146,7 @@ public class Maze {
   
   /**
    * Create a new maze given an already created loader.
-   * @param loader object used to obtain the data
+   * @param loader object used to obtain the data. This cannot be null.
    */ 
   public Maze(LevelReader loader) {
     checkArgument(loader != null, "The loader must be well defined");
@@ -161,9 +162,16 @@ public class Maze {
 
   /**
    * Move the player from it's current position to a different tile in the board.
+   * This require the player to be in a valid position when the method is invoked.
+   * Which includes that the position store in the player object match the tile
+   * where the player is located in the board. And that the player is allowed to 
+   * stand on that tile.
+   * Moreover it requires the state invariants such that the number of treasures is 
+   * constant to be true. 
    * 
-   * @param move indicates where should the player move to
+   * @param move indicates where should the player move to. This cannot be null.
    * @return whether the move was successful
+   * 
    */
   public boolean movePlayer(Move move) {
     checkArgument(isPlayerPosValid());
@@ -184,8 +192,14 @@ public class Maze {
   
   /**
    * Move an Entity of the board.
+   * This require the given entity to be in a valid position when the method is invoked.
+   * Which includes that the position store in the entity object match the tile
+   * where the entity is located in the board. And that the entity is allowed to 
+   * stand on that tile.
+   * Moreover it requires the state invariants such that the number of treasures is 
+   * constant to be true.
    * 
-   * @param move indicates where should the player move to
+   * @param move indicates where the entity should move to. This cannot be null.
    * @param movingEntity who needs to be moved
    * @return whether the move was successful
    */
@@ -265,6 +279,7 @@ public class Maze {
   /**
    * Get the list of items collected by the player.
    * This list does not includes chips (treasures), use getChipsLeft() to obtain that information
+   * The player must have initialised, this is done in the constructor and should always be true. 
    * @return unmodifiable list of collected items
    */
   public List<Collectable> getPlayerInventory() {
@@ -387,6 +402,10 @@ public class Maze {
     }
   }
   
+  /**
+   * Check whether the player has won the game.
+   * @return whether the player has won the game.
+   */
   private boolean isGameWon() {
     //Get the coordinates of the tile where the player should be located
     Point playerPos = player.getPosition();
@@ -403,13 +422,13 @@ public class Maze {
   private boolean isPlayerPosValid() {
     checkNotNull(player, "There must be a player on the board to validate its position");
     
-    return isEntityPosValid(player) && isThereOnlyOnePlayer();    
+    return isThereOnlyOnePlayer() && isEntityPosValid(player);    
   }
   
   /**
    * Check whether the given entity position is valid.
    * It looks if it is within the board and if the coordinates match the state of the board
-   * @param entity to check its position
+   * @param entity to check its position. It cannot be null.
    * @return whether the given entity's position is valid
    */
   private boolean isEntityPosValid(Entity entity) {

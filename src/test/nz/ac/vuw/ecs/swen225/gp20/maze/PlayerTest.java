@@ -86,7 +86,7 @@ class PlayerTest {
    */
   @Test
   void invalidDropItemTest() {
-    Player player = new Player(new Point(5, 4));
+    Entity player = new Player(new Point(5, 4));
     Assume.assumeTrue(player.getInventory().isEmpty());
     
     try {
