@@ -422,7 +422,7 @@ public class Maze {
   private boolean isPlayerPosValid() {
     checkNotNull(player, "There must be a player on the board to validate its position");
     
-    return isEntityPosValid(player) && isThereOnlyOnePlayer();    
+    return isThereOnlyOnePlayer() && isEntityPosValid(player);    
   }
   
   /**
