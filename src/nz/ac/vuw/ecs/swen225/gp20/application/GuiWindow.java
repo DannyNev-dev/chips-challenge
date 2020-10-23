@@ -83,7 +83,7 @@ public class GuiWindow extends JFrame {
   private static int level = -1;
 
   private enum modes {
-    Run, Load, Save, Replay
+    Run, Replay
   }
 
   private GameTimer gameCountdown;
@@ -176,7 +176,7 @@ public class GuiWindow extends JFrame {
         evtOpen = evt;
         mode = modes.Run.name();
         if (level != -1) {
-          newGame(level);
+          newGameUpdate(level);
         } else {
           formWindowOpened(evt);
         }
@@ -653,12 +653,30 @@ public class GuiWindow extends JFrame {
   }
 
   /**
-   * Creates a game by creating a new timer and passes the information to the
+   * Creates a new gui window for new games.
+   */
+  private void newGame(){
+    gameCountdown.pause(); // old timer is stopped
+    new GuiWindow().setVisible(true);
+    // Game always starts from Run mode
+    mode = modes.Run.name();
+    // Makes sure there is nly one window open at the time
+    // since game has a countdown I found it pointless to have
+    // more than one window open.
+    if (GuiWindow.getWindows().length > 1) {
+      for (int i = 0; i < GuiWindow.getWindows().length - 1; i++) {
+        GuiWindow.getWindows()[i].dispose();
+      }
+    }
+  }
+
+  /**
+   * Ppasses the information to the
    * other modules too.
    *
    * @param level to be played.
    */
-  private void newGame(int level) {
+  private void newGameUpdate(int level) {
     // New timer for every game (2 minutes long)
     if (gameCountdown != null) {
       gameCountdown.pause();
@@ -715,7 +733,7 @@ public class GuiWindow extends JFrame {
         System.exit(0);
         return;
       }
-      newGame(numSelected);
+      newGameUpdate(numSelected);
     } else {
       System.exit(0); // changed to prevent bug when closing
     }
@@ -732,7 +750,7 @@ public class GuiWindow extends JFrame {
           "Game Won", JOptionPane.WARNING_MESSAGE);
       if (confirm == JOptionPane.OK_OPTION) {
         level = 2;
-        newGame(level);
+        newGame();
       } else if (confirm == JOptionPane.CANCEL_OPTION) {
         System.exit(0); // close all windows
       }
@@ -760,15 +778,16 @@ public class GuiWindow extends JFrame {
     int confirm = JOptionPane.showConfirmDialog(null, message, "Game Over", 
         JOptionPane.YES_NO_OPTION);
     if (confirm == JOptionPane.YES_OPTION) {
-      newGame(level);
+      newGame();
     } else if (confirm == JOptionPane.NO_OPTION) {
       int confirm2 = JOptionPane.showConfirmDialog(null, "Do you want to play another level?",
           "Game Over",
           JOptionPane.YES_NO_OPTION);
       if (confirm2 == JOptionPane.YES_OPTION) {
-        formWindowOpened(evtOpen);
+        level = -1;
+        newGame();
       } else {
-        System.exit(0); // close this window only
+        System.exit(0); // close
       }
     }
   }
@@ -819,15 +838,32 @@ public class GuiWindow extends JFrame {
     setVisible(true);
     popUpInfo(m.getInfo());
     displayInventory();
+
+    if(checkGameStatus()){
+      transferFocus();
+      return isValidMove;
+    }
+
     propertyEditorSupport.firePropertyChange();
+    checkGameStatus();
+
+    transferFocus();
+    return isValidMove;
+  }
+
+  /**
+   * Checks if Chap has been murdered or reached the winning tile.
+   * @return whether the game ended
+   */
+  private boolean checkGameStatus(){
     if (m.getStatus() == Maze.GameState.GAME_WON) {
       formWindowWon();
+      return true;
     } else if (m.getStatus() == Maze.GameState.GAME_LOST) {
       formWindowLost(evtOpen);
+      return true;
     }
-    transferFocus();
-    
-    return isValidMove;
+    return false;
   }
 
   /**
@@ -897,12 +933,12 @@ public class GuiWindow extends JFrame {
 
       File file = fileChooser.getSelectedFile();
       mode = modes.Replay.name();
-      System.out.println("Selected game record: " + file.getAbsolutePath());
+      //System.out.println("Selected game record: " + file.getAbsolutePath());
       this.eventIterator = EventListener.getRecord()
           .getIteratorByFile(file.getAbsolutePath(), this.replaySpeed);
       replaySetLevel();
     } else {
-      System.out.println("File access cancelled by user.");
+      //System.out.println("File access cancelled by user.");
       // Resume the app timer, return to current game
       mode = modes.Run.name(); // Game is back to running mode
       // resume timer
@@ -925,17 +961,17 @@ public class GuiWindow extends JFrame {
       public void actionPerformed(ActionEvent evt) {
         if (!it.hasNext()) {
           ((Timer) evt.getSource()).stop();
-          System.out.println("Auto-Replay stopped iteration");
+          //System.out.println("Auto-Replay stopped iteration");
           return;
         }
         Event ev = it.next();
         SingleMove mv = null;
-        System.out.println("Auto-Replay event: " + ev.getType());
+        //System.out.println("Auto-Replay event: " + ev.getType());
         switch(ev.getType()){
           case ChapMove:
             mv = ev.getMove();
             if (mv != null) {
-              System.out.println("Auto-Replay ChapMove: " + mv.getLastDirection());
+              //System.out.println("Auto-Replay ChapMove: " + mv.getLastDirection());
               forwordable.handleMovement(mv);
               mv = null;
             } else {
@@ -945,7 +981,7 @@ public class GuiWindow extends JFrame {
           case BugMove:
             mv = ev.getMove();
             if (mv != null) {
-              System.out.println("Auto-Replay BugMove: " + mv.getLastDirection() + "BugId: " + ev.getBugId());
+              //System.out.println("Auto-Replay BugMove: " + mv.getLastDirection() + "BugId: " + ev.getBugId());
               int bugId = ev.getBugId();
               BugEntity bug = forwordable.getBug(bugId);
               mz.moveEntity(mv, bug);
@@ -958,7 +994,7 @@ public class GuiWindow extends JFrame {
             break;
         }
         int latency = (int) it.getLatency();
-        System.out.println("Auto-Replay latency updated to: " + latency);
+        //System.out.println("Auto-Replay latency updated to: " + latency);
         //FayLu: Theoretically the speed might be adjusted during the auto-replay
         ((Timer) evt.getSource()).setDelay(latency);
       }
@@ -966,7 +1002,7 @@ public class GuiWindow extends JFrame {
     // When auto-replay is triggered the real-time speed value is used
     it.setSpeed(this.replaySpeed);
     int latency = (int) it.getLatency();
-    System.out.println("Auto-Replay latency initialized to: " + latency);
+    //System.out.println("Auto-Replay latency initialized to: " + latency);
     new Timer(latency, taskPerformer).start();
 
   }
@@ -982,17 +1018,17 @@ public class GuiWindow extends JFrame {
     Maze mz = this.m;
 
     if (!it.hasNext()) {
-      System.out.println("Replay stopped iteration");
+     // System.out.println("Replay stopped iteration");
       return;
     }
     Event ev = it.next();
     SingleMove mv = null;
-    System.out.println("Replay event: " + ev.getType());
+    //System.out.println("Replay event: " + ev.getType());
     switch(ev.getType()){
       case ChapMove:
         mv = ev.getMove();
         if (mv != null) {
-          System.out.println("Replay ChapMove: " + mv.getLastDirection());
+          //System.out.println("Replay ChapMove: " + mv.getLastDirection());
           forwordable.handleMovement(mv);
           mv = null;
         } else {
@@ -1002,7 +1038,7 @@ public class GuiWindow extends JFrame {
       case BugMove:
         mv = ev.getMove();
         if (mv != null) {
-          System.out.println("Replay BugMove: " + mv.getLastDirection() + "BugId: " + ev.getBugId());
+          //System.out.println("Replay BugMove: " + mv.getLastDirection() + "BugId: " + ev.getBugId());
           int bugId = ev.getBugId();
           BugEntity bug = forwordable.getBug(bugId);
           mz.moveEntity(mv, bug);
@@ -1053,13 +1089,7 @@ public class GuiWindow extends JFrame {
   private void levelOneActionPerformed(java.awt.event.ActionEvent evt) {
     if (mode != null && !mode.equals(modes.Replay.name())) {
       level = 1;
-      gameCountdown.pause();
-      new GuiWindow().setVisible(true);
-      if (GuiWindow.getWindows().length > 1) {
-        for (int i = 0; i < GuiWindow.getWindows().length - 1; i++) {
-          GuiWindow.getWindows()[i].dispose();
-        }
-      }
+      newGame();
     } else {
       display("Replay mode ON. \nCannot set a new level.");
     }
@@ -1073,16 +1103,10 @@ public class GuiWindow extends JFrame {
   private void levelTwoActionPerformed(java.awt.event.ActionEvent evt) {
     if (mode != null && !mode.equals(modes.Replay.name())) {
       level = 2;
-      gameCountdown.pause();
-      new GuiWindow().setVisible(true);
-      if (GuiWindow.getWindows().length > 1) {
-        for (int i = 0; i < GuiWindow.getWindows().length - 1; i++) {
-          GuiWindow.getWindows()[i].dispose();
-        }
+      newGame();
       } else {
         display("Replay mode on. \nCannot set a new level.");
       }
-    }
   }
 
   /**
@@ -1100,18 +1124,7 @@ public class GuiWindow extends JFrame {
    * @param evt Click or CTRL+P
    */
   private void newGameSameLevelActionPerformed(java.awt.event.ActionEvent evt) {
-    gameCountdown.pause(); // old timer is stopped
-    new GuiWindow().setVisible(true);
-    // Game always starts from Run mode
-    mode = modes.Run.name();
-    // Makes sure there is nly one window open at the time
-    // since game has a countdown I found it pointless to have
-    // more than one window open.
-    if (GuiWindow.getWindows().length > 1) {
-      for (int i = 0; i < GuiWindow.getWindows().length - 1; i++) {
-        GuiWindow.getWindows()[i].dispose();
-      }
-    }
+    newGame();
   }
 
   /**
@@ -1214,7 +1227,7 @@ public class GuiWindow extends JFrame {
         return;
       }
       Event evt = this.eventIterator.next();
-      System.out.println("Replay saved game in level: " + evt.getLevel());
+      //System.out.println("Replay saved game in level: " + evt.getLevel());
       this.setLevelNumber(evt.getLevel());
       boardCanvas.setVisible(false);
       render = new Render(m);
@@ -1282,7 +1295,6 @@ public class GuiWindow extends JFrame {
       int line;
 
       line = Integer.parseInt(bufferedReader.readLine());
-      System.out.println(line);
       lastLevel = line;
       reader.close();
 
