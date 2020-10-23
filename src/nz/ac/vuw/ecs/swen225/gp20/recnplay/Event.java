@@ -49,7 +49,6 @@ public class Event {
 	 * @param level of the Event
 	 * @param move of the Event
 	 * @param bugId of the event 
-	 * @param chapDies of the Event
 	 */
 	public Event(Type type, int level, SingleMove move, int bugId) {
 		this();
