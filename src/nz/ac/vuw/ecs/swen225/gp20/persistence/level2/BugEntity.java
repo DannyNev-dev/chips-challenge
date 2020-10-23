@@ -76,12 +76,20 @@ public class BugEntity implements Entity, Collectable, PropertyChangeListener {
 	 */
 	public SingleMove randomAdjacentPos(Board board) {
 		Point newPos;
-		// Get a random direction for the move
-		SingleMove sm = SingleMove.createRandomlyMove();
-		newPos = sm.getDestination(position);
-		// Check if the bug can access it
-		if (!board.getTile(newPos).isAccessible(this)) {
-			randomAdjacentPos(board);
+		SingleMove sm=null;
+		int retries = 0;
+		boolean accessible = false;
+		// (1/4)^5 ~= 0.001, if in worst case it hits the 0.1%, emit a to-be-rejected move and wait for next round
+		while(retries <=5 && !accessible) {
+			// Get a random direction for the move
+			sm = SingleMove.createRandomlyMove();
+			newPos = sm.getDestination(position);
+			// Check if the bug can access it
+			accessible = board.getTile(newPos).isAccessible(this);
+			retries++;
+		}
+		if (sm==null) {
+			System.out.println("randomAdjacentPos: failed to pop valid random move in time, return a move to be rejected in this round");
 		}
 		return sm;
 	}
@@ -255,12 +263,20 @@ public class BugEntity implements Entity, Collectable, PropertyChangeListener {
 	 */
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
+		if (!this.gw.inRunMode()) {
+			return;
+		}
+		
 		Board b = m.getBoardObject();
 		SingleMove sm = this.randomAdjacentPos(b);
-		m.moveEntity(sm, this); // returns false if game is paused
-
-		// call static application method to notify record and replay
-		gw.notifyRecord(sm, this.ID);
+		// moveEntity() returns false if game is paused
+		if (m.moveEntity(sm, this))
+		{
+			// call static application method to notify record and replay
+			gw.notifyRecord(sm, this.ID);
+		}else {
+			System.err.println("PropertyChange: The random move is rejected");
+		}
 	}
 
 	/**
@@ -268,8 +284,8 @@ public class BugEntity implements Entity, Collectable, PropertyChangeListener {
 	 *
 	 * @param sm the the single move you desire the bug to execute
 	 */
-	public void moveBug(SingleMove sm) {
-		m.moveEntity(sm, this);
+	public boolean moveBug(SingleMove sm) {
+		return m.moveEntity(sm, this);
 	}
 
 	/**
