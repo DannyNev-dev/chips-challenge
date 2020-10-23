@@ -6,7 +6,7 @@ import java.sql.Timestamp;
 /**
  * Implements Iterator.
  * Pop up saved java objects to GUIWIndow in replay mode.
- * @author YanLu
+ * @author YanLu (300520177)
  *
  */
 public class EventIterator implements Iterator<Event>{
@@ -22,7 +22,7 @@ public class EventIterator implements Iterator<Event>{
 	
 	/**
 	 * Set replay speed with a given parameter.
-	 * @param a given speed
+	 * @param speed given speed
 	 */
 	public void setSpeed(int speed) {
 		this.speed = speed;
@@ -56,8 +56,8 @@ public class EventIterator implements Iterator<Event>{
 
 	/**
 	 * Constructor of EventIterator.
-	 * @param a saved RecordedGame object
-	 * @param replay speed
+	 * @param rg saved RecordedGame object
+	 * @param speed replay speed
 	 */
 	public EventIterator(RecordedGame rg, int speed) {
 		super();
@@ -76,7 +76,7 @@ public class EventIterator implements Iterator<Event>{
 
 	/**
 	 * Constructor of EventIterator.
-	 * @param a saved RecordedGame object
+	 * @param recordedGame saved RecordedGame object
 	 */
 	public EventIterator(RecordedGame recordedGame) {
 		this(recordedGame, EventIterator.DEFAULT_SPEED);

@@ -3,7 +3,7 @@ package nz.ac.vuw.ecs.swen225.gp20.recnplay;
 /**
  * Contains onEvent method which will be called by Application module.
  * when a new event occurs(set level, move, pick up key, pick up chip etc.). 
- * @author YanLu
+ * @author YanLu (300520177)
  */
 public class EventListener implements Plugin {
 

@@ -15,7 +15,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 /**
  * Create JSon object for recording current game.
  * save current game to JSon file.
- * @author YanLu
+ * @author YanLu (300520177)
  *
  */
 public class Record{

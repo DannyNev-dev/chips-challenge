@@ -8,7 +8,7 @@ import nz.ac.vuw.ecs.swen225.gp20.recnplay.EventIterator;
 
 /**
  * Test save, load, iterate functions.
- * @author YanLu
+ * @author YanLu (300520177)
  *
  */
 public class TestRecord {
