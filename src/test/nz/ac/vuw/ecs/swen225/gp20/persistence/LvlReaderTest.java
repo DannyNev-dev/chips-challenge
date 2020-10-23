@@ -67,6 +67,12 @@ public class LvlReaderTest {
 			assertEquals(lR.loadTarget(),7);	
 		}
 		
+		/**
+		 * Test 4.
+		 * checks that we can create level 2 and set maze
+		 *
+		 * @throws IOException Signals that an I/O exception has occurred.
+		 */
 		@Test
 		void test4() throws IOException {
 			LevelReader lR = new LevelReader(2);
@@ -74,11 +80,17 @@ public class LvlReaderTest {
 			assertTrue(lR.setMaze(m));
 		}
 		
+		/**
+		 * Test 5.
+		 * checks that we can create level 2 and set application
+		 *
+		 * @throws IOException Signals that an I/O exception has occurred.
+		 */
 		@Test
 		void test5() throws IOException {
 			LevelReader lR = new LevelReader(2);
-			@SuppressWarnings("unused")
 			Maze m = new Maze(lR);
+			lR.setMaze(m);
 			GuiWindow gw = new GuiWindow();
 			assertTrue(lR.setApplication(gw));
 		}

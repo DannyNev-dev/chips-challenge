@@ -116,6 +116,7 @@ public class LevelReader {
 	 * Sets the maze. and gives the bugs references
 	 *
 	 * @param m the new maze
+	 * @return true if successful
 	 */
 	public boolean setMaze(Maze m) {
 		this.maze = m;
@@ -130,6 +131,7 @@ public class LevelReader {
 	 * Sets the application. and gives the bugs references
 	 *
 	 * @param gw the new application
+	 * @return true if successful
 	 */
 	public boolean setApplication(GuiWindow gw) {
 		this.gw = gw;
@@ -249,7 +251,6 @@ public class LevelReader {
 			int x = varObj.getInt("x");
 			int y = varObj.getInt("y");
 			BugEntity bug = new BugEntity(new Point(x, y), bugCount);
-			System.out.println(bugCount);
 			bugCount++;
 			tile = new ItemTile(bug);
 			bugs.add(bug);
