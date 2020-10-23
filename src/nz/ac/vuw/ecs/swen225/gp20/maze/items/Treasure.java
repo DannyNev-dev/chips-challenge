@@ -2,8 +2,6 @@ package nz.ac.vuw.ecs.swen225.gp20.maze.items;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
-//import static com.google.common.base.Preconditions;
-//import static nz.ac.vuw.ecs.swen225.gp20.maze.Maze.SpecialEvent; //imported by interface
 
 import nz.ac.vuw.ecs.swen225.gp20.maze.Maze.SpecialEvent;
 

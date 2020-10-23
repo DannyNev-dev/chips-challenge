@@ -26,7 +26,7 @@ public abstract class Tile implements Cloneable {
 
   /**
    * Constructor that will call by the sub-types to initiate the logic of collectable items. 
-   * 
+   * Note the tile CAN be null and it will represent when the tile is empty.
    * @param item an object which can be collected by the player from this tile
    */
   public Tile(Item item) {
@@ -47,7 +47,7 @@ public abstract class Tile implements Cloneable {
    * items contains in the collection passed as a parameter nor their properties.
    * Indeed, this method should be given an unmodifiable collection.
    * 
-   * @param entity the entity which would like to access this tile
+   * @param entity the entity which would like to access this tile. It cannot be null
    * @return whether this tile can be currently accessed
    */
   public abstract boolean isAccessible(Entity entity);
@@ -70,7 +70,7 @@ public abstract class Tile implements Cloneable {
    * Apply the action linked with the item in this tile.
    * This might affects who interacts with this item.
    * 
-   * @param entity who is interacting with this item
+   * @param entity who is interacting with this item. It cannot be null.
    * @return This method return a special event or null depending by what happens 
    */
   public SpecialEvent applyAction(Entity entity) {
@@ -106,9 +106,9 @@ public abstract class Tile implements Cloneable {
    * Insert an item to this cell.
    * @param newItem item to add to this tile
    * @return the item which was previously in this time, null if it was empty
-   * @throws RuntimeException if an item can't be added to this tile
+   * @throws UnsupportedOperationException if an item can't be added to this tile
    */
-  public Item replaceItem(Item newItem) throws RuntimeException {
+  public Item replaceItem(Item newItem) throws UnsupportedOperationException {
     Item previous = item;
     item = newItem;
     return previous;
@@ -120,6 +120,9 @@ public abstract class Tile implements Cloneable {
    * @return the item on this tile
    */
   public Item getItem() {
+    if (item == null) { 
+      return item;
+    }
     return item.unmodifiableItem(item);
   }
   

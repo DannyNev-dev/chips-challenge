@@ -50,10 +50,11 @@ public interface Entity extends Item, Cloneable {
   }
   
   /**
-   * Get this entity.
-   * @return this
+   * Obtain the concrete implementation of this interface.
+   * @return the current entity
+   * @throws UnsupportedOperationException by default this feature is not available
    */
-  public default Entity getEntity() {
+  public default Entity getEntity() throws UnsupportedOperationException {
     throw new UnsupportedOperationException("This is not a standard features! It can "
         + "be activated to incorporate extentions. It particular it allows the renderer"
         + "to obtain more information about this entity");
@@ -63,8 +64,9 @@ public interface Entity extends Item, Cloneable {
    * Get the path for this entity data.
    * @param prefix location of generic data folder
    * @return the path for this entity data
+   * @throws UnsupportedOperationException by default this feature is not available
    */
-  public default String getFile(String prefix) {
+  public default String getFile(String prefix) throws UnsupportedOperationException {
     throw new UnsupportedOperationException("This is not a standard features! It can "
         + "be activated to incorporate extentions. It particular it allows the renderer"
         + "to identify where are the files used to represent the extentison.");

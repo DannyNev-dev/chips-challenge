@@ -1,8 +1,6 @@
 package nz.ac.vuw.ecs.swen225.gp20.maze.items;
 
-
 import static com.google.common.base.Preconditions.checkArgument;
-//import static nz.ac.vuw.ecs.swen225.gp20.maze.Maze.SpecialEvent;
 
 import java.awt.Point;
 import java.util.ArrayList;
@@ -14,6 +12,9 @@ import nz.ac.vuw.ecs.swen225.gp20.maze.Move;
 
 /**
  * Represent the token of chip (the player).
+ * The hero of the game. His movement is restricted by the nature of the tiles 
+ * (for instance, he cannot move into walls). 
+ * Note that the icon may depend on the current direction of movement.
  * @author Emanuel Evans (ID: 300472656)
  *
  */
@@ -45,10 +46,11 @@ public class Player implements Entity {
   
   /**
    * Create a player from a previous game.
-   * @param inventory items which have already been collected
-   * @param position where the player is currently located
-   * @param orientation where the player is facing
-   * @param chipsCollected number of chips which have been already collected
+   * @param inventory items which have already been collected. It cannot be null
+   * @param position where the player is currently located. It cannot be null
+   * @param orientation where the player is facing.
+   * @param chipsCollected number of chips which have been already collected. 
+   *                       The number of chipsCollected cannot be negative
    */
   private Player(List<Collectable> inventory, Point position, 
       Move.Direction orientation,  int chipsCollected) {
@@ -133,8 +135,6 @@ public class Player implements Entity {
     }
     
     inventory.remove(toDrop);
-    
-    //if a key was dropped a door must have been opened
   }
   
   @Override
@@ -196,10 +196,9 @@ public class Player implements Entity {
    * Create a new player with the same characteristics.
    */
   public Player clone() {
-    //Deep clone inventory
     List<Collectable> newInventory = new ArrayList<>();
     for (Collectable item : inventory) {
-      newInventory.add(item); //.clone());
+      newInventory.add(item);
     }
    
     return new Player(newInventory, position, orientation, chipsCollected);

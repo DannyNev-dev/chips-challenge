@@ -8,6 +8,8 @@ import nz.ac.vuw.ecs.swen225.gp20.maze.Maze.SpecialEvent;
 
 /**
  * Represent keys which can be take up a whole tile in the board of be collected by an entity.
+ * If Chap moves onto such a tile, he picks up the key with this colour, 
+ * once this is done, the tile turns into a free tile.
  * 
  * @author Emanuel Evans (ID: 300472656)
  *

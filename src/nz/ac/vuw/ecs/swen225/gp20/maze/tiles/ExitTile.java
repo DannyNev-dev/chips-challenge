@@ -8,6 +8,7 @@ import nz.ac.vuw.ecs.swen225.gp20.maze.items.Player;
 
 /**
  * Exit of the maze, ending tile.
+ * Once Chap reaches this tile, the game level is finished. 
  * 
  * @author Emanuel Evans (ID: 300472656)
  *

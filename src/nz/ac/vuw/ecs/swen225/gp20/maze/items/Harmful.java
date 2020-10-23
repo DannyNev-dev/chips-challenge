@@ -14,8 +14,7 @@ import nz.ac.vuw.ecs.swen225.gp20.maze.items.Remedy.Type;
 public class Harmful implements Item {
   
   /**
-   * Types of harmful items. When players interacts with these items they will
-   * be affected in a negative way. 
+   * Types of harmful items. This will determine how the player is affected. 
    * @author Emanuel Evans (ID: 300472656)
    *
    */
