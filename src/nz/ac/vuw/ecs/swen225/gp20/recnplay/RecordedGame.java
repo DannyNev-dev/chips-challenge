@@ -58,7 +58,7 @@ public class RecordedGame {
 
 	/**
 	 * Set level with given information.
-	 * @param level
+	 * @param level given level
 	 */
 	public void setLevel(int level) {
 		this.level = level;

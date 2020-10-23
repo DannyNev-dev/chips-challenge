@@ -14,7 +14,7 @@ import nz.ac.vuw.ecs.swen225.gp20.recnplay.EventIterator;
 public class TestRecord {
 	/**
 	 * create SetLevel and move object to test save function.
-	 * @param args
+	 * @param args mock information
 	 */
 	public static void main(String[] args) {	
 		EventListener listener = EventListener.eventListenerFactory();
