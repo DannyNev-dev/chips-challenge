@@ -283,6 +283,7 @@ public class BugEntity implements Entity, Collectable, PropertyChangeListener {
 	 * Move the bug using the given SingleMove.
 	 *
 	 * @param sm the the single move you desire the bug to execute
+	 * @return true, if successful
 	 */
 	public boolean moveBug(SingleMove sm) {
 		return m.moveEntity(sm, this);
